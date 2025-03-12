@@ -81,7 +81,7 @@ export default function Home() {
         </div>
 
         {/* Latest Jobs */}
-        <div className="mt-6 mx-2">
+        <div className="mt-6 mb-15 mx-2">
           <div className="flex items-center justify-between">
             <h2 className="text-lg text-gray-600 font-bold mb-2">Latest Jobs</h2>
             <h2 className="text-sm text-pink-500 font-bold mb-2">See All</h2>
