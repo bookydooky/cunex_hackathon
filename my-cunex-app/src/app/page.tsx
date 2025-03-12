@@ -26,17 +26,17 @@ export default function Home() {
         <div className="flex justify-between items-center">
           <div className="text-lg font-bold text-pink-500">CU<span className="text-gray-800">NEX</span></div>
           <div className="flex-1 mx-2">
-            <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center w-full">
+            <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
               <input type='search' placeholder='What are you looking for?' className="text-gray-400 text-sm flex-1 bg-transparent outline-none"/>
               <FaMagnifyingGlass className="text-gray-400"/>
             </div>
           </div>
           <div className="flex space-x-2">
-            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center">
+            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
               <FaBell className='text-gray-400 text-lg'/>
             </div>
-            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center">
-              <IoPersonSharp className='text-gray-400 text-lg'/>
+            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
+              <IoPersonSharp className='text-gray-400 text-lg'/> 
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function Home() {
         <div className="mt-6 bg-white px-4 py-3 rounded-lg shadow-md">
           <div className="flex items-center justify-between">
             <h2 className="text-lg text-gray-600 font-bold mb-2">Request Services</h2>
-            <h2 className="text-sm text-pink-500 font-bold mb-2">More</h2>
+    
           </div>
           <div className="flex overflow-x-auto space-x-10 pb-2 justify-center">
             {[{icon: FiBox, label: "Item Delivery"}, {icon: MdFoodBank, label: "Food Delivery"}, {icon: BiCube, label: "3D Printing"}, {icon: GiCutDiamond, label: "Laser Cutting"}].map((item, idx) => (
