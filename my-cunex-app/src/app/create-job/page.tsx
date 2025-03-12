@@ -1,7 +1,21 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Share2, Users, Clock } from 'lucide-react';
+import PopupWindow from '../components/CollaborateWindow';
 
 const CreateJobPreview = () => {
+  const router = useRouter();
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const handleCollaborateClick = () => {
+    setIsPopupVisible(true);
+  };
+  const handleClosePopup = () => {
+    setIsPopupVisible(false);
+  };
+  const handlePreviousPage = () => {
+    router.push('/');
+  };
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
 
@@ -9,7 +23,10 @@ const CreateJobPreview = () => {
       {/* App Header */}
       <div className="px-4 py-5 flex items-center justify-between border-b">
         <div className="flex items-center">
-          <ArrowLeft className="mr-4 text-pink-500" />
+          <button onClick={handlePreviousPage}
+          className="transition-transform transform active:scale-90">
+            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+          </button>
           <div className="flex items-center">
             <div className="font-bold text-lg">
               <span className="text-pink-500">CU</span>
@@ -92,7 +109,9 @@ const CreateJobPreview = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-black">Job Details</h2>
             <div className="bg-pink-100 p-1 rounded-lg">
-              <Users size={20} className="text-pink-500" />
+              <button onClick={handleCollaborateClick}>
+                <Users size={20} className="text-pink-500" />
+              </button>
             </div>
           </div>
           
@@ -168,6 +187,8 @@ const CreateJobPreview = () => {
           </svg>
         </button>
       </div>
+      {/* Pop-up Window */}
+      <PopupWindow isVisible={isPopupVisible} onClose={handleClosePopup} />
     </div>
   );
 };

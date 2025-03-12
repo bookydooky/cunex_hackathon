@@ -1,7 +1,8 @@
+'use client'
 import React from 'react';
 import Head from 'next/head';
 import { 
-  FiBox, FiUsers, FiPlus, FiHome, FiCalendar, FiGrid, FiEdit
+  FiBox, FiPlus, FiEdit
 } from 'react-icons/fi';
 import { BiCube } from 'react-icons/bi';
 import { GiCutDiamond } from 'react-icons/gi';
@@ -11,9 +12,15 @@ import { FaCode, FaBell, FaPaintBrush, FaBook, FaLanguage, FaEllipsisH } from 'r
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
+import { useRouter } from 'next/navigation';
 import BottomNavigation from "./components/BottomNavigation";
 
 export default function Home() {
+  const router = useRouter();
+  const handleCreateJobClick = () => {
+    router.push('/create-job');
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
@@ -89,7 +96,10 @@ export default function Home() {
           </div>
           <div className="flex overflow-x-auto space-x-3 pb-2">
             <div className="w-24 h-24 bg-pink-100 rounded-lg flex items-center justify-center">
-              <FiPlus className="text-pink-400 text-3xl" />
+              <button onClick={handleCreateJobClick}
+              className='transition-transform transform hover:scale-110 active:scale-90'>
+                <FiPlus className="text-pink-400 text-3xl" />
+              </button>
             </div>
             {["Logo Design", "Video Editing", "Math Tutoring"].map((job, idx) => (
               <div key={idx} className="w-24 h-24 bg-white rounded-lg overflow-hidden">
