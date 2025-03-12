@@ -27,7 +27,7 @@ export default function Home() {
           <div className="text-lg font-bold text-pink-500">CU<span className="text-gray-800">NEX</span></div>
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center w-full">
-              <input type='search' placeholder='Search...' className="text-gray-400 text-sm flex-1 bg-transparent outline-none"/>
+              <input type='search' placeholder='What are you looking for?' className="text-gray-400 text-sm flex-1 bg-transparent outline-none"/>
               <FaMagnifyingGlass className="text-gray-400"/>
             </div>
           </div>
@@ -51,35 +51,41 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex-1 overflow-auto p-4">
         {/* Service Categories */}
-        <div className="grid grid-cols-4 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        <div className="grid grid-cols-4 gap-3 md:grid-cols-4 sm:grid-cols-3">
           {[{icon: FiEdit, label: "UX/UI"}, {icon: FaCode, label: "Coding"}, {icon: FaPaintBrush, label: "Graphic"}, {icon: RiVideoAiFill, label: "Video"}, {icon: FaBook, label: "Tutoring"}, {icon: FaLanguage, label: "Language"}, {icon: BiCube, label: "Modeling"}, {icon: FaEllipsisH, label: "Others"}].map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
-              <div className="bg-pink-100 rounded-full p-4 w-14 h-14 flex items-center justify-center">
-                <item.icon className="text-pink-500 text-xl" />
+              <div className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-center">
+                <item.icon className="text-pink-500 text-2xl" />
               </div>
-              <span className="text-xs mt-1 text-center">{item.label}</span>
+              <span className="text-xs text-gray-600 mt-1 text-center">{item.label}</span>
             </div>
           ))}
         </div>
 
         {/* Request Services */}
-        <div className="mt-6">
-          <h2 className="text-lg font-bold mb-2">Request Services</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-6 bg-white px-4 py-3 rounded-lg shadow-md">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg text-gray-600 font-bold mb-2">Request Services</h2>
+            <h2 className="text-sm text-pink-500 font-bold mb-2">More</h2>
+          </div>
+          <div className="flex overflow-x-auto space-x-10 pb-2 justify-center">
             {[{icon: FiBox, label: "Item Delivery"}, {icon: MdFoodBank, label: "Food Delivery"}, {icon: BiCube, label: "3D Printing"}, {icon: GiCutDiamond, label: "Laser Cutting"}].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div className="bg-gray-200 rounded-full p-4 w-14 h-14 flex items-center justify-center">
-                  <item.icon className="text-black text-xl" />
+                  <item.icon className="text-black text-2xl" />
                 </div>
-                <span className="text-xs mt-1 text-center">{item.label}</span>
+                <span className="text-xs text-gray-600 mt-1 text-center">{item.label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Latest Jobs */}
-        <div className="mt-6">
-          <h2 className="text-lg font-bold mb-2">Latest Jobs</h2>
+        <div className="mt-6 mx-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg text-gray-600 font-bold mb-2">Latest Jobs</h2>
+            <h2 className="text-sm text-pink-500 font-bold mb-2">See All</h2>
+          </div>
           <div className="flex overflow-x-auto space-x-3 pb-2">
             <div className="w-24 h-24 bg-pink-100 rounded-lg flex items-center justify-center">
               <FiPlus className="text-pink-400 text-3xl" />
