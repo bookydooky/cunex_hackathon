@@ -3,30 +3,7 @@ import { ArrowLeft, Share2, MessageCircle } from 'lucide-react';
 
 const WorkDetailPreview = () => {
   return (
-    <div className="flex flex-col h-full bg-white max-w-md mx-auto shadow-lg">
-      {/* Header with time and status icons */}
-      <div className="p-4 flex justify-between items-center">
-        <div className="text-lg font-bold">14:40</div>
-        <div className="flex space-x-2 items-center">
-          <div className="h-4 w-4 text-black">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2">
-              <path d="M1 1L23 23M18 11.4V6M18 6H12.6M6 6v12h12v-4.6" />
-            </svg>
-          </div>
-          <div className="h-4 w-4 text-black">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </div>
-          <div className="h-4 w-4 text-black">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
-              <path d="M7 15V9L12 12L17 9V15" fill="none" stroke="currentColor" strokeWidth="2" />
-            </svg>
-          </div>
-        </div>
-      </div>
-
+    <div className="flex flex-col h-full bg-white mx-auto shadow-lg">
       {/* App Header */}
       <div className="px-4 py-3 flex items-center justify-between border-b">
         <div className="flex items-center">
