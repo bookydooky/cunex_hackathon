@@ -3,11 +3,11 @@ import { ArrowLeft, Share2, Users, Clock } from 'lucide-react';
 
 const CreateJobPreview = () => {
   return (
-    <div className="flex flex-col h-full bg-white max-w-md mx-auto shadow-lg">
+    <div className="flex flex-col min-h-screen bg-gray-100">
 
 
       {/* App Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b">
+      <div className="px-4 py-5 flex items-center justify-between border-b">
         <div className="flex items-center">
           <ArrowLeft className="mr-4 text-pink-500" />
           <div className="flex items-center">
@@ -15,7 +15,7 @@ const CreateJobPreview = () => {
               <span className="text-pink-500">CU</span>
               <span className="text-black">NEX</span>
             </div>
-            <div className="h-6 border-l border-gray-300 mx-3"></div>
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-pink-500 text-xl font-medium">Create Job</div>
           </div>
         </div>
@@ -23,70 +23,72 @@ const CreateJobPreview = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="flex w-full h-1 space-x-1">
-        <div className="bg-pink-500 w-1/2 rounded-l-full"></div>
-        <div className="bg-gray-300 w-1/2 rounded-r-full"></div>
+      <div className="flex px-4 mt-4">
+        <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
+        <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
       </div>
 
       <div className="flex-1 overflow-auto p-4">
         {/* User Profile Section */}
-        <div className="flex items-start mb-6">
-          <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
-            <Users size={28} className="text-pink-300" />
-          </div>
-          <div className="ml-4">
-            <div className="font-bold text-xl text-black">Maria Schmidt</div>
-            <div className="flex items-center">
-              <div className="text-yellow-400">★</div>
-              <div className="ml-1 font-medium text-black">4.9</div>
+        <div className='bg-white p-4 rounded-lg mb-8'>
+          <div className="flex items-start mb-6">
+            <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
+              <Users size={28} className="text-pink-300" />
             </div>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
-          <div className="bg-pink-50 p-4 rounded-lg">
-            <div className="flex items-center text-pink-500 mb-1">
-              <div className="w-4 h-4 mr-2">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-                  <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+            <div className="ml-4">
+              <div className="font-bold text-xl text-black">Maria Schmidt</div>
+              <div className="flex items-center">
+                <div className="text-yellow-400">★</div>
+                <div className="ml-1 font-medium text-black">4.9</div>
               </div>
-              <span className="text-sm text-black">Success Rate</span>
             </div>
-            <div className="font-bold text-lg text-black">98%</div>
           </div>
-          
-          <div className="bg-pink-50 p-4 rounded-lg">
-            <div className="flex items-center text-pink-500 mb-1">
-              <Users size={16} className="mr-2" />
-              <span className="text-sm text-black">Jobs Sold</span>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="bg-pink-50 p-4 rounded-lg">
+              <div className="flex items-center text-pink-500 mb-1">
+                <div className="w-4 h-4 mr-2">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
+                    <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <span className="text-sm text-black">Success Rate</span>
+              </div>
+              <div className="font-bold text-lg text-black">98%</div>
             </div>
-            <div className="font-bold text-lg text-black">156</div>
-          </div>
-          
-          <div className="bg-pink-50 p-4 rounded-lg">
-            <div className="flex items-center text-pink-500 mb-1">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2 text-pink-500">
-                <path d="M16 5v2a10 10 0 0 1-10 10h0c0-5.5 4.5-10 10-10h2m-2-2h7v7" />
-              </svg>
-              <span className="text-sm text-black">Rehired</span>
+            
+            <div className="bg-pink-50 p-4 rounded-lg">
+              <div className="flex items-center text-pink-500 mb-1">
+                <Users size={16} className="mr-2" />
+                <span className="text-sm text-black">Jobs Sold</span>
+              </div>
+              <div className="font-bold text-lg text-black">156</div>
             </div>
-            <div className="font-bold text-lg text-black">42 times</div>
-          </div>
-          
-          <div className="bg-pink-50 p-4 rounded-lg">
-            <div className="flex items-center text-pink-500 mb-1">
-              <Clock size={16} className="mr-2" />
-              <span className="text-sm text-black">Avg. Response</span>
+            
+            <div className="bg-pink-50 p-4 rounded-lg">
+              <div className="flex items-center text-pink-500 mb-1">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2 text-pink-500">
+                  <path d="M16 5v2a10 10 0 0 1-10 10h0c0-5.5 4.5-10 10-10h2m-2-2h7v7" />
+                </svg>
+                <span className="text-sm text-black">Rehired</span>
+              </div>
+              <div className="font-bold text-lg text-black">42 times</div>
             </div>
-            <div className="font-bold text-lg text-black">2 hours</div>
+            
+            <div className="bg-pink-50 p-4 rounded-lg">
+              <div className="flex items-center text-pink-500 mb-1">
+                <Clock size={16} className="mr-2" />
+                <span className="text-sm text-black">Avg. Response</span>
+              </div>
+              <div className="font-bold text-lg text-black">2 hours</div>
+            </div>
           </div>
         </div>
 
         {/* Job Details Form */}
-        <div>
+        <div className='bg-white p-4 rounded-lg mb-8'>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-black">Job Details</h2>
             <div className="bg-pink-100 p-1 rounded-lg">
@@ -108,8 +110,9 @@ const CreateJobPreview = () => {
             <div className="relative">
               <select
                 className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black"
+                defaultValue=""
               >
-                <option value="" disabled selected>Select work type</option>
+                <option value="" disabled>Select work type</option>
                 <option value="design">UX/UI</option>
                 <option value="development">Coding</option>
                 <option value="writing">Graphics</option>
@@ -147,7 +150,7 @@ const CreateJobPreview = () => {
             />
           </div>
           
-          <div className="mb-6">
+          <div className='mb-4'>
             <label className="block text-black mb-2">Work Description</label>
             <textarea
               placeholder="Describe the job details"

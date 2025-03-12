@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoCloudUpload } from "react-icons/io5";
+import { ArrowLeft } from 'lucide-react';
 
 export default function Portfolio() {
   const [portfolioItems, setPortfolioItems] = useState(Array(6).fill(null));
@@ -18,15 +19,13 @@ export default function Portfolio() {
       {/* Navigation bar */}
       <div className="px-4 py-5 flex justify-between items-center bg-white">
         <div className="flex items-center">
-          <button className="text-pink-500 text-3xl mr-2">
-            &lt;
-          </button>
+          <ArrowLeft className="mr-4 text-pink-500" />
           <div className="flex items-center">
             <span className="text-pink-500 font-semibold text-xl">CU</span>
             <span className="text-gray-800 font-bold text-xl">NEX</span>
           </div>
-          <div className="h-6 w-[2px] bg-gray-600 mx-5"></div>
-          <div className="text-pink-500 font-semibold text-2xl">Portfolio</div>
+          <div className="h-6 border-l border-gray-300 mx-5"></div>
+          <div className="text-pink-500 font-medium text-xl">Portfolio</div>
         </div>
         <button className="text-black">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -89,7 +88,7 @@ export default function Portfolio() {
         </div>
         
         {/* Add portfolio button */}
-        <button className="w-full bg-pink-500 text-white py-4 rounded-lg text-lg font-semibold mb-15">
+        <button className="w-full bg-pink-500 text-white py-4 rounded-lg text-lg font-semibold">
           Add Portfolio
         </button>
       </div>
