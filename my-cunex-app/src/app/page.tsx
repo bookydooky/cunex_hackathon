@@ -51,7 +51,7 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex-1 overflow-auto p-4">
         {/* Service Categories */}
-        <div className="grid grid-cols-4 gap-3 md:grid-cols-4 sm:grid-cols-3">
+        <div className="grid gap-3 grid-cols-3 sm:grid-cols-3 md:grid-cols-4">
           {[{icon: FiEdit, label: "UX/UI"}, {icon: FaCode, label: "Coding"}, {icon: FaPaintBrush, label: "Graphic"}, {icon: RiVideoAiFill, label: "Video"}, {icon: FaBook, label: "Tutoring"}, {icon: FaLanguage, label: "Language"}, {icon: BiCube, label: "Modeling"}, {icon: FaEllipsisH, label: "Others"}].map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
               <div className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-center">

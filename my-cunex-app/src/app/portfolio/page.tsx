@@ -79,7 +79,7 @@ export default function Portfolio() {
         
         {/* Portfolio grid */}
         <h2 className="text-xl text-black font-bold mb-4">Your Portfolio Previews</h2>
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
           {portfolioItems.map((item, index) => (
             <div key={index} className="border-2 rounded-lg p-2 flex flex-col items-center">
               <div className="w-full h-24 bg-gray-200 rounded-md mb-2"></div>
