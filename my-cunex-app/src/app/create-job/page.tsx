@@ -113,16 +113,16 @@ const CreateJobPreview = () => {
                 defaultValue=""
               >
                 <option value="" disabled>Select work type</option>
-                <option value="UX/UI">UX/UI</option>
-                <option value="Coding">Coding</option>
-                <option value="Graphics">Graphics</option>
-                <option value="Video editing">Video editing</option>
-                <option value="3D modeling">3D modeling</option>
-                <option value="linguistics">linguistics</option>
-                <option value="Branding">Branding</option>
-                <option value="Accounting">Accounting</option>
-                <option value="Consultancy">Consultancy</option>
-                <option value="Tutoring">Tutoring</option>
+                <option value="design">UX/UI</option>
+                <option value="development">Coding</option>
+                <option value="writing">Graphics</option>
+                <option value="writing">Video editing</option>
+                <option value="writing">3D modeling</option>
+                <option value="writing">linguistics</option>
+                <option value="writing">Branding</option>
+                <option value="writing">Accounting</option>
+                <option value="writing">Consultancy</option>
+                <option value="writing">Tutoring</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                 <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
