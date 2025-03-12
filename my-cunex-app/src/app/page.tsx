@@ -1,101 +1,97 @@
-import Image from "next/image";
+import React from 'react';
+import Head from 'next/head';
+import { 
+  FiBox, FiUsers, FiPlus, FiHome, FiCalendar, FiGrid, FiEdit
+} from 'react-icons/fi';
+import { BiCube } from 'react-icons/bi';
+import { GiCutDiamond } from 'react-icons/gi';
+import { MdFoodBank, MdLocationOn } from 'react-icons/md';
+import { RiVideoAiFill } from 'react-icons/ri';
+import { FaCode, FaBell, FaPaintBrush, FaBook, FaLanguage, FaEllipsisH } from 'react-icons/fa';
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { IoPersonSharp } from "react-icons/io5";
+import { TiWeatherPartlySunny } from "react-icons/ti";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <Head>
+        <title>CU FASTWORK</title>
+        <meta name="description" content="CU FASTWORK App" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Header */}
+      <div className="bg-white p-4 shadow-md">
+        <div className="flex justify-between items-center">
+          <div className="text-lg font-bold text-pink-500">CU<span className="text-gray-800">NEX</span></div>
+          <div className="flex-1 mx-2">
+            <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center w-full">
+              <input type='search' placeholder='Search...' className="text-gray-400 text-sm flex-1 bg-transparent outline-none"/>
+              <FaMagnifyingGlass className="text-gray-400"/>
+            </div>
+          </div>
+          <div className="flex space-x-2">
+            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center">
+              <FaBell className='text-gray-400 text-lg'/>
+            </div>
+            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center">
+              <IoPersonSharp className='text-gray-400 text-lg'/>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        {/* Location and Weather */}
+        <div className="mt-2 text-sm text-gray-600 flex items-center">
+          <MdLocationOn className="text-pink-500" /><span className="ml-1">Chulalongkorn University</span>
+          <TiWeatherPartlySunny className="ml-4 text-pink-500"/>
+          <span className="ml-1">27°C</span>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto p-4">
+        {/* Service Categories */}
+        <div className="grid grid-cols-4 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {[{icon: FiEdit, label: "UX/UI"}, {icon: FaCode, label: "Coding"}, {icon: FaPaintBrush, label: "Graphic"}, {icon: RiVideoAiFill, label: "Video"}, {icon: FaBook, label: "Tutoring"}, {icon: FaLanguage, label: "Language"}, {icon: BiCube, label: "Modeling"}, {icon: FaEllipsisH, label: "Others"}].map((item, idx) => (
+            <div key={idx} className="flex flex-col items-center">
+              <div className="bg-pink-100 rounded-full p-4 w-14 h-14 flex items-center justify-center">
+                <item.icon className="text-pink-500 text-xl" />
+              </div>
+              <span className="text-xs mt-1 text-center">{item.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Request Services */}
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-2">Request Services</h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+            {[{icon: FiBox, label: "Item Delivery"}, {icon: MdFoodBank, label: "Food Delivery"}, {icon: BiCube, label: "3D Printing"}, {icon: GiCutDiamond, label: "Laser Cutting"}].map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <div className="bg-gray-200 rounded-full p-4 w-14 h-14 flex items-center justify-center">
+                  <item.icon className="text-black text-xl" />
+                </div>
+                <span className="text-xs mt-1 text-center">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Latest Jobs */}
+        <div className="mt-6">
+          <h2 className="text-lg font-bold mb-2">Latest Jobs</h2>
+          <div className="flex overflow-x-auto space-x-3 pb-2">
+            <div className="w-24 h-24 bg-pink-100 rounded-lg flex items-center justify-center">
+              <FiPlus className="text-pink-400 text-3xl" />
+            </div>
+            {["Logo Design", "Video Editing", "Math Tutoring"].map((job, idx) => (
+              <div key={idx} className="w-24 h-24 bg-white rounded-lg overflow-hidden">
+                <img src={`https://via.placeholder.com/100x100?text=${job}`} alt={job} className="w-full h-full object-cover" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
