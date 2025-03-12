@@ -11,6 +11,7 @@ import { FaCode, FaBell, FaPaintBrush, FaBook, FaLanguage, FaEllipsisH } from 'r
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
+import BottomNavigation from "./components/BottomNavigation";
 
 export default function Home() {
   return (
@@ -97,6 +98,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <BottomNavigation/>
       </div>
     </div>
   );
