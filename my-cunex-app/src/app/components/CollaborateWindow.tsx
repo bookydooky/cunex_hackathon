@@ -35,7 +35,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
               value={newMember}
               onChange={(e) => setNewMember(e.target.value)}
               className="w-full p-3 border text-gray-800 border-gray-300 rounded-lg"/>
-            <button className="mt-2 bg-pink-500 text-white font-semibold text-sm px-4 py-1 rounded-full"
+            <button className="mt-2 bg-pink-500 text-white text-sm px-4 py-1 rounded-full
+             transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
               onClick={handleAddMember}>
                 Add
             </button>
@@ -57,7 +58,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
                     </div>
                     <button
                       onClick={() => handleRemoveMember(index)}
-                      className="ml-4 bg-red-500 text-white font-semibold text-sm px-2 py-1 rounded-full flex items-center"
+                      className="ml-4 bg-red-500 text-white font-semibold text-sm px-2 py-1 rounded-full flex items-center
+                      transition-colors duration-200 ease-in-out hover:bg-red-600 active:bg-red-700"
                     >
                       <IoIosRemoveCircleOutline className="text-white text-xl font-bold"/>
                     </button>
@@ -70,10 +72,12 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           )}
         </div>
         <div className='flex items-center justify-center gap-2'>
-          <button onClick={onClose} className="mt-4 bg-gray-100 text-gray-400 py-2 px-4 rounded-lg flex-1">
+          <button onClick={onClose} className="mt-4 bg-gray-100 text-gray-400 py-2 px-4 rounded-lg flex-1
+           transition-colors duration-200 ease-in-out hover:bg-gray-200 hover:text-gray-500 active:bg-gray-300 active:text-gray-600">
             Cancel
           </button>
-          <button onClick={onClose} className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg flex-1">
+          <button onClick={onClose} className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg flex-1
+          transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700">
             Confirm
           </button>
         </div>

@@ -16,12 +16,15 @@ const CreateJobPreview = () => {
   const handlePreviousPage = () => {
     router.push('/');
   };
+  const handleNextPage = () => {
+    router.push('/portfolio');
+  }
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
 
 
       {/* App Header */}
-      <div className="px-4 py-5 flex items-center justify-between border-b">
+      <div className="px-4 py-5 flex items-center justify-between bg-white">
         <div className="flex items-center">
           <button onClick={handlePreviousPage}
           className="transition-transform transform active:scale-90">
@@ -108,11 +111,10 @@ const CreateJobPreview = () => {
         <div className='bg-white p-4 rounded-lg mb-8'>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-black">Job Details</h2>
-            <div className="bg-pink-100 p-1 rounded-lg">
-              <button onClick={handleCollaborateClick}>
-                <Users size={20} className="text-pink-500" />
-              </button>
-            </div>
+            <button onClick={handleCollaborateClick}
+              className='mr-2 transition-transform transform active:scale-90'>
+              <Users size={25} className="text-pink-500 hover:text-pink-800" />
+            </button>
           </div>
           
           <div className="mb-4">
@@ -179,7 +181,9 @@ const CreateJobPreview = () => {
         </div>
         
         <button 
-          className="w-full bg-pink-500 text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center"
+          onClick={handleNextPage}
+          className="w-full bg-pink-500 text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
+          transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
         >
           <span>Next</span>
           <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
