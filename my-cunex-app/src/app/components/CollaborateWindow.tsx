@@ -69,9 +69,14 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
             <p className="text-gray-500">No team members added yet.</p>
           )}
         </div>
-        <button onClick={onClose} className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg">
-          Close
-        </button>
+        <div className='flex items-center justify-center gap-2'>
+          <button onClick={onClose} className="mt-4 bg-gray-100 text-gray-400 py-2 px-4 rounded-lg flex-1">
+            Cancel
+          </button>
+          <button onClick={onClose} className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg flex-1">
+            Confirm
+          </button>
+        </div>
       </div>
     </div>
   );
