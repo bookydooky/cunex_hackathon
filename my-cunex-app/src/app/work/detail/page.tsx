@@ -8,8 +8,8 @@ const WorkDetail = () => {
 
   return (
 
-      <div className="flex-1 overflow-auto p-4">
-        <div className="mt-2 mb-4">
+      <div className="p-4">
+        <div className="my-2 mb-4">
           <h2 className="text-xl text-pink-500 font-bold mb-1">Logo Design</h2>
           <p className="text-gray-600">
             Price: 300THB | Duration: 4 weeks | Type: Graphic Design
