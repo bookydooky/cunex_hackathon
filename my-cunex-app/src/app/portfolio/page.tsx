@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { IoCloudUpload } from "react-icons/io5";
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, X} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function Portfolio() {
@@ -113,7 +113,13 @@ export default function Portfolio() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
             {portfolioItems.map((item, index) => (
               <div key={index} className="border-2 rounded-lg p-2 flex flex-col items-center">
-                <div className="w-full h-24 bg-gray-200 rounded-md mb-2 flex items-center justify-center">
+                <div className="w-full h-24 bg-gray-200 rounded-md mb-2 flex items-center justify-center relative">
+                <button
+                onClick={() => setPortfolioItems(portfolioItems.filter((_, i) => i !== index))}
+                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+              >
+                <X size={20}/>
+              </button>
                   <p className="text-sm text-gray-600">{item.name}</p>
                 </div>
                 <p className="text-sm text-gray-600">Portfolio Item {index + 1}</p>
@@ -129,9 +135,14 @@ export default function Portfolio() {
           Submit Portfolio
         </button>
       </div>
-      {showPopup && (
+      { showPopup && portfolioItems.length > 0 && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">
           Portfolio item successfully added!
+        </div>
+      )}
+      { showPopup && portfolioItems.length == 0 && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg">
+          Can't add empty portfolio!
         </div>
       )}
     </div>
