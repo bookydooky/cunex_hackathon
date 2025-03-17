@@ -1,7 +1,7 @@
 'use client'
 import React, { ReactNode, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { ArrowLeft, Share2 } from 'lucide-react';
+import { ArrowLeft, Share2, MessageCircle } from 'lucide-react';
 
 interface WorkDetailLayoutProps {
   children: ReactNode;
@@ -21,7 +21,7 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white mx-auto shadow-lg">
+    <div className="flex flex-col h-screen bg-white mx-auto shadow-lg relative">
       {/* App Header */}
       <div className="px-4 py-5 flex justify-between items-center">
         <div className="flex items-center">
@@ -94,8 +94,18 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children }) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto mx-2">
+      <div className="flex-1 overflow-y-auto mx-2 pb-16">
         {children}
+      </div>
+      <div className='absolute bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4'>
+                <button className="flex-grow bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium">
+                  Request Design
+                </button>
+      
+                {/* Chat Button */}
+                <div className="flex-shrink-0 bg-white rounded-full p-3 shadow-lg border border-gray-200">
+                  <MessageCircle size={24} className="text-gray-600" />
+                </div>
       </div>
     </div>
   );

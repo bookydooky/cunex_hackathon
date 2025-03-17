@@ -73,7 +73,7 @@ const WorkAbout = () => {
               </div>
               <div className="font-bold text-lg text-black">2 hours</div>
             </div>
-      </div>
+    </div>
     
     {/* Bio Section */}
     <div className='mb-6'>
@@ -82,16 +82,6 @@ const WorkAbout = () => {
         Passionate interaction designer with a focus on creating user-centric digital experiences. 
         I believe in design that not only looks great but also solves real-world problems.
       </p>
-    </div>
-    
-    {/* Request Button */}
-    <button className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium mb-4">
-          Request Design
-    </button>
-    
-    {/* Chat Button */}
-    <div className="fixed bottom-6 right-6 bg-white rounded-full p-3 shadow-lg border border-gray-200">
-          <MessageCircle size={24} className="text-gray-600" />
     </div>
   </div>
   );

@@ -4,8 +4,6 @@ import { MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const WorkDetail = () => {
-  const router = useRouter();
-
   return (
 
       <div className="p-4">
@@ -39,15 +37,6 @@ const WorkDetail = () => {
               InVision
             </div>
           </div>
-        </div>
-
-        <button className="w-full bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium mb-4">
-          Request Design
-        </button>
-
-        {/* Chat Button */}
-        <div className="fixed bottom-6 right-6 bg-white rounded-full p-3 shadow-lg border border-gray-200">
-          <MessageCircle size={24} className="text-gray-600" />
         </div>
       </div>
 
