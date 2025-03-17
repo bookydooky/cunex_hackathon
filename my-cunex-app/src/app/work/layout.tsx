@@ -1,19 +1,40 @@
-import React from 'react';
-import { ArrowLeft, Share2, MessageCircle } from 'lucide-react';
+'use client'
+import React, { ReactNode, useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { ArrowLeft, Share2 } from 'lucide-react';
 
-const WorkDetailPreview = () => {
+interface WorkDetailLayoutProps {
+  children: ReactNode;
+}
+
+const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children }) => {
+  const router = useRouter();
+  const pathname= usePathname();
+  const [selectedTab, setSelectedTab] = useState(pathname); 
+
+  useEffect(() => {
+    setSelectedTab(pathname);
+  }, [pathname]);
+  
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <div className="flex flex-col h-full bg-white mx-auto shadow-lg">
       {/* App Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b">
+      <div className="px-4 py-5 flex justify-between items-center">
         <div className="flex items-center">
-          <ArrowLeft className="mr-4 text-pink-500" />
+          <button onClick={() => handleNavigation('/')} 
+          className="text-gray-700 transition-transform transform active:scale-90">
+            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-600" />
+          </button>
           <div className="flex items-center">
             <div className="font-bold text-lg">
               <span className="text-pink-500">CU</span>
               <span className="text-gray-700">NEX</span>
             </div>
-            <div className="h-6 border-l border-gray-300 mx-3"></div>
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-pink-500 text-xl font-medium">Logo Design</div>
           </div>
         </div>
@@ -21,7 +42,7 @@ const WorkDetailPreview = () => {
       </div>
 
       {/* Logo Image Carousel */}
-      <div className="relative py-6">
+      <div className="bg-gray-100 relative py-6">
         <div className="flex justify-center items-center">
           <button className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10">
             <ArrowLeft size={20} className="text-gray-700" />
@@ -58,62 +79,26 @@ const WorkDetailPreview = () => {
 
       {/* Tab Navigation */}
       <div className="flex border-b">
-        <button className="flex-1 text-center py-3 text-pink-500 border-b-2 border-pink-500 font-medium">
+        <button onClick={() => handleNavigation('/work/detail')}
+        className={`flex-1 text-center py-3 ${selectedTab === '/work/detail' ? 'text-pink-500 border-b-2 border-pink-500 font-medium' : 'text-gray-500 hover:text-pink-500'}`}>
           Detail
         </button>
-        <button className="flex-1 text-center py-3 text-gray-500">
+        <button onClick={() => handleNavigation('/work/about')}
+        className={`flex-1 text-center py-3 ${selectedTab === '/work/about' ? 'text-pink-500 border-b-2 border-pink-500  font-medium' : 'text-gray-500 hover:text-pink-500'}`}>
           About
         </button>
-        <button className="flex-1 text-center py-3 text-gray-500">
+        <button onClick={() => handleNavigation('/work/feedback')}
+        className={`flex-1 text-center py-3 ${selectedTab === '/work/feedback' ? 'text-pink-500 border-b-2 border-pink-500  ont-medium' : 'text-gray-500 hover:text-pink-500'}`}>
           Feedback
         </button>
       </div>
 
-      {/* Work Detail Content */}
-      <div className="flex-1 overflow-auto p-4">
-        <div className="mb-4">
-          <h2 className="text-xl text-pink-500 font-medium mb-1">Logo Design</h2>
-          <p className="text-gray-600">
-            Price: 300THB | Duration: 4 weeks | Type: Graphic Design
-          </p>
-        </div>
-
-        <div className="mb-6">
-          <h3 className="text-lg font-bold mb-2">Project Description</h3>
-          <p className="text-gray-700">
-            Looking for a unique and professional logo to represent your brand? I offer custom logo design tailored to your business needs, ensuring a visually appealing and memorable identity.
-          </p>
-          <p className="text-gray-700 mt-2">
-            You will receive three high-quality final drafts in PNG/JPEG format, ready for immediate use on your products, website, and marketing materials.
-          </p>
-        </div>
-
-        <div className="mb-6">
-          <h3 className="text-lg font-bold mb-2">Tools</h3>
-          <div className="flex flex-wrap gap-2">
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
-              Figma
-            </div>
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
-              Adobe XD
-            </div>
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
-              InVision
-            </div>
-          </div>
-        </div>
-
-        <button className="w-full bg-pink-500 text-white py-4 rounded-lg font-medium mb-4">
-          Request Design
-        </button>
-
-        {/* Chat Button */}
-        <div className="fixed bottom-6 right-6 bg-white rounded-full p-3 shadow-lg border border-gray-200">
-          <MessageCircle size={24} className="text-gray-600" />
-        </div>
+      {/* Content */}
+      <div className="flex-1 overflow-auto mx-2">
+        {children}
       </div>
     </div>
   );
 };
 
-export default WorkDetailPreview;
+export default WorkLayout;
