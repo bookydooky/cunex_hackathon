@@ -69,8 +69,8 @@ export default function ProfilePage() {
       {/* Menu items */}
       <div className="mx-4 mt-4">
         {/* My Jobs */}
-        <div className="bg-white rounded-lg mb-3 shadow-sm">
-          <Link href="/jobs">
+        <div className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100">
+          <Link href="/profile/myJob">
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">

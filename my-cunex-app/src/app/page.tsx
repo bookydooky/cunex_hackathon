@@ -43,7 +43,11 @@ export default function Home() {
             <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
               <FaBell className='text-gray-400 text-lg'/>
             </div>
-            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
+
+            {/* Profile */}
+            <div onClick={() => router.push('/profile')}
+            className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer
+            transition-transform hover:bg-gray-300 active:scale-90">
               <IoPersonSharp className='text-gray-400 text-lg'/> 
             </div>
           </div>
@@ -62,7 +66,8 @@ export default function Home() {
         <div className="grid gap-3 grid-cols-3 sm:grid-cols-3 md:grid-cols-4">
           {[{icon: FiEdit, label: "UX/UI"}, {icon: FaCode, label: "Coding"}, {icon: FaPaintBrush, label: "Graphic"}, {icon: RiVideoAiFill, label: "Video"}, {icon: FaBook, label: "Tutoring"}, {icon: FaLanguage, label: "Language"}, {icon: BiCube, label: "Modeling"}, {icon: FaEllipsisH, label: "Others"}].map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
-              <div className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-center">
+              <div className="bg-pink-100 hover:bg-pink-300 rounded-full p-4 w-16 h-16 flex items-center justify-center
+              transition-transform transform active:scale-90">
                 <item.icon className="text-pink-500 text-2xl" />
               </div>
               <span className="text-xs text-gray-600 mt-1 text-center">{item.label}</span>
@@ -79,7 +84,8 @@ export default function Home() {
           <div className="flex overflow-x-auto space-x-10 pb-2 justify-center">
             {[{icon: FiBox, label: "Item Delivery"}, {icon: MdFoodBank, label: "Food Delivery"}, {icon: BiCube, label: "3D Printing"}, {icon: GiCutDiamond, label: "Laser Cutting"}].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
-                <div className="bg-gray-200 rounded-full p-4 w-14 h-14 flex items-center justify-center">
+                <div className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
+                transition-transform transform active:scale-90">
                   <item.icon className="text-black text-2xl" />
                 </div>
                 <span className="text-xs text-gray-600 mt-1 text-center">{item.label}</span>
