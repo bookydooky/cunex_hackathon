@@ -32,7 +32,20 @@ export default function Checkout() {
     fetchJobDetails();
   }, [bannerId]);
 
-  const handlePreviousPage = () => {
+  const handleAddPortfolio = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/confirmJob/${bannerId}`,
+        {
+          method: "POST",
+        }
+      );
+      const result = await response.json();
+      console.log("Server response:", result);
+    } catch (error) {
+      console.error("Error Requesting Job", error);
+      throw error; // Re-throw to handle in the calling function
+    }
     router.push("/");
   };
   if (!jobData) return <p>Loading job details...</p>;
@@ -43,7 +56,7 @@ export default function Checkout() {
       <div className="px-4 py-5 flex items-center justify-between bg-white">
         <div className="flex items-center">
           <button
-            onClick={handlePreviousPage}
+            onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
@@ -203,7 +216,7 @@ export default function Checkout() {
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-white">
         <button
           className="w-full bg-pink-500 text-white py-4 rounded-lg font-medium text-lg hover:bg-pink-600 transition duration-200"
-          onClick={handlePreviousPage}
+          onClick={handleAddPortfolio}
         >
           Confirm Payment
         </button>
