@@ -106,7 +106,6 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-
         {/* Payment Methods */}
         <div className="bg-white rounded-lg mb-3 shadow-sm">
           <Link href="/payment-methods">
@@ -132,7 +131,6 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-
         {/* Order History */}
         <div className="bg-white rounded-lg mb-3 shadow-sm">
           <Link href="/order-history">
@@ -158,7 +156,6 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-
         {/* Settings */}
         <div className="bg-white rounded-lg mb-3 shadow-sm">
           <Link href="/settings">
