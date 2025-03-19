@@ -67,9 +67,6 @@ const CreateJobPreview = () => {
       <div className="flex px-4 mt-4">
         <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
         <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
-      <div className="flex px-4 mt-4">
-        <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
-        <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
       </div>
 
       <div className="flex-1 overflow-auto p-4">
@@ -87,12 +84,7 @@ const CreateJobPreview = () => {
               </div>
             </div>
           </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 gap-4 mb-4">
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-pink-50 p-4 rounded-lg">
