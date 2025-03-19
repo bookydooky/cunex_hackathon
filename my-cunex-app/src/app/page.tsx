@@ -1,7 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
+import {
+  FiBox,
+  FiUsers,
+  FiPlus,
+  FiHome,
+  FiCalendar,
+  FiGrid,
+  FiEdit,
+} from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { GiCutDiamond } from "react-icons/gi";
 import { MdFoodBank, MdLocationOn } from "react-icons/md";
@@ -82,6 +90,8 @@ export default function Home() {
             <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
               <FaBell className="text-gray-400 text-lg" />
             </div>
+
+            {/* Profile */}
             <div
               onClick={() => router.push("/profile")}
               className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer
@@ -119,7 +129,10 @@ export default function Home() {
               className="flex flex-col items-center"
               onClick={() => router.push(`/seeAll/${item.path}`)}
             >
-              <div className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-center">
+              <div
+                className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-300 rounded-full p-4 w-16 h-16 flex items-center justify-center
+              transition-transform transform active:scale-90"
+              >
                 <item.icon className="text-pink-500 text-2xl" />
               </div>
               <span className="text-xs text-gray-600 mt-1 text-center">
@@ -144,7 +157,10 @@ export default function Home() {
               { icon: GiCutDiamond, label: "Laser Cutting" },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
-                <div className="bg-gray-200 rounded-full p-4 w-14 h-14 flex items-center justify-center">
+                <div
+                  className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
+                transition-transform transform active:scale-90"
+                >
                   <item.icon className="text-black text-2xl" />
                 </div>
                 <span className="text-xs text-gray-600 mt-1 text-center">
