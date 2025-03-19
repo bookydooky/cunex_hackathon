@@ -148,8 +148,11 @@ export default function MyJobsPage() {
                   <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
                     Message
                   </button>
+
                   <button className="flex-1 py-3 text-center text-pink-500 font-medium">
-                    Update
+                    <Link href={`/profile/myJob/upload/${job.historyId}`}>
+                      Update
+                    </Link>
                   </button>
                 </div>
               </div>

@@ -291,7 +291,7 @@ app.get("/getOngoingJobs", (req, res) => {
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
-    WHERE jh.sellerId = ?
+    WHERE jh.sellerId = ? and jh.progress != 3
   `;
   con.query(jobData, [userId], (err, result) => {
     if (err) {
@@ -300,6 +300,50 @@ app.get("/getOngoingJobs", (req, res) => {
     }
     res.json({ jobs: result });
   });
+});
+
+app.post("/addSubmittedImages", async (req, res) => {
+  const { images, historyId } = req.body;
+
+  if (!images || images.length === 0) {
+    return res.status(400).json({ error: "No images provided" });
+  }
+
+  try {
+    let values = images.map((imageUrl) => [historyId, imageUrl]);
+
+    // Insert the image data into the database. imageId is AUTO_INCREMENT, so we don't include it.
+    const sql = "INSERT INTO submittedImages (historyId, imageURL) VALUES ?";
+    con.query(sql, [values], async (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      // After images are inserted, update the progress in jobHistory table
+      const updateProgressSql = `
+        UPDATE jobHistory
+        SET progress = progress + 1
+        WHERE historyId = ?
+      `;
+      con.query(updateProgressSql, [historyId], (updateErr, updateResult) => {
+        if (updateErr) {
+          console.error("Error updating progress:", updateErr);
+          return res.status(500).json({ error: "Failed to update progress" });
+        }
+
+        // Return success response
+        res.json({
+          success: true,
+          message: "Images saved and progress updated successfully",
+          insertedCount: result.affectedRows,
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
 app.listen(3001, () => {
