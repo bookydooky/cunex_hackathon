@@ -29,6 +29,12 @@ import { useRouter } from "next/navigation";
 import BottomNavigation from "./components/BottomNavigation";
 
 export default function Home() {
+  const fakeNotifications = [
+    { id: 1, image: "https://via.placeholder.com/50", name: "Test Work 1" },
+    { id: 2, image: "https://via.placeholder.com/50", name: "Test Work 2" },
+    { id: 3, image: "https://via.placeholder.com/50", name: "Test Work 3" },
+  ];
+
   const router = useRouter();
   const handleCreateJobClick = () => {
     router.push("/create-job");
@@ -38,6 +44,7 @@ export default function Home() {
   };
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -87,9 +94,40 @@ export default function Home() {
             </div>
           </div>
           <div className="flex space-x-2">
-            <div className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10">
+            <div
+              className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10"
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
               <FaBell className="text-gray-400 text-lg" />
             </div>
+            {showNotifications && (
+              <div className="absolute top-12 right-0 bg-white shadow-lg rounded-lg w-64 p-4">
+                <h3 className="text-gray-700 font-semibold mb-2">
+                  Notifications
+                </h3>
+                {fakeNotifications.map((notif) => (
+                  <div
+                    key={notif.id}
+                    className="flex items-center mb-2 border-b pb-2"
+                  >
+                    <img
+                      src={notif.image}
+                      alt={notif.name}
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span className="ml-2 flex-1 text-sm text-gray-700">
+                      {notif.name}
+                    </span>
+                    <button className="bg-green-500 text-white px-2 py-1 rounded text-xs mr-1">
+                      Submit
+                    </button>
+                    <button className="bg-red-500 text-white px-2 py-1 rounded text-xs">
+                      Deny
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Profile */}
             <div

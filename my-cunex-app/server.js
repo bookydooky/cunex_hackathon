@@ -291,7 +291,7 @@ app.get("/getOngoingJobs", (req, res) => {
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
-    WHERE jh.sellerId = ? and jh.progress != 3
+    WHERE jh.sellerId = ? and jh.progress < 3
   `;
   con.query(jobData, [userId], (err, result) => {
     if (err) {
@@ -331,7 +331,6 @@ app.post("/addSubmittedImages", async (req, res) => {
           console.error("Error updating progress:", updateErr);
           return res.status(500).json({ error: "Failed to update progress" });
         }
-
         // Return success response
         res.json({
           success: true,
@@ -357,7 +356,7 @@ app.get("/getCompletedJobs", (req, res) => {
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
-    WHERE jh.sellerId = ? and jh.progress = 3
+    WHERE jh.sellerId = ? and jh.progress >= 3
   `;
   con.query(jobData, [userId], (err, result) => {
     if (err) {
