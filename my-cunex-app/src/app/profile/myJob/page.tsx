@@ -8,27 +8,7 @@ export default function MyJobsPage() {
   const [activeTab, setActiveTab] = useState("ongoing");
   const router = useRouter();
   const [ongoingJobs, setOngoingJobs] = useState([]);
-  // Sample job data
-  const completedJobs = [
-    {
-      id: 4,
-      title: "Math Tutoring - Calculus II",
-      client: "Somsak K.",
-      completedDate: "March 10, 2025",
-      price: "฿1,200",
-      rating: 5,
-      image: "/placeholder-math.jpg",
-    },
-    {
-      id: 5,
-      title: "Event Poster Design",
-      client: "Music Club",
-      completedDate: "February 28, 2025",
-      price: "฿650",
-      rating: 4.8,
-      image: "/placeholder-poster.jpg",
-    },
-  ];
+  const [completedJobs, setCompletedJobs] = useState([]);
   const getOngoingJobs = async () => {
     const session = {
       userId: "100000000000000001",
@@ -53,8 +33,33 @@ export default function MyJobsPage() {
       throw error; // Re-throw to handle in the calling function
     }
   };
+  const getCompletedJobs = async () => {
+    const session = {
+      userId: "100000000000000001",
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/getCompletedJobs?userId=${session.userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      console.log("Server response:", result);
+      setCompletedJobs(result.jobs);
+      return result; // Return the result to get the bannerId
+    } catch (error) {
+      console.error("Error Finding Ongoing Jobs", error);
+      throw error; // Re-throw to handle in the calling function
+    }
+  };
   useEffect(() => {
     getOngoingJobs();
+    getCompletedJobs();
   }, []);
 
   return (
@@ -148,8 +153,11 @@ export default function MyJobsPage() {
                   <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
                     Message
                   </button>
+
                   <button className="flex-1 py-3 text-center text-pink-500 font-medium">
-                    Update
+                    <Link href={`/profile/myJob/upload/${job.historyId}`}>
+                      Update
+                    </Link>
                   </button>
                 </div>
               </div>
@@ -161,23 +169,25 @@ export default function MyJobsPage() {
           <>
             {completedJobs.map((job) => (
               <div
-                key={job.id}
+                key={job.historyId}
                 className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-black">{job.title}</h2>
+                    <h2 className="font-semibold text-black">
+                      {job.bannerName}
+                    </h2>
                     <span className="text-pink-500 font-medium">
                       {job.price}
                     </span>
                   </div>
 
                   <p className="text-gray-500 text-sm mb-1">
-                    Client: {job.client}
+                    Client: {job.firstName} {job.lastName}
                   </p>
                   <div className="flex justify-between items-center mb-2">
                     <p className="text-gray-500 text-sm">
-                      Completed: {job.completedDate}
+                      Duration: {job.duration}
                     </p>
                     <div className="flex items-center">
                       <svg
@@ -188,7 +198,7 @@ export default function MyJobsPage() {
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
-                      <span className="text-sm">{job.rating}</span>
+                      <span className="text-sm">5.0</span>
                     </div>
                   </div>
 
