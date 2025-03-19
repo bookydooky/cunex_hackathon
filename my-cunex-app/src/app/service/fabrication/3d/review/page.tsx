@@ -30,7 +30,7 @@ export default function ReviewAndPayPage() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50">
+    <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <header className="text-center mb-10">
           <h1 className="text-3xl font-bold text-pink-500 mb-2">
@@ -339,10 +339,6 @@ export default function ReviewAndPayPage() {
           </div>
         </div>
       </div>
-
-      <footer className="bg-pink-100 py-4 text-center text-pink-500">
-        <p>Questions? Contact us at support@fabrication-service.com</p>
-      </footer>
     </div>
   );
 }

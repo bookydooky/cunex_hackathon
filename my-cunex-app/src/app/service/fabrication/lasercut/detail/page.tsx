@@ -1,10 +1,12 @@
 "use client";
 import { useState, useRef } from "react";
+import { useRouter } from 'next/navigation'
 
 export default function UploadPagePreview() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
 
   const materials = [
     { id: "pla", name: "PLA", icon: "🔹" },
@@ -27,7 +29,7 @@ export default function UploadPagePreview() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-50">
+    <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <header className="text-center mb-10">
           <h1 className="text-3xl font-bold text-pink-500 mb-2">
@@ -162,7 +164,8 @@ export default function UploadPagePreview() {
 
             <button
               type="button"
-              className="w-full bg-pink-500 text-white py-4 px-6 rounded-full text-lg font-semibold transition-all hover:bg-pink-600 hover:shadow-lg"
+              onClickCapture={() => router.push("/service/fabrication/lasercut/review")}
+              className="w-full bg-pink-500 text-white py-4 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-pink-600 hover:shadow-lg active:scale-90"
             >
               Continue to Review
             </button>
