@@ -165,6 +165,8 @@ export default function Portfolio() {
           </div>
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-pink-500 font-medium text-xl">Portfolio</div>
+          <div className="h-6 border-l border-gray-300 mx-5"></div>
+          <div className="text-pink-500 font-medium text-xl">Portfolio</div>
         </div>
         <button className="text-black">
           <svg
