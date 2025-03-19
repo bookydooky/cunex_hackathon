@@ -3,11 +3,7 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import {
   FiBox,
-  FiUsers,
   FiPlus,
-  FiHome,
-  FiCalendar,
-  FiGrid,
   FiEdit,
 } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
@@ -36,6 +32,9 @@ export default function Home() {
   const handleSeeAllClick = () => {
     router.push("/seeAll/None");
   };
+  const handleServiceClick = (path: string) => {
+    router.push(path);
+  }
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -153,11 +152,12 @@ export default function Home() {
             {[
               { icon: FiBox, label: "Item Delivery" },
               { icon: MdFoodBank, label: "Food Delivery" },
-              { icon: BiCube, label: "3D Printing" },
-              { icon: GiCutDiamond, label: "Laser Cutting" },
+              { icon: BiCube, label: "3D Printing", path:'/service/fabrication/3d' },
+              { icon: GiCutDiamond, label: "Laser Cutting", path:'/service/fabrication/lasercut' },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div
+                  onClick={() => handleServiceClick(item.path)}
                   className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
                 transition-transform transform active:scale-90"
                 >
