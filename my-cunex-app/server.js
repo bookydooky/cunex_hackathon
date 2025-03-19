@@ -124,41 +124,6 @@ app.post("/addImages", async (req, res) => {
   }
 });
 
-// app.get("/api/latest-jobs", (req, res) => {
-//   // Get the limit parameter from the query string
-//   // If not provided or set to "none", we'll use no limit
-//   const limitParam = req.query.limit;
-
-//   // Build the SQL query - only add LIMIT clause if a numeric limit is provided
-//   let query = `
-//     SELECT jb.bannerId, jb.bannerName, jb.price, jb.typeOfWork,
-//            MIN(img.imageId) as firstImageId,
-//            (SELECT imageURL FROM images WHERE bannerId = jb.bannerId ORDER BY imageId ASC LIMIT 1) as imageURL
-//     FROM jobBanners jb
-//     LEFT JOIN images img ON jb.bannerId = img.bannerId
-//     GROUP BY jb.bannerId
-//     ORDER BY jb.bannerId DESC
-//   `;
-
-//   // Add LIMIT clause only if a numeric limit is provided
-//   if (
-//     limitParam &&
-//     limitParam.toLowerCase() !== "none" &&
-//     !isNaN(parseInt(limitParam))
-//   ) {
-//     query += ` LIMIT ${parseInt(limitParam)}`;
-//   }
-
-//   con.query(query, (err, results) => {
-//     if (err) {
-//       console.error("Database error:", err);
-//       return res.status(500).json({ error: "Database error" });
-//     }
-
-//     res.json({ jobs: results });
-//   });
-// });
-
 app.get("/api/latest-jobs", (req, res) => {
   const limitParam = req.query.limit;
   const typeOfWorkParam = req.query.typeOfWork; // Get typeOfWork filter from query
@@ -281,6 +246,59 @@ app.get("/getFreelanceDetails/:userId", (req, res) => {
 
       res.json(userData);
     });
+  });
+});
+
+app.post("/confirmJob/:bannerId", async (req, res) => {
+  const { bannerId } = req.params;
+
+  if (!bannerId) {
+    return res.status(400).json({ error: "Banner Error" });
+  }
+
+  try {
+    values = [
+      [bannerId, "100000000000000001", "100000000000000001", new Date(), 0],
+    ];
+    const sql =
+      "INSERT INTO jobHistory (bannerId, sellerId, buyerId, dateSold, progress) VALUES ?";
+    con.query(sql, [values], (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      res.json({
+        success: true,
+        message: "Job Added Successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/getOngoingJobs", (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ error: "Missing User" });
+  }
+  // Query job history with banner and buyer information
+  const jobData = `
+    SELECT jh.*, jb.bannerName, jb.price, jb.duration,
+           u.firstName, u.lastName
+    FROM jobHistory jh
+    LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
+    LEFT JOIN users u ON jh.buyerId = u.userId
+    WHERE jh.sellerId = ?
+  `;
+  con.query(jobData, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json({ jobs: result });
   });
 });
 

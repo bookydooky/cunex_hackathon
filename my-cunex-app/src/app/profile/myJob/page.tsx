@@ -1,43 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import moment from "moment";
 export default function MyJobsPage() {
   const [activeTab, setActiveTab] = useState("ongoing");
   const router = useRouter();
+  const [ongoingJobs, setOngoingJobs] = useState([]);
   // Sample job data
-  const ongoingJobs = [
-    {
-      id: 1,
-      title: "Logo Design for Student Club",
-      client: "Engineering Society",
-      dueDate: "March 25, 2025",
-      price: "฿850",
-      progress: 65,
-      image: "/placeholder-design.jpg",
-    },
-    {
-      id: 2,
-      title: "Website Development",
-      client: "Faculty of Science",
-      dueDate: "April 2, 2025",
-      price: "฿3,200",
-      progress: 40,
-      image: "/placeholder-website.jpg",
-    },
-    {
-      id: 3,
-      title: "Video Editing - Orientation",
-      client: "Student Affairs",
-      dueDate: "March 30, 2025",
-      price: "฿1,500",
-      progress: 20,
-      image: "/placeholder-video.jpg",
-    },
-  ];
-
   const completedJobs = [
     {
       id: 4,
@@ -58,6 +29,33 @@ export default function MyJobsPage() {
       image: "/placeholder-poster.jpg",
     },
   ];
+  const getOngoingJobs = async () => {
+    const session = {
+      userId: "100000000000000001",
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/getOngoingJobs?userId=${session.userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      console.log("Server response:", result);
+      setOngoingJobs(result.jobs);
+      return result; // Return the result to get the bannerId
+    } catch (error) {
+      console.error("Error Finding Ongoing Jobs", error);
+      throw error; // Re-throw to handle in the calling function
+    }
+  };
+  useEffect(() => {
+    getOngoingJobs();
+  }, []);
 
   return (
     <div className="bg-gray-100 min-h-screen pb-20">
@@ -110,30 +108,37 @@ export default function MyJobsPage() {
           <>
             {ongoingJobs.map((job) => (
               <div
-                key={job.id}
+                key={job.historyId}
                 className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-black">{job.title}</h2>
+                    <h2 className="font-semibold text-black">
+                      {job.bannerName}
+                    </h2>
                     <span className="text-pink-500 font-medium">
                       {job.price}
                     </span>
                   </div>
 
                   <p className="text-gray-500 text-sm mb-1">
-                    Client: {job.client}
+                    Client: {job.firstName} {job.lastName}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Start Date: {moment(job.dateSold).format("MM/DD/YYYY")}
                   </p>
                   <div className="flex justify-between items-center mb-3">
-                    <p className="text-gray-500 text-sm">Due: {job.dueDate}</p>
-                    <span className="text-sm">{job.progress}%</span>
+                    <p className="text-gray-500 text-sm">
+                      Duration: {job.duration}
+                    </p>
+                    <span className="text-sm">{job.progress * 33.33}%</span>
                   </div>
 
                   {/* Progress bar */}
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-pink-500 h-2 rounded-full"
-                      style={{ width: `${job.progress}%` }}
+                      style={{ width: `${job.progress * 33.33}%` }}
                     ></div>
                   </div>
                 </div>
