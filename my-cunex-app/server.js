@@ -345,7 +345,28 @@ app.post("/addSubmittedImages", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
+app.get("/getCompletedJobs", (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ error: "Missing User" });
+  }
+  // Query job history with banner and buyer information
+  const jobData = `
+    SELECT jh.*, jb.bannerName, jb.price, jb.duration,
+           u.firstName, u.lastName
+    FROM jobHistory jh
+    LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
+    LEFT JOIN users u ON jh.buyerId = u.userId
+    WHERE jh.sellerId = ? and jh.progress = 3
+  `;
+  con.query(jobData, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json({ jobs: result });
+  });
+});
 app.listen(3001, () => {
   console.log("Server running on port 3001");
 });
