@@ -5,12 +5,43 @@ import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
 export default function MyJobsPage() {
+  interface OngoingJob {
+    historyId: number;
+    bannerId: string;
+    buyerId: string;
+    dateSold: string; // Using string to represent DateTime
+    progress: number;
+    sellerId: string;
+    completedDate: string | null; // Can be '0000-00-00 00:00:00' (needs handling)
+    accept: number | null;
+    bannerName?: string;
+    price?: number;
+    duration?: string;
+    firstName?: string;
+    lastName?: string;
+  }
+
+  interface CompletedJob {
+    historyId: number;
+    bannerId: string;
+    buyerId: string;
+    dateSold: string; // Using string to represent DateTime
+    progress: number;
+    sellerId: string;
+    completedDate: string | null; // Can be '0000-00-00 00:00:00' (needs handling)
+    accept: number | null;
+    bannerName?: string;
+    price?: number;
+    duration?: string;
+    firstName?: string;
+    lastName?: string;
+  }
   const params = useParams();
   const userId = params.id; // ✅ Get id dynamically  const router = useRouter();
   const [activeTab, setActiveTab] = useState("ongoing");
   const router = useRouter();
-  const [ongoingJobs, setOngoingJobs] = useState([]);
-  const [completedJobs, setCompletedJobs] = useState([]);
+  const [ongoingJobs, setOngoingJobs] = useState<OngoingJob[]>([]);
+  const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
   const getOngoingJobs = async () => {
     try {
       const response = await fetch(

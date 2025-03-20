@@ -5,12 +5,12 @@ import { useRouter, useParams } from "next/navigation";
 
 const ImageUpload = () => {
   const params = useParams();
-  const historyId = params.uploadid;
-  const [imageSrc, setImageSrc] = useState(null); // State to hold the image source
-  const [file, setFile] = useState(null); // State to hold the file object
-  const fileInputRef = useRef(null);
+  const historyId = String(params.uploadid);
+  const [imageSrc, setImageSrc] = useState<string | null>(null); // Explicitly set type
+  const [file, setFile] = useState<File | null>(null); // Explicitly set type
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter(); // Don't forget to use the router for navigation
-  const [acceptStatus, setAcceptStatus] = useState(null); // State to track jh.accept status
+  const [acceptStatus, setAcceptStatus] = useState<boolean | null>(null); // Explicitly set type
   useEffect(() => {
     console.log("History Id: ", historyId);
     const fetchAcceptStatus = async () => {
@@ -32,42 +32,42 @@ const ImageUpload = () => {
       fetchAcceptStatus();
     }
   }, [historyId]);
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     preventDefaults(e);
 
     const files = e.dataTransfer.files;
-    if (files.length) {
+    if (files && files.length) {
       handleFiles(files); // Only handles the first file
     }
   };
 
-  const preventDefaults = (e) => {
+  const preventDefaults = (e: React.SyntheticEvent) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleFiles = (files) => {
+  const handleFiles = (files: FileList) => {
     console.log("Files selected:", files);
     const selectedFile = files[0]; // Only take the first file
     if (selectedFile) {
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
-        setImageSrc(fileReader.result); // Set image source to the file reader result (image URL)
+        setImageSrc(fileReader.result as string); // Set image source to the file reader result (image URL)
         setFile(selectedFile); // Save the file object for submission
       };
       fileReader.readAsDataURL(selectedFile);
     }
   };
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files.length) {
+    if (files && files.length) {
       handleFiles(files); // Only handles the first file
     }
   };
 
   const openFileDialog = () => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   const handleFileSubmit = async () => {
@@ -102,7 +102,7 @@ const ImageUpload = () => {
     }
   };
 
-  const sendToServer = async (fileUrls, historyId) => {
+  const sendToServer = async (fileUrls: string[], historyId: string) => {
     console.log("Sent History Id: ", historyId);
     try {
       const response = await fetch("http://localhost:3001/addSubmittedImages", {

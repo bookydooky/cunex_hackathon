@@ -3,12 +3,26 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2, Users, Clock } from "lucide-react";
 import PopupWindow from "../../components/CollaborateWindow";
+interface UserProfileResponse {
+  firstName: string;
+  lastName: string;
+  facultyCode: string;
+  studentYear: string;
+  facultyNameEN: string;
+  studentId: string;
+  successRate: number;
+  jobsSold: number;
+  rehired: number;
+  avgResponse: number;
+  bio: string;
+  rating: number;
+}
 
 const CreateJobPreview = () => {
   const router = useRouter();
   const params = useParams();
   const userId = params.id;
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserProfileResponse | null>(null);
   useEffect(() => {
     if (!userId) return;
 
@@ -42,7 +56,11 @@ const CreateJobPreview = () => {
       setJobDetails(JSON.parse(savedData));
     }
   }, []);
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     setJobDetails({ ...jobDetails, [e.target.name]: e.target.value });
   };
   const [isPopupVisible, setIsPopupVisible] = useState(false);

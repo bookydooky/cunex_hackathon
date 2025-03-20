@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 
-const ImageCarousel = ({ images }) => {
+interface Image {
+  src: string;
+  alt?: string;
+  caption?: string;
+}
+
+interface ImageCarouselProps {
+  images: Image[];
+}
+
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrevious = () => {

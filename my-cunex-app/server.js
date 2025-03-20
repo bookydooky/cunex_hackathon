@@ -275,7 +275,7 @@ app.get("/getOngoingJobs", (req, res) => {
   // Query job history with banner and buyer information
   const jobData = `
     SELECT jh.*, jb.bannerName, jb.price, jb.duration,
-           u.firstName, u.lastName, jh.accept
+           u.firstName, u.lastName
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
@@ -340,7 +340,7 @@ app.get("/getCompletedJobs", (req, res) => {
   // Query job history with banner and buyer information
   const jobData = `
     SELECT jh.*, jb.bannerName, jb.price, jb.duration,
-           u.firstName, u.lastName, jh.accept
+           u.firstName, u.lastName
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId

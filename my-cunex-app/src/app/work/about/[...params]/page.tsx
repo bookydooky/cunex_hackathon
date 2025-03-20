@@ -3,14 +3,38 @@ import React, { useEffect, useState } from "react";
 import { Users, Clock } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
+interface JobDetailResponse {
+  bannerId: string;
+  userId: string;
+  bannerName: string;
+  price: number;
+  duration: string; // Duration in days, or another appropriate unit
+  typeOfWork: string;
+  bannerdesc: string;
+  images: string[]; // Array of image URLs
+}
+interface FreelanceDetailsResponse {
+  firstName: string;
+  lastName: string;
+  facultyCode: string;
+  studentYear: string;
+  facultyNameEN: string;
+  successRate: number;
+  jobsSold: number;
+  rehired: number;
+  avgResponse: number;
+  bio: string;
+  rating: number;
+}
 
 const WorkAbout = () => {
   const router = useRouter();
   const params = useParams();
   if (!params?.params) return <p>Loading...</p>;
   const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
-  const [jobData, setJobData] = useState(null);
-  const [freelanceData, setFreelanceData] = useState(null);
+  const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
+  const [freelanceData, setFreelanceData] =
+    useState<FreelanceDetailsResponse | null>(null);
 
   useEffect(() => {
     if (!bannerId) return;
@@ -52,7 +76,10 @@ const WorkAbout = () => {
   }, [jobData]);
 
   if (!jobData || !freelanceData) return <p>Loading job details...</p>;
-  function getAcademicYearLevel(entryYear, currentAcademicYear) {
+  function getAcademicYearLevel(
+    entryYear: number,
+    currentAcademicYear: number
+  ) {
     // Calculate the difference between current academic year and entry year
     const yearDifference = currentAcademicYear - entryYear;
 
@@ -98,8 +125,11 @@ const WorkAbout = () => {
               {freelanceData.firstName} {freelanceData.lastName}
             </h2>
             <p className="text-gray-500">
-              {getAcademicYearLevel(freelanceData.studentYear, 2567)},{" "}
-              {freelanceData.facultyNameEN}
+              {getAcademicYearLevel(
+                parseInt(freelanceData.studentYear, 10),
+                2567
+              )}
+              , {freelanceData.facultyNameEN}
             </p>
             <div className="flex items-center">
               {[1, 2, 3, 4, 5].map((star) => (

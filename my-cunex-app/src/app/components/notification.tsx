@@ -1,8 +1,28 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-export default function Notification({ userId, setShowNotifications }) {
-  const [currentNotis, setCurrentNotis] = useState(null);
+interface NotificationProps {
+  userId: string;
+  setShowNotifications: (show: boolean) => void;
+}
+interface SubmittedImage {
+  historyId: number;
+  bannerName: string;
+  firstName: string;
+  lastName: string;
+  imageURL: string;
+  submittedImageId: number;
+}
+
+interface GetSubmittedImagesResponse {
+  data: SubmittedImage[];
+  error?: string;
+}
+export default function Notification({
+  userId,
+  setShowNotifications,
+}: NotificationProps) {
+  const [currentNotis, setCurrentNotis] = useState<SubmittedImage[]>([]);
   const handleCloseNotifications = () => {
     // Hide notifications by setting the state to false
     setShowNotifications(false);
@@ -30,7 +50,7 @@ export default function Notification({ userId, setShowNotifications }) {
   if (!currentNotis) return <p>Loading Notification details...</p>;
 
   // Group notifications by historyId
-  const groupedNotifications = {};
+  const groupedNotifications: { [key: number]: SubmittedImage[] } = {};
   currentNotis.forEach((notif) => {
     if (!groupedNotifications[notif.historyId]) {
       groupedNotifications[notif.historyId] = [];
@@ -40,7 +60,7 @@ export default function Notification({ userId, setShowNotifications }) {
 
   // Convert the grouped object to an array for rendering
   const historyGroups = Object.entries(groupedNotifications);
-  const handleAccept = async (historyId, submittedImageId) => {
+  const handleAccept = async (historyId: number, submittedImageId: number) => {
     try {
       const response = await fetch(`http://localhost:3001/acceptImage`, {
         method: "POST",
@@ -58,11 +78,11 @@ export default function Notification({ userId, setShowNotifications }) {
       handleCloseNotifications();
       console.log("Response:", data);
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error);
     }
   };
 
-  const handleDeny = async (historyId, submittedImageId) => {
+  const handleDeny = async (historyId: number, submittedImageId: number) => {
     try {
       const response = await fetch(`http://localhost:3001/denyImage`, {
         method: "POST",
@@ -80,7 +100,7 @@ export default function Notification({ userId, setShowNotifications }) {
       console.log("Response:", data);
       handleCloseNotifications();
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error);
     }
   };
   return (

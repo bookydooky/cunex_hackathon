@@ -11,14 +11,14 @@ export default function Portfolio() {
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
   //Chien
-  const [files, setFiles] = useState([]); // Store multiple files
+  const [files, setFiles] = useState<{ file: File; preview: string }[]>([]); // Store multiple files
 
   const [uploading, setUploading] = useState(false);
 
   const [bannerId, setbannerId] = useState(null);
 
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
     const filePreviews = selectedFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file), // Create a preview URL for the file
@@ -27,7 +27,7 @@ export default function Portfolio() {
     setFiles((prevFiles) => [...prevFiles, ...filePreviews]); // Add new files
   };
 
-  const handleFileSubmit = async (bannerId) => {
+  const handleFileSubmit = async (bannerId: string | null) => {
     if (files.length === 0) {
       console.error("No files selected for upload");
       return;
@@ -64,7 +64,7 @@ export default function Portfolio() {
     }
   };
 
-  const sendToServer = async (fileUrls, bannerId) => {
+  const sendToServer = async (fileUrls: string[], bannerId: string | null) => {
     console.log("Sent Banner Id: ", bannerId);
     try {
       const response = await fetch("http://localhost:3001/addImages", {
@@ -82,7 +82,7 @@ export default function Portfolio() {
     }
   };
 
-  const handleRemoveFile = (index) => {
+  const handleRemoveFile = (index: number) => {
     setFiles((prevFiles) => {
       const updatedFiles = prevFiles.filter((_, i) => i !== index);
       URL.revokeObjectURL(prevFiles[index].preview); // Free memory
@@ -134,7 +134,7 @@ export default function Portfolio() {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent page refresh
 
     try {
@@ -246,7 +246,7 @@ export default function Portfolio() {
                     alt={`Portfolio Item ${index + 1}`}
                     className="w-full h-24 object-cover rounded-md mb-2"
                   />
-                  <p className="text-sm text-gray-600">{file.name}</p>
+                  {/*<p className="text-sm text-gray-600">{file.file.name}</p>*/}
                 </div>
                 <p className="text-sm text-gray-600">
                   Portfolio Item {index + 1}

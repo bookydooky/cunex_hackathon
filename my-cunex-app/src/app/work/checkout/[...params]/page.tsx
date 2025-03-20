@@ -2,7 +2,16 @@
 import { ArrowLeft, Share2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-
+interface JobDetailResponse {
+  bannerId: string;
+  userId: string;
+  bannerName: string;
+  price: number;
+  duration: string; // Duration in days, or another appropriate unit
+  typeOfWork: string;
+  bannerdesc: string;
+  images: string[]; // Array of image URLs
+}
 export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isClientDetailsOpen, setIsClientDetailsOpen] = useState(false);
@@ -11,7 +20,7 @@ export default function Checkout() {
   const params = useParams();
   if (!params?.params) return <p>Loading...</p>;
   const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
-  const [jobData, setJobData] = useState(null);
+  const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
 
   useEffect(() => {
     if (!bannerId) return;
@@ -33,6 +42,7 @@ export default function Checkout() {
     fetchJobDetails();
   }, [bannerId]);
 
+  if (!jobData) return <p>Loading job details...</p>;
   const handleAddPortfolio = async () => {
     try {
       const response = await fetch(`http://localhost:3001/confirmJob`, {
@@ -54,7 +64,6 @@ export default function Checkout() {
     }
     router.push("/");
   };
-  if (!jobData) return <p>Loading job details...</p>;
 
   return (
     <div className="h-screen bg-white">

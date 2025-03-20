@@ -1,15 +1,23 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import { useParams } from "next/navigation"; // Import useParams
-
+interface JobDetailResponse {
+  bannerId: string;
+  userId: string;
+  bannerName: string;
+  price: number;
+  duration: string; // Duration in days, or another appropriate unit
+  typeOfWork: string;
+  bannerdesc: string;
+  images: string[]; // Array of image URLs
+}
 const WorkDetailPreview = () => {
   const params = useParams();
   if (!params?.params) return <p>Loading...</p>;
   const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
-  const [jobData, setJobData] = useState(null);
+  const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
 
   useEffect(() => {
     if (!bannerId) return;

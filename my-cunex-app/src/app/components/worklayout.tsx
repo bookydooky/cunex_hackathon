@@ -3,10 +3,20 @@ import React, { ReactNode, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
 import ImageCarousel from "./ImageCarousel";
-
+interface JobDetailResponse {
+  bannerId: string;
+  userId: string;
+  bannerName: string;
+  price: number;
+  duration: string; // Duration in days, or another appropriate unit
+  typeOfWork: string;
+  bannerdesc: string;
+  images: string[]; // Array of image URLs
+}
 interface WorkDetailLayoutProps {
-  children: ReactNode;
-  jobData: any;
+  jobData: JobDetailResponse;
+  userId: string;
+  children: ReactNode; // To accept child elements (the content inside WorkLayout)
 }
 
 const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
