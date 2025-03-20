@@ -5,7 +5,16 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2 } from "lucide-react";
 
 export default function AllJobs() {
-  const [jobs, setJobs] = useState([]);
+  interface Job {
+    bannerId: string;
+    bannerName: string;
+    price: number;
+    typeOfWork: string;
+    firstImageId: number;
+    imageURL: string;
+  }
+
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { path, userId } = useParams(); // ✅ Get both parameters

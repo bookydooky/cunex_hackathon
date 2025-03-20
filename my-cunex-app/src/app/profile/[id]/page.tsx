@@ -5,7 +5,24 @@ import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
 export default function ProfilePage() {
-  function getAcademicYearLevel(entryYear, currentAcademicYear) {
+  interface UserProfile {
+    firstName: string;
+    lastName: string;
+    facultyCode: string;
+    studentYear: string;
+    facultyNameEN: string;
+    studentId: string;
+    successRate?: number;
+    jobsSold?: number;
+    rehired?: number;
+    avgResponse?: number;
+    bio?: string;
+    rating?: number;
+  }
+  function getAcademicYearLevel(
+    entryYear: number,
+    currentAcademicYear: number
+  ) {
     // Calculate the difference between current academic year and entry year
     const yearDifference = currentAcademicYear - entryYear;
 
@@ -30,7 +47,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const params = useParams();
   const userId = params.id; // ✅ Get id dynamically  const router = useRouter();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<UserProfile | null>(null);
   useEffect(() => {
     if (!userId) return;
 
@@ -95,7 +112,7 @@ export default function ProfilePage() {
               {userData.firstName} {userData.lastName}
             </h2>
             <p className="text-gray-500 text-sm">
-              {getAcademicYearLevel(userData.studentYear, 2567)}
+              {getAcademicYearLevel(parseInt(userData.studentYear, 10), 2567)}
             </p>
             <p className="text-gray-500 text-sm">
               Faculty: {userData.facultyNameEN}

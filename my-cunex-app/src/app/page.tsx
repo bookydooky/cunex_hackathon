@@ -23,6 +23,23 @@ import axios from "axios";
 import { GlobalStateContext } from "./context/GlobalState";
 
 export default function Home() {
+  interface Profile {
+    userId: string;
+    studentId: string;
+    firstNameEN: string;
+    lastNameEN: string;
+    facultyCode: string;
+    studentYear: string;
+  }
+  interface Job {
+    bannerId: string;
+    bannerName: string;
+    price: number;
+    typeOfWork: string;
+    firstImageId: number;
+    imageURL: string;
+  }
+
   const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
   const handleCreateJobClick = () => {
@@ -36,10 +53,17 @@ export default function Home() {
     else if (label.includes("Laser Cutting")) setService("lasercut");
     router.push("/service/startorder");
   };
-  const [latestJobs, setLatestJobs] = useState([]);
+  const [latestJobs, setLatestJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile>({
+    userId: "",
+    studentId: "",
+    firstNameEN: "",
+    lastNameEN: "",
+    facultyCode: "",
+    studentYear: "",
+  });
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -249,10 +273,9 @@ export default function Home() {
                         alt={job.bannerName || `Job ${idx}`}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = `https://via.placeholder.com/100x100?text=${
-                            job.typeOfWork || "Job"
-                          }`;
+                          const target = e.target as HTMLImageElement; // Type assertion
+                          target.onerror = null; // Prevent infinite loop in case the placeholder fails
+                          target.src = "/placeholder.png";
                         }}
                       />
                     </div>
