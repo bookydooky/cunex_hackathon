@@ -39,26 +39,6 @@ export default function ReviewPaymentPage() {
           <p className="text-xl text-pink-400">Bring your ideas to life</p>
         </header>
 
-        <div className="flex justify-between mb-8">
-          <div className="flex-1 text-center px-4">
-            <div className="w-10 h-10 rounded-full bg-pink-200 text-pink-500 flex items-center justify-center mx-auto mb-2 font-bold">
-              1
-            </div>
-            <div className="text-gray-800 font-semibold">Start Order</div>
-          </div>
-          <div className="flex-1 text-center px-4">
-            <div className="w-10 h-10 rounded-full bg-pink-200 text-pink-500 flex items-center justify-center mx-auto mb-2 font-bold">
-              2
-            </div>
-            <div className="text-gray-800 font-semibold">Enter Details</div>
-          </div>
-          <div className="flex-1 text-center px-4">
-            <div className="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center mx-auto mb-2 font-bold">
-              3
-            </div>
-            <div className="text-gray-800 font-semibold">Review & Pay</div>
-          </div>
-        </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {/* Project Summary */}
