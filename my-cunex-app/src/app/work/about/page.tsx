@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Users, Clock, MessageCircle } from 'lucide-react';
+import { Users, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const WorkAbout = () => {
