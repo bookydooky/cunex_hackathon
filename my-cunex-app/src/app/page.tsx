@@ -1,11 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import Head from "next/head";
-import {
-  FiBox,
-  FiPlus,
-  FiEdit,
-} from "react-icons/fi";
+import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { GiCutDiamond } from "react-icons/gi";
 import { MdFoodBank, MdLocationOn } from "react-icons/md";
@@ -81,7 +77,7 @@ export default function Home() {
       <div className="bg-white p-4 shadow-md">
         <div className="flex justify-between items-center">
           <div className="text-lg font-bold text-pink-500">
-            CU<span className="text-gray-800">NEX</span>
+            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
           </div>
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
@@ -96,12 +92,18 @@ export default function Home() {
           <div className="flex space-x-2">
             <div
               className={`rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer transition-colors
-              ${showNotifications ? "bg-gray-300" : "bg-gray-100 hover:bg-gray-300"}`}
+              ${
+                showNotifications
+                  ? "bg-gray-300"
+                  : "bg-gray-100 hover:bg-gray-300"
+              }`}
               onClick={() => setShowNotifications(!showNotifications)}
             >
               <FaBell className="text-gray-400 text-lg" />
             </div>
-            {showNotifications && <Notification/>}
+            {showNotifications && (
+              <Notification setShowNotifications={setShowNotifications} />
+            )}
 
             {/* Profile */}
             <div

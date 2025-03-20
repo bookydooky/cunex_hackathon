@@ -159,10 +159,7 @@ export default function Portfolio() {
           >
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
           </button>
-          <div className="flex items-center">
-            <span className="text-pink-500 font-semibold text-xl">CU</span>
-            <span className="text-gray-800 font-bold text-xl">NEX</span>
-          </div>
+          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-pink-500 font-medium text-xl">Portfolio</div>
         </div>
