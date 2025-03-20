@@ -51,11 +51,7 @@ const CreateJobPreview = () => {
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
           </button>
           <div className="flex items-center">
-            <div className="font-bold text-lg">
-              <span className="text-pink-500">CU</span>
-              <span className="text-black">NEX</span>
-            </div>
-            <div className="h-6 border-l border-gray-300 mx-5"></div>
+          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-pink-500 text-xl font-medium">Create Job</div>
           </div>
