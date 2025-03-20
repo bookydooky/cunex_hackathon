@@ -16,7 +16,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </Head>
       
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
         <div className="flex items-center">
           <button
             onClick={() => router.back()}
