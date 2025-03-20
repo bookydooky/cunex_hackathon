@@ -9,7 +9,7 @@ export default function ProfilePage() {
   return (
     <div className="h-screen bg-gray-100">
       {/* Navigation bar */}
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
+      <div className="sticky top-0 right-0 left-0 px-4 py-2 flex justify-between items-center bg-white">
         <div className="flex items-center">
           <button
             onClick={() => router.push("/")}
@@ -17,10 +17,7 @@ export default function ProfilePage() {
           >
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
           </button>
-          <div className="flex items-center">
-            <span className="text-pink-500 font-semibold text-xl">CU</span>
-            <span className="text-gray-800 font-bold text-xl">NEX</span>
-          </div>
+          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-pink-500 font-medium text-xl">Profile</div>
         </div>

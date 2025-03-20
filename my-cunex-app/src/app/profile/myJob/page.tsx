@@ -63,50 +63,48 @@ export default function MyJobsPage() {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen pb-20">
-      {/* Navigation bar */}
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
-        <div className="flex items-center">
-          <button
-            onClick={() => router.push("/profile")}
-            className="transition-transform transform active:scale-90"
-          >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
-          </button>
+    <div className="bg-gray-100 h-screen overflow-y-auto">
+      <div className="sticky top-0 left-0 right-0">
+        {/* Navigation bar */}
+        <div className="px-4 py-2 flex justify-between items-center bg-white">
           <div className="flex items-center">
-            <span className="text-pink-500 font-semibold text-xl">CU</span>
-            <span className="text-gray-800 font-bold text-xl">NEX</span>
+            <button
+              onClick={() => router.push("/profile")}
+              className="transition-transform transform active:scale-90"
+            >
+              <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            </button>
+            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
+            <div className="text-pink-500 font-medium text-xl">Profile</div>
           </div>
-          <div className="h-6 border-l border-gray-300 mx-5"></div>
-          <div className="text-pink-500 font-medium text-xl">Profile</div>
+          <Share2 className="text-black" />
         </div>
-        <Share2 className="text-black" />
-      </div>
 
-      {/* Tabs */}
-      <div className="bg-white flex mb-4 shadow-sm">
-        <button
-          className={`flex-1 py-3 text-center font-medium ${
-            activeTab === "ongoing"
-              ? "text-pink-500 border-b-2 border-pink-500"
-              : "text-gray-500"
-          }`}
-          onClick={() => setActiveTab("ongoing")}
-        >
-          Ongoing
-        </button>
-        <button
-          className={`flex-1 py-3 text-center font-medium ${
-            activeTab === "completed"
-              ? "text-pink-500 border-b-2 border-pink-500"
-              : "text-gray-500"
-          }`}
-          onClick={() => setActiveTab("completed")}
-        >
-          Completed
-        </button>
+        {/* Tabs */}
+        <div className="bg-white flex mb-4 shadow-sm">
+          <button
+            className={`flex-1 py-3 text-center font-medium ${
+              activeTab === "ongoing"
+                ? "text-pink-500 border-b-2 border-pink-500"
+                : "text-gray-500"
+            }`}
+            onClick={() => setActiveTab("ongoing")}
+          >
+            Ongoing
+          </button>
+          <button
+            className={`flex-1 py-3 text-center font-medium ${
+              activeTab === "completed"
+                ? "text-pink-500 border-b-2 border-pink-500"
+                : "text-gray-500"
+            }`}
+            onClick={() => setActiveTab("completed")}
+          >
+            Completed
+          </button>
+        </div>
       </div>
-
       {/* Job List */}
       <div className="mx-4">
         {activeTab === "ongoing" && (

@@ -38,18 +38,15 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
   return (
     <div className="flex flex-col h-screen bg-white mx-auto shadow-lg relative">
       {/* App Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b">
+      <div className="px-4 py-2 flex items-center justify-between border-b">
         <div className="flex items-center">
           <ArrowLeft
-            className="mr-4 text-pink-500"
+            className="mr-4 text-pink-500 hover:text-pink-800 transition-transform transform active:scale-90"
             onClick={() => handleNavigation("/")}
           />
           <div className="flex items-center">
-            <div className="font-bold text-lg">
-              <span className="text-pink-500">CU</span>
-              <span className="text-gray-700">NEX</span>
-            </div>
-            <div className="h-6 border-l border-gray-300 mx-3"></div>
+            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-pink-500 text-xl font-medium">
               {jobData?.bannerName || "Loading..."}
             </div>

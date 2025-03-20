@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
-import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
+import { ArrowLeft, Share2 } from "lucide-react";
 
 export default function AllJobs({ params }: { params: { id: string } }) {
   const [jobs, setJobs] = useState([]);
@@ -36,7 +35,7 @@ export default function AllJobs({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col h-screen bg-gray-100 mx-auto shadow-lg overflow-y-auto">
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-5 flex items-center justify-between border-b bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between border-b bg-white">
         <div className="flex items-center">
           <ArrowLeft
             className="mr-4 text-pink-500 hover:text-pink-800 transition-transform
@@ -44,10 +43,7 @@ export default function AllJobs({ params }: { params: { id: string } }) {
             onClick={() => router.push("/")}
           />
           <div className="flex items-center">
-            <div className="font-bold text-lg">
-              <span className="text-pink-500">CU</span>
-              <span className="text-gray-700">NEX</span>
-            </div>
+            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
             <div className="h-6 border-l border-gray-300 mx-3"></div>
             <div className="text-pink-500 text-xl font-medium">All Jobs</div>
           </div>

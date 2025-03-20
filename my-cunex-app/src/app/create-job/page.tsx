@@ -40,29 +40,30 @@ const CreateJobPreview = () => {
     router.push("/portfolio");
   };
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100">
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-5 flex items-center justify-between bg-white z-1">
-        <div className="flex items-center">
-          <button
-            onClick={handlePreviousPage}
-            className="transition-transform transform active:scale-90"
-          >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
-          </button>
-          <div className="flex items-center">
-          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
-            <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 text-xl font-medium">Create Job</div>
-          </div>
-        </div>
-        <Share2 className="text-black" />
-      </div>
-        {/* Progress Bar */}
-        <div className="flex px-4 mt-4">
-          <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
-          <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
-        </div>
+            <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
+              <div className="flex items-center">
+                <button
+                  onClick={handlePreviousPage}
+                  className="transition-transform transform active:scale-90"
+                >
+                  <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+                </button>
+                <div className="flex items-center">
+                  <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+                  <div className="h-6 border-l border-gray-300 mx-5"></div>
+                  <div className="text-pink-500 text-xl font-medium">Create Job</div>
+                </div>
+              </div>
+              <Share2 className="text-black" />
+            </div>
+            {/* Progress Bar */}
+            <div className="flex px-4 mt-4">
+                <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
+                <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
+            </div>
+      
 
         <div className="flex-1 overflow-auto p-4">
           {/* User Profile Section */}

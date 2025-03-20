@@ -77,7 +77,7 @@ export default function Home() {
       <div className="bg-white p-4 shadow-md">
         <div className="flex justify-between items-center">
           <div className="text-lg font-bold text-pink-500">
-            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
+            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
           </div>
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
