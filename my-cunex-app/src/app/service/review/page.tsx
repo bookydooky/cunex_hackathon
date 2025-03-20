@@ -1,9 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { GlobalStateContext } from "@/app/context/GlobalState";
+import { useRouter } from 'next/navigation';
 
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const { service } = useContext(GlobalStateContext);
+  const router = useRouter();
 
   // Sample order data that would come from previous steps
   const orderDetails = {
@@ -25,8 +29,14 @@ export default function ReviewAndPayPage() {
     },
   };
 
+  if (service == 'lasercut') {
+    orderDetails.service = 'Laser Cutting';
+    orderDetails.filename = 'custom-sign.dxf';
+  }
+
   const handleSubmitOrder = () => {
-    alert("Order submitted successfully! Redirecting to confirmation page...");
+    alert("Order submitted successfully! Redirecting to home page...");
+    router.push("/");
   };
 
   return (
@@ -34,7 +44,7 @@ export default function ReviewAndPayPage() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <header className="text-center mb-10">
           <h1 className="text-3xl font-bold text-pink-500 mb-2">
-            3D Printing Service
+            Fabrication Service
           </h1>
           <p className="text-xl text-pink-400">
             Review your order and complete payment
@@ -67,9 +77,9 @@ export default function ReviewAndPayPage() {
             Order Summary
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Order Details Column */}
-            <div className="col-span-2">
+            <div className="col-span-1">
               <div className="border-b border-pink-100 pb-4 mb-4">
                 <h3 className="text-lg font-semibold text-pink-500 mb-3">
                   Project Details
@@ -274,7 +284,7 @@ export default function ReviewAndPayPage() {
 
             {/* Order Summary Column */}
             <div className="col-span-1">
-              <div className="bg-pink-50 rounded-lg p-6">
+              <div className="bg-pink-50 rounded-lg p-6 w-full">
                 <h3 className="text-lg font-semibold mb-4 text-gray-800">
                   Price Summary
                 </h3>

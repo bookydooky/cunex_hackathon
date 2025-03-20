@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import {
   FiBox,
@@ -22,11 +22,12 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useRouter } from "next/navigation";
-import BottomNavigation from "./components/BottomNavigation";
 import Notification from "./components/notification";
+import { GlobalStateContext  } from "./context/GlobalState";
 
 export default function Home() {
 
+  const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
   const handleCreateJobClick = () => {
     router.push("/create-job");
@@ -34,8 +35,12 @@ export default function Home() {
   const handleSeeAllClick = () => {
     router.push("/seeAll/None");
   };
-  const handleServiceClick = (path: string) => {
-    router.push(path);
+  const handleServiceClick = (label: string) => {
+    if (label.includes('3D Printing'))
+      setService('3d');
+    else if (label.includes('Laser Cutting'))
+      setService('lasercut');
+    router.push('/service/startorder');
   }
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -160,12 +165,12 @@ export default function Home() {
             {[
               { icon: FiBox, label: "Item Delivery" },
               { icon: MdFoodBank, label: "Food Delivery" },
-              { icon: BiCube, label: "3D Printing", path:'/service/fabrication/3d' },
-              { icon: GiCutDiamond, label: "Laser Cutting", path:'/service/fabrication/lasercut' },
+              { icon: BiCube, label: "3D Printing"},
+              { icon: GiCutDiamond, label: "Laser Cutting",},
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div
-                  onClick={() => handleServiceClick(item.path)}
+                  onClick={() => handleServiceClick(item.label)}
                   className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
                 transition-transform transform active:scale-90"
                 >
@@ -186,7 +191,7 @@ export default function Home() {
               Latest Jobs
             </h2>
             <h2
-              className="text-sm text-pink-500 font-bold mb-2"
+              className="text-sm text-pink-500 font-bold mb-2 hover:underline cursor-pointer"
               onClick={handleSeeAllClick}
             >
               See All
@@ -242,7 +247,6 @@ export default function Home() {
                 ))}
           </div>
         </div>
-        <BottomNavigation />
       </div>
     </div>
   );

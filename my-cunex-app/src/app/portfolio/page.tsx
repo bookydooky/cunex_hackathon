@@ -149,9 +149,9 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 overflow-y-auto">
       {/* Navigation bar */}
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-5 flex justify-between items-center bg-white z-1">
         <div className="flex items-center">
           <button
             onClick={handlePreviousPage}
@@ -194,7 +194,7 @@ export default function Portfolio() {
       </div>
 
       {/* Main content */}
-      <div className="px-4 py-6">
+      <div className="flex-1 px-4 py-4">
         {/* Info box */}
         <div className="bg-gray-50 rounded-lg p-4 mb-8">
           <h2 className="text-xl text-black font-bold mb-2">
@@ -268,22 +268,22 @@ export default function Portfolio() {
             ))}
           </div>
         )}
-
-        {/* Add portfolio button */}
+      </div>
+      {/* Add portfolio button */}
+      <div className="sticky bottom-0 left-0 right-0 px-4 py-4">
         <form onSubmit={handleSubmit}>
-          <button
-            type="submit"
-            disabled={files.length === 0} // Disable button if no files are uploaded
-            className={`w-full py-4 rounded-lg text-lg font-semibold transition-colors duration-200 ease-in-out
-    ${
-      files.length === 0
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700"
-    }`}
-          >
-            Submit Portfolio
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={files.length === 0} // Disable button if no files are uploaded
+              className={`w-full py-4 rounded-lg text-lg font-semibold transition-colors duration-200 ease-in-out
+              ${
+                files.length === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700"
+              }`}>
+              Submit Portfolio
+            </button>
+          </form>
       </div>
       {showPopup && files.length > 0 && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg">

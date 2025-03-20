@@ -1,12 +1,14 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useRouter } from 'next/navigation'
+import { GlobalStateContext } from "@/app/context/GlobalState";
 
 export default function UploadPagePreview() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+  const { service }  = useContext(GlobalStateContext);
 
   const materials = [
     { id: "pla", name: "PLA", icon: "🔹" },
@@ -70,7 +72,7 @@ export default function UploadPagePreview() {
                 className="block text-pink-500 font-semibold mb-2"
                 htmlFor="file-upload"
               >
-                Upload 3D Model/Laser printing file
+                {service == '3d' ? 'Upload your 3D model' : 'Upload your laser cutting design'}
               </label>
               <div
                 className={`border-2 ${
@@ -93,7 +95,8 @@ export default function UploadPagePreview() {
                       Drag & drop your file here or click to browse
                     </p>
                     <p className="text-sm text-gray-600">
-                      Supported formats: STL, DXF
+                      {service == '3d' ? 'Supported formats: STL' :
+                      'Supported formats: DXF'}
                     </p>
                   </>
                 )}
@@ -164,8 +167,8 @@ export default function UploadPagePreview() {
 
             <button
               type="button"
-              onClickCapture={() => router.push("/service/fabrication/lasercut/review")}
-              className="w-full bg-pink-500 text-white py-4 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-pink-600 hover:shadow-lg active:scale-90"
+              onClickCapture={() => router.push("/service/review")}
+              className="w-full bg-pink-500 text-white py-3 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-pink-600 hover:shadow-lg active:scale-90"
             >
               Continue to Review
             </button>

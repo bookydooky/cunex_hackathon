@@ -1,29 +1,12 @@
 'use client'
 import React from 'react';
-import { useRouter, usePathname} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { ArrowLeft, Share2 } from 'lucide-react';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const pathname = usePathname();
-  const handlePrevious = () => {
-    if (pathname === '/service/fabrication/3d/detail') {
-      router.push('/service/fabrication/3d');
-    }
-    else if (pathname === '/service/fabrication/lasercut/detail') {
-      router.push('/service/fabrication/lasercut');
-    }
-    else if (pathname === '/service/fabrication/3d/review') {
-      router.push('/service/fabrication/3d/detail');
-    }
-    else if (pathname === '/service/fabrication/lasercut/review') {
-      router.push('/service/fabrication/lasercut/detail');
-    }
-    else {
-      router.push('/');
-    }
-  }
+  
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Head>
@@ -33,10 +16,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </Head>
       
       {/* App Header */}
-      <div className="px-4 py-5 flex items-center justify-between bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-5 flex items-center justify-between bg-white">
         <div className="flex items-center">
           <button
-            onClick={handlePrevious}
+            onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
