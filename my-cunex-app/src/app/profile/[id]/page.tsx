@@ -53,7 +53,7 @@ export default function ProfilePage() {
   if (!userData) return <p>Loading user details...</p>;
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen bg-gray-100 overflow-y-auto">
       {/* Navigation bar */}
       <div className="sticky top-0 right-0 left-0 px-4 py-2 flex justify-between items-center bg-white">
         <div className="flex items-center">
@@ -131,7 +131,10 @@ export default function ProfilePage() {
       {/* Menu items */}
       <div className="mx-4 mt-4">
         {/* My Jobs */}
-        <div className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100">
+        <div
+          className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
+      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+        >
           <Link href={`/profile/${userId}/myJob/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useContext } from "react";
 import { GlobalStateContext } from "@/app/context/GlobalState";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
@@ -29,9 +29,9 @@ export default function ReviewAndPayPage() {
     },
   };
 
-  if (service == 'lasercut') {
-    orderDetails.service = 'Laser Cutting';
-    orderDetails.filename = 'custom-sign.dxf';
+  if (service == "lasercut") {
+    orderDetails.service = "Laser Cutting";
+    orderDetails.filename = "custom-sign.dxf";
   }
 
   const handleSubmitOrder = () => {
@@ -112,9 +112,7 @@ export default function ReviewAndPayPage() {
                   </div>
                   <div className="sm:col-span-2">
                     <p className="text-sm text-Gray">Size</p>
-                    <p className="font-medium text-Gray">
-                      {orderDetails.size}
-                    </p>
+                    <p className="font-medium text-Gray">{orderDetails.size}</p>
                   </div>
                   <div className="sm:col-span-2">
                     <p className="text-sm text-Gray">Additional Requests</p>
@@ -123,9 +121,7 @@ export default function ReviewAndPayPage() {
                     </p>
                   </div>
                   <div className="sm:col-span-2">
-                    <p className="text-sm text-Gray">
-                      Estimated Print Time
-                    </p>
+                    <p className="text-sm text-Gray">Estimated Print Time</p>
                     <p className="font-medium text-Gray">
                       {orderDetails.estimatedPrintTime}
                     </p>
@@ -332,7 +328,7 @@ export default function ReviewAndPayPage() {
                   <button
                     className={`w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-semibold transition-all ${
                       agreeToTerms
-                        ? "hover:bg-darkPink hover:shadow-lg"
+                        ? "hover:bg-darkPink hover:shadow-lg transition-transform transform active:scale-90 active:bg-darkPink"
                         : "opacity-50 cursor-not-allowed"
                     }`}
                     disabled={!agreeToTerms}

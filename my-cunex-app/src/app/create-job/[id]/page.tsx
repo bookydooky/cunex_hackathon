@@ -195,7 +195,10 @@ const CreateJobPreview = () => {
               onClick={handleCollaborateClick}
               className="mr-2 transition-transform transform active:scale-90"
             >
-              <Users size={25} className="text-Pink hover:text-darkPink" />
+              <Users
+                size={25}
+                className="text-Pink hover:text-darkPink active:text-darkPink"
+              />
             </button>
           </div>
 
@@ -289,7 +292,7 @@ const CreateJobPreview = () => {
         <button
           onClick={handleNextPage}
           className="w-full bg-Pink text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
-            transition-colors duration-200 ease-in-out hover:bg-darkPink transition-transform transform active:scale-90"
+            transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink transition-transform transform active:scale-90"
         >
           <span>Next</span>
         </button>

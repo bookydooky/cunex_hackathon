@@ -109,7 +109,8 @@ export default function Notification({ userId, setShowNotifications }) {
                 {notif.bannerName}
               </span>
               <button
-                className="bg-green-400 text-white px-2 py-1 rounded text-xs mr-1 ml-2"
+                className="bg-green-400 hover:bg-green-500 active:bg-green-500
+                text-white px-2 py-1 rounded text-xs mr-1 ml-2"
                 onClick={() =>
                   handleAccept(notif.historyId, notif.submittedImageId)
                 }
@@ -117,7 +118,8 @@ export default function Notification({ userId, setShowNotifications }) {
                 Accept
               </button>
               <button
-                className="bg-red-400 text-white px-2 py-1 rounded text-xs"
+                className="bg-red-400 hover:bg-red-500 active:bg-red-500
+                text-white px-2 py-1 rounded text-xs"
                 onClick={() =>
                   handleDeny(notif.historyId, notif.submittedImageId)
                 }

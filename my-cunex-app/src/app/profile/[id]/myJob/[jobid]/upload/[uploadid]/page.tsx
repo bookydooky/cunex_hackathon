@@ -122,22 +122,25 @@ const ImageUpload = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
+      <div className="px-4 py-2 flex justify-between items-center bg-white">
         <div className="flex items-center">
           <button
-            onClick={() => router.push("/profile")}
+            onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-pink-800" />
           </button>
           <div className="flex items-center">
-            <span className="text-pink-500 font-semibold text-xl">CU</span>
-            <span className="text-gray-800 font-bold text-xl">NEX</span>
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-12"
+            />
           </div>
           <div className="h-6 border-l border-gray-300 mx-5"></div>
-          <div className="text-pink-500 font-medium text-xl">Upload Image</div>
+          <div className="text-Pink font-medium text-xl">Upload Image</div>
         </div>
-        <Share2 className="text-black" />
+        <Share2 className="text-Gray" />
       </div>
 
       <div className="flex-1 flex justify-center items-center p-4">
@@ -181,10 +184,10 @@ const ImageUpload = () => {
           />
 
           <button
-            className={`font-bold py-2 px-6 rounded transition-colors ${
+            className={`font-medium w-full py-2 px-6 rounded-lg transition-colors ${
               acceptStatus === null
                 ? "bg-gray-400 cursor-not-allowed text-white"
-                : "bg-pink-500 hover:bg-pink-600 text-white"
+                : "bg-pink-500 hover:bg-pink-600 text-white transition-transform transform active:scale-90 active:bg-darkPink"
             }`}
             onClick={handleFileSubmit}
             disabled={acceptStatus === null}

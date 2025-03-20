@@ -148,7 +148,7 @@ export default function Portfolio() {
   //---------------------------------------------------------------------
 
   const handlePreviousPage = () => {
-    router.push("/create-job");
+    router.back();
   };
 
   return (
@@ -169,7 +169,7 @@ export default function Portfolio() {
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-Pink text-xl font-medium">Create Job</div>
+            <div className="text-Pink text-xl font-medium">Portfolio</div>
           </div>
         </div>
         <Share2 className="text-black" />
@@ -205,7 +205,7 @@ export default function Portfolio() {
             <label
               htmlFor="file-upload"
               className="bg-Pink text-white px-6 py-2 rounded-md cursor-pointer
-            transition-transform transition-colors transform active:scale-90  hover:bg-darkPink"
+            transition-transform transition-colors transform active:scale-90  hover:bg-darkPink active:bg-darkPink"
             >
               Upload Files
             </label>
@@ -262,11 +262,11 @@ export default function Portfolio() {
           <button
             type="submit"
             disabled={files.length === 0} // Disable button if no files are uploaded
-            className={`w-full py-4 rounded-lg text-lg font-medium transition-colors duration-200 ease-in-out
+            className={`w-full py-4 rounded-lg text-lg font-medium
               ${
                 files.length === 0
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700"
+                  : "bg-Pink text-white hover:bg-darkPink active:bg-darkPink transition-transform transform active:scale-90"
               }`}
           >
             Submit Portfolio

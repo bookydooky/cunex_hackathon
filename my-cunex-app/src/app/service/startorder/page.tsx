@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useEffect } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
 
 export default function ServiceSelectionPage() {
@@ -8,7 +8,7 @@ export default function ServiceSelectionPage() {
   const router = useRouter();
   useEffect(() => {
     console.log(service);
-  })
+  });
 
   return (
     <div>
@@ -46,76 +46,82 @@ export default function ServiceSelectionPage() {
 
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-8 flex flex-col">
           <h2 className="text-2xl font-semibold mb-6 text-center text-Gray">
-            {service == '3d' ? '3D Printing' : 'Laser Cutting'}
+            {service == "3d" ? "3D Printing" : "Laser Cutting"}
           </h2>
 
-            {/* 3D Printing Option */}
-            {service === '3d' && (
-                <div
-                className='border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
+          {/* 3D Printing Option */}
+          {service === "3d" && (
+            <div
+              className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
                     border-pink-500
-                '
-                >
-                <div className="bg-pink-100 p-6 flex justify-center items-center">
-                    <div className="text-6xl">
-                      <img src='https://cdn-icons-png.flaticon.com/512/2844/2844942.png' alt='3D printing vector'
-                      className="h-20"/>
-                    </div>
-                </div>
-                <div className="p-6">
-                    <h3 className="text-xl text-Pink font-bold mb-2">
-                    3D Printing
-                    </h3>
-                    <p className="text-gray-500 mb-4">
-                    Create complex three-dimensional objects from digital models
-                    with precision and customization.
-                    </p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• Perfect for prototypes & custom parts</li>
-                    <li>• Various materials available</li>
-                    <li>• Detailed & complex geometries</li>
-                    </ul>
-                </div>
-                </div> 
-                )
-            }
-            {/* Laser Cutting Option */}
-            {service === 'lasercut' && (
-                <div
-                className='border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
-                  border-pink-500
-                '
-              >
-                <div className="bg-pink-100 p-6 flex justify-center items-center">
-                  <div className="text-6xl">
-                    <img src='https://cdn-icons-png.flaticon.com/512/2162/2162509.png'
-                    alt='Laser cutting vector' className="h-20"/>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl text-Pink font-bold mb-2">
-                    Laser Cutting
-                  </h3>
-                  <p className="text-gray-500 mb-4">
-                    Precise cutting or engraving of flat materials with clean
-                    edges and intricate details.
-                  </p>
-                  <ul className="text-sm text-gray-700 space-y-1">
-                    <li>• Fast production time</li>
-                    <li>• Works with various sheet materials</li>
-                    <li>• Ideal for 2D designs & engravings</li>
-                  </ul>
+                "
+            >
+              <div className="bg-pink-100 p-6 flex justify-center items-center">
+                <div className="text-6xl">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/2844/2844942.png"
+                    alt="3D printing vector"
+                    className="h-20"
+                  />
                 </div>
               </div>
-                )
-            }
+              <div className="p-6">
+                <h3 className="text-xl text-Pink font-bold mb-2">
+                  3D Printing
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  Create complex three-dimensional objects from digital models
+                  with precision and customization.
+                </p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• Perfect for prototypes & custom parts</li>
+                  <li>• Various materials available</li>
+                  <li>• Detailed & complex geometries</li>
+                </ul>
+              </div>
+            </div>
+          )}
+          {/* Laser Cutting Option */}
+          {service === "lasercut" && (
+            <div
+              className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
+                  border-pink-500
+                "
+            >
+              <div className="bg-pink-100 p-6 flex justify-center items-center">
+                <div className="text-6xl">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/2162/2162509.png"
+                    alt="Laser cutting vector"
+                    className="h-20"
+                  />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl text-Pink font-bold mb-2">
+                  Laser Cutting
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  Precise cutting or engraving of flat materials with clean
+                  edges and intricate details.
+                </p>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• Fast production time</li>
+                  <li>• Works with various sheet materials</li>
+                  <li>• Ideal for 2D designs & engravings</li>
+                </ul>
+              </div>
+            </div>
+          )}
 
           <div className="mt-10 text-center">
             <button
-              className='bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium transition-all ${
-                 hover:bg-darkPink transition-transform transform active:scale-90
-              '
-              onClick={() => { router.push('/service/detail') }}
+              className="bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium transition-all ${
+                 hover:bg-darkPink transition-transform transform active:scale-90 active:bg-darkPink
+              "
+              onClick={() => {
+                router.push("/service/detail");
+              }}
             >
               Continue to Details
             </button>

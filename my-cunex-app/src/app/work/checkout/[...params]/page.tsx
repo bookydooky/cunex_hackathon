@@ -68,7 +68,11 @@ export default function Checkout() {
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
-            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-12"
+            />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-Pink text-xl font-medium">Checkout</div>
           </div>
@@ -111,9 +115,7 @@ export default function Checkout() {
         <h2 className="text-xl font-bold text-Gray mb-4">Method</h2>
         <div
           className={`border rounded-lg p-4 mb-3 flex justify-between items-center cursor-pointer ${
-            paymentMethod === "Bank Account"
-              ? "border-Pink"
-              : "border-gray-300"
+            paymentMethod === "Bank Account" ? "border-Pink" : "border-gray-300"
           }`}
           onClick={() => setPaymentMethod("Bank Account")}
         >
@@ -131,9 +133,7 @@ export default function Checkout() {
             </div>
             <span
               className={`${
-                paymentMethod === "Bank Account"
-                  ? "text-Pink"
-                  : "text-gray-300"
+                paymentMethod === "Bank Account" ? "text-Pink" : "text-gray-300"
               }`}
             >
               Bank Account
@@ -143,9 +143,7 @@ export default function Checkout() {
 
         <div
           className={`border rounded-lg p-4 flex justify-between items-center cursor-pointer ${
-            paymentMethod === "PromptPay"
-              ? "border-Pink"
-              : "border-gray-300"
+            paymentMethod === "PromptPay" ? "border-Pink" : "border-gray-300"
           }`}
           onClick={() => setPaymentMethod("PromptPay")}
         >
@@ -163,9 +161,7 @@ export default function Checkout() {
             </div>
             <span
               className={`${
-                paymentMethod === "PromptPay"
-                  ? "text-Pink"
-                  : "text-gray-300"
+                paymentMethod === "PromptPay" ? "text-Pink" : "text-gray-300"
               }`}
             >
               PromtPay
@@ -216,7 +212,7 @@ export default function Checkout() {
       </div>
 
       {/* Confirm Payment Button */}
-      <div className="p-4 bg-white">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
         <button
           className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink transition duration-200"
           onClick={handleAddPortfolio}

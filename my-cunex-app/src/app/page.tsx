@@ -120,7 +120,7 @@ export default function Home() {
             <div
               onClick={() => router.push(`/profile/${profile.userId}`)}
               className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer
-            transition-transform hover:bg-gray-300 active:scale-90"
+            transition-transform hover:bg-gray-300 active:scale-90 active:bg-gray-300"
             >
               <IoPersonSharp className="text-gray-400 text-lg" />
             </div>
@@ -158,7 +158,7 @@ export default function Home() {
             >
               <div
                 className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-200 rounded-full p-4 w-16 h-16 flex items-center justify-center
-              transition-transform transform active:scale-90"
+              transition-transform transform active:scale-90 transition-colors active:bg-pink-200"
               >
                 <item.icon className="text-Pink text-2xl" />
               </div>
@@ -187,7 +187,7 @@ export default function Home() {
                 <div
                   onClick={() => handleServiceClick(item.label)}
                   className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
-                transition-transform transform active:scale-90"
+                transition-transform transform active:scale-90 transition-colors active:bg-gray-300"
                 >
                   <item.icon className="text-Gray text-2xl" />
                 </div>
@@ -204,7 +204,8 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <h2 className="text-lg text-Gray font-bold mb-2">Latest Jobs</h2>
             <h2
-              className="text-sm text-Pink font-bold mb-2 hover:underline cursor-pointer"
+              className="text-sm text-Pink font-bold mb-2 hover:underline cursor-pointer
+              active:underline"
               onClick={handleSeeAllClick}
             >
               See All

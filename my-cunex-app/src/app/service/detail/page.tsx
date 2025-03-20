@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useContext } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
 
 export default function UploadPagePreview() {
@@ -8,7 +8,7 @@ export default function UploadPagePreview() {
   const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-  const { service }  = useContext(GlobalStateContext);
+  const { service } = useContext(GlobalStateContext);
 
   const materials = [
     { id: "pla", name: "PLA", icon: "🔹" },
@@ -72,7 +72,9 @@ export default function UploadPagePreview() {
                 className="block text-Pink font-semibold mb-2"
                 htmlFor="file-upload"
               >
-                {service == '3d' ? 'Upload your 3D model' : 'Upload your laser cutting design'}
+                {service == "3d"
+                  ? "Upload your 3D model"
+                  : "Upload your laser cutting design"}
               </label>
               <div
                 className={`border-2 ${
@@ -95,8 +97,9 @@ export default function UploadPagePreview() {
                       Drag & drop your file here or click to browse
                     </p>
                     <p className="text-sm text-gray-600">
-                      {service == '3d' ? 'Supported formats: STL' :
-                      'Supported formats: DXF'}
+                      {service == "3d"
+                        ? "Supported formats: STL"
+                        : "Supported formats: DXF"}
                     </p>
                   </>
                 )}
@@ -168,7 +171,8 @@ export default function UploadPagePreview() {
             <button
               type="button"
               onClickCapture={() => router.push("/service/review")}
-              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-darkPink hover:shadow-lg active:scale-90"
+              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-semibold transition-transform transform 
+              hover:bg-darkPink hover:shadow-lg active:scale-90 active:bg-darkPink"
             >
               Continue to Review
             </button>
