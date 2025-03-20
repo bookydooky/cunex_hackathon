@@ -5,13 +5,14 @@ import { useRouter, useParams } from "next/navigation";
 
 const ImageUpload = () => {
   const params = useParams();
-  const historyId = params.id; // ✅ Get id dynamically  const router = useRouter();
+  const historyId = params.uploadid;
   const [imageSrc, setImageSrc] = useState(null); // State to hold the image source
   const [file, setFile] = useState(null); // State to hold the file object
   const fileInputRef = useRef(null);
   const router = useRouter(); // Don't forget to use the router for navigation
   const [acceptStatus, setAcceptStatus] = useState(null); // State to track jh.accept status
   useEffect(() => {
+    console.log("History Id: ", historyId);
     const fetchAcceptStatus = async () => {
       try {
         const response = await fetch(

@@ -2,21 +2,19 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
 export default function MyJobsPage() {
+  const params = useParams();
+  const userId = params.id; // ✅ Get id dynamically  const router = useRouter();
   const [activeTab, setActiveTab] = useState("ongoing");
   const router = useRouter();
   const [ongoingJobs, setOngoingJobs] = useState([]);
   const [completedJobs, setCompletedJobs] = useState([]);
   const getOngoingJobs = async () => {
-    const session = {
-      userId: "100000000000000001",
-    };
-
     try {
       const response = await fetch(
-        `http://localhost:3001/getOngoingJobs?userId=${session.userId}`,
+        `http://localhost:3001/getOngoingJobs?userId=${userId}`,
         {
           method: "GET",
           headers: {
@@ -34,13 +32,9 @@ export default function MyJobsPage() {
     }
   };
   const getCompletedJobs = async () => {
-    const session = {
-      userId: "100000000000000001",
-    };
-
     try {
       const response = await fetch(
-        `http://localhost:3001/getCompletedJobs?userId=${session.userId}`,
+        `http://localhost:3001/getCompletedJobs?userId=${userId}`,
         {
           method: "GET",
           headers: {
@@ -60,6 +54,7 @@ export default function MyJobsPage() {
   useEffect(() => {
     getOngoingJobs();
     getCompletedJobs();
+    console.log("userId", userId);
   }, []);
 
   return (
@@ -68,7 +63,7 @@ export default function MyJobsPage() {
       <div className="px-4 py-5 flex justify-between items-center bg-white">
         <div className="flex items-center">
           <button
-            onClick={() => router.push("/profile")}
+            onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
@@ -161,7 +156,9 @@ export default function MyJobsPage() {
                   </button>
 
                   <button className="flex-1 py-3 text-center text-pink-500 font-medium">
-                    <Link href={`/profile/myJob/upload/${job.historyId}`}>
+                    <Link
+                      href={`/profile/${userId}/myJob/${userId}/upload/${job.historyId}`}
+                    >
                       Update
                     </Link>
                   </button>

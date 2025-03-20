@@ -7,7 +7,8 @@ import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 const WorkAbout = () => {
   const router = useRouter();
   const params = useParams();
-  const bannerId = params.id; // ✅ Get id dynamically  const router = useRouter();
+  if (!params?.params) return <p>Loading...</p>;
+  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
   const [jobData, setJobData] = useState(null);
   const [freelanceData, setFreelanceData] = useState(null);
 
@@ -73,7 +74,7 @@ const WorkAbout = () => {
     }
   }
   return (
-    <WorkLayout jobData={jobData}>
+    <WorkLayout jobData={jobData} userId={userId}>
       <div className="p-4">
         {/* View Full Profile Link */}
         <div className="text-right">

@@ -1,12 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-export default function Notification({ setShowNotifications }) {
+export default function Notification({ userId, setShowNotifications }) {
   const [currentNotis, setCurrentNotis] = useState(null);
-  const session = {
-    userId: "100000000000000001",
-  };
-  const userId = session.userId;
   const handleCloseNotifications = () => {
     // Hide notifications by setting the state to false
     setShowNotifications(false);

@@ -20,14 +20,15 @@ import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useRouter } from "next/navigation";
 import BottomNavigation from "./components/BottomNavigation";
 import Notification from "./components/notification";
+import axios from "axios";
 
 export default function Home() {
   const router = useRouter();
   const handleCreateJobClick = () => {
-    router.push("/create-job");
+    router.push(`/create-job/${profile.userId}`);
   };
   const handleSeeAllClick = () => {
-    router.push("/seeAll/None");
+    router.push(`/seeAll/None/${profile.userId}`);
   };
   const handleServiceClick = (path: string) => {
     router.push(path);
@@ -35,6 +36,7 @@ export default function Home() {
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -55,9 +57,19 @@ export default function Home() {
         setLoading(false);
       }
     }
-
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/fetchProfile");
+        console.log("Profile fetched successfully:", response.data);
+        setProfile(response.data);
+      } catch (err) {
+        console.log("Error fetching profile. Please try again.", err);
+      }
+    };
+    fetchProfile();
     fetchLatestJobs();
   }, []);
+  if (!profile) return <p>Loading user details...</p>;
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -71,7 +83,11 @@ export default function Home() {
       <div className="bg-white p-4 shadow-md">
         <div className="flex justify-between items-center">
           <div className="text-lg font-bold text-pink-500">
-            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-8"
+            />
           </div>
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
@@ -96,12 +112,15 @@ export default function Home() {
               <FaBell className="text-gray-400 text-lg" />
             </div>
             {showNotifications && (
-              <Notification setShowNotifications={setShowNotifications} />
+              <Notification
+                userId={profile.userId}
+                setShowNotifications={setShowNotifications}
+              />
             )}
 
             {/* Profile */}
             <div
-              onClick={() => router.push("/profile")}
+              onClick={() => router.push(`/profile/${profile.userId}`)}
               className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer
             transition-transform hover:bg-gray-300 active:scale-90"
             >
@@ -135,7 +154,9 @@ export default function Home() {
             <div
               key={idx}
               className="flex flex-col items-center"
-              onClick={() => router.push(`/seeAll/${item.path}`)}
+              onClick={() =>
+                router.push(`/seeAll/${item.path}/${profile.userId}`)
+              }
             >
               <div
                 className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-300 rounded-full p-4 w-16 h-16 flex items-center justify-center
@@ -229,7 +250,9 @@ export default function Home() {
                     <div
                       className="w-24 h-24 bg-white rounded-lg overflow-hidden cursor-pointer"
                       onClick={() =>
-                        router.push(`/work/workdetail/${job.bannerId}`)
+                        router.push(
+                          `/work/workdetail/${job.bannerId}/${profile.userId}`
+                        )
                       }
                     >
                       <img

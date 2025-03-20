@@ -7,7 +7,8 @@ import { useParams } from "next/navigation"; // Import useParams
 
 const WorkDetailPreview = () => {
   const params = useParams();
-  const bannerId = params.id; // ✅ Get id dynamically  const router = useRouter();
+  if (!params?.params) return <p>Loading...</p>;
+  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const WorkDetailPreview = () => {
   //     ];
 
   return (
-    <WorkLayout jobData={jobData}>
+    <WorkLayout jobData={jobData} userId={userId}>
       <div className="flex-1 overflow-auto p-4">
         <div className="mb-4">
           <h2 className="text-xl text-pink-500 font-medium mb-1">

@@ -9,7 +9,11 @@ interface WorkDetailLayoutProps {
   jobData: any;
 }
 
-const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
+const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
+  children,
+  jobData,
+  userId,
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const [selectedTab, setSelectedTab] = useState(pathname);
@@ -67,10 +71,10 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
       <div className="flex border-b">
         <button
           onClick={() =>
-            handleNavigation(`/work/workdetail/${jobData.bannerId}`)
+            handleNavigation(`/work/workdetail/${jobData.bannerId}/${userId}`)
           }
           className={`flex-1 text-center py-3 ${
-            selectedTab === `/work/workdetail/${jobData.bannerId}`
+            selectedTab === `/work/workdetail/${jobData.bannerId}/${userId}`
               ? "text-pink-500 border-b-2 border-pink-500 font-medium"
               : "text-gray-500 hover:text-pink-500"
           }`}
@@ -78,9 +82,11 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
           Detail
         </button>
         <button
-          onClick={() => handleNavigation(`/work/about/${jobData.bannerId}`)}
+          onClick={() =>
+            handleNavigation(`/work/about/${jobData.bannerId}/${userId}`)
+          }
           className={`flex-1 text-center py-3 ${
-            selectedTab === `/work/about/${jobData.bannerId}`
+            selectedTab === `/work/about/${jobData.bannerId}/${userId}`
               ? "text-pink-500 border-b-2 border-pink-500  font-medium"
               : "text-gray-500 hover:text-pink-500"
           }`}
@@ -88,9 +94,11 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
           About
         </button>
         <button
-          onClick={() => handleNavigation(`/work/feedback/${jobData.bannerId}`)}
+          onClick={() =>
+            handleNavigation(`/work/feedback/${jobData.bannerId}/${userId}`)
+          }
           className={`flex-1 text-center py-3 ${
-            selectedTab === `/work/feedback/${jobData.bannerId}`
+            selectedTab === `/work/feedback/${jobData.bannerId}/${userId}`
               ? "text-pink-500 border-b-2 border-pink-500  font-medium"
               : "text-gray-500 hover:text-pink-500"
           }`}
@@ -104,7 +112,9 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({ children, jobData }) => {
       <div className="absolute bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4">
         <button
           className="flex-grow bg-pink-500 hover:bg-pink-600 text-white py-4 rounded-lg font-medium"
-          onClick={() => handleNavigation(`/work/checkout/${jobData.bannerId}`)}
+          onClick={() =>
+            handleNavigation(`/work/checkout/${jobData.bannerId}/${userId}`)
+          }
         >
           Request Design
         </button>

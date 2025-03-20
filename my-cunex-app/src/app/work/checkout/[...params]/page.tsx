@@ -9,7 +9,8 @@ export default function Checkout() {
   const router = useRouter();
 
   const params = useParams();
-  const bannerId = params.id; // ✅ Get id dynamically  const router = useRouter();
+  if (!params?.params) return <p>Loading...</p>;
+  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
@@ -34,12 +35,17 @@ export default function Checkout() {
 
   const handleAddPortfolio = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/confirmJob/${bannerId}`,
-        {
-          method: "POST",
-        }
-      );
+      const response = await fetch(`http://localhost:3001/confirmJob`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bannerId: bannerId,
+          userId: userId, // Ensure userId is included
+          sellerId: jobData.userId,
+        }),
+      });
       const result = await response.json();
       console.log("Server response:", result);
     } catch (error) {

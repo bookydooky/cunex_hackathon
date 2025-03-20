@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
 import { ArrowLeft, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function Portfolio() {
+  const params = useParams();
+  const userId = params.id;
   const [portfolioItems, setPortfolioItems] = useState<File[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
@@ -91,6 +93,7 @@ export default function Portfolio() {
   const handleAddPortfolio = async () => {
     const jobDetails = JSON.parse(localStorage.getItem("jobDetails") || "{}");
     const workData = {
+      userId: userId,
       workTitle: jobDetails.workTitle || "Untitled",
       workType: jobDetails.workType || "Unknown",
       price: jobDetails.price || "0",

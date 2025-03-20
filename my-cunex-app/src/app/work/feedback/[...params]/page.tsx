@@ -6,8 +6,11 @@ import { useRouter, useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 const WorkFeedback = () => {
   const router = useRouter();
+
   const params = useParams();
-  const bannerId = params.id; // ✅ Get id dynamically  const router = useRouter();
+  if (!params?.params) return <p>Loading...</p>;
+
+  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const WorkFeedback = () => {
 
   if (!jobData) return <p>Loading job details...</p>;
   return (
-    <WorkLayout jobData={jobData}>
+    <WorkLayout jobData={jobData} userId={userId}>
       <div className="flex flex-col p-4">
         {/* Overall Rating */}
         <div className="flex items-center mb-6">

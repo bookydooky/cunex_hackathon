@@ -1,23 +1,21 @@
 "use client";
 
 import React, { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
-import Head from "next/head";
+import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
 
 export default function AllJobs({ params }: { params: { id: string } }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const resolvedParams = use(params);
-  const selectedtype = resolvedParams.id; // ✅ Extract id from params prop
+  const { path, userId } = useParams(); // ✅ Get both parameters
   useEffect(() => {
     async function fetchJobs() {
       try {
         const apiUrl =
-          selectedtype === "None"
+          path === "None"
             ? "http://localhost:3001/api/latest-jobs"
-            : `http://localhost:3001/api/latest-jobs?typeOfWork=${selectedtype}`;
+            : `http://localhost:3001/api/latest-jobs?typeOfWork=${path}`;
         const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
@@ -62,7 +60,9 @@ export default function AllJobs({ params }: { params: { id: string } }) {
               <div
                 key={job.bannerId}
                 className="bg-white shadow-lg rounded-lg p-3 cursor-pointer hover:shadow-xl transition"
-                onClick={() => router.push(`/work/workdetail/${job.bannerId}`)}
+                onClick={() =>
+                  router.push(`/work/workdetail/${job.bannerId}/${userId}`)
+                }
               >
                 <img
                   src={job.imageURL || "https://via.placeholder.com/150"}

@@ -1,12 +1,33 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2, Users, Clock } from "lucide-react";
-import PopupWindow from "../components/CollaborateWindow";
+import PopupWindow from "../../components/CollaborateWindow";
 
 const CreateJobPreview = () => {
   const router = useRouter();
+  const params = useParams();
+  const userId = params.id;
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    if (!userId) return;
 
+    const fetchUserDetail = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/getProfile/?userId=${userId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch job details");
+
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching job details:", error);
+      }
+    };
+
+    fetchUserDetail();
+  }, [userId]);
   //Chien
   const [jobDetails, setJobDetails] = useState({
     workTitle: "",
@@ -37,8 +58,11 @@ const CreateJobPreview = () => {
   const handleNextPage = () => {
     localStorage.setItem("jobDetails", JSON.stringify(jobDetails));
     console.log("Saved to localStorage:", jobDetails);
-    router.push("/portfolio");
+    router.push(`/portfolio/${userId}`);
   };
+  console.log(userId);
+  if (!userData) return <p>Loading user details...</p>;
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       {/* App Header */}
@@ -51,7 +75,11 @@ const CreateJobPreview = () => {
             <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
           </button>
           <div className="flex items-center">
-          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-8"
+            />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-pink-500 text-xl font-medium">Create Job</div>
           </div>
@@ -73,10 +101,14 @@ const CreateJobPreview = () => {
               <Users size={28} className="text-pink-300" />
             </div>
             <div className="ml-4">
-              <div className="font-bold text-xl text-black">Maria Schmidt</div>
+              <div className="font-bold text-xl text-black">
+                {userData.firstName} {userData.lastName}
+              </div>
               <div className="flex items-center">
                 <div className="text-yellow-400">★</div>
-                <div className="ml-1 font-medium text-black">4.9</div>
+                <div className="ml-1 font-medium text-black">
+                  {userData.rating}
+                </div>
               </div>
             </div>
           </div>
@@ -109,7 +141,9 @@ const CreateJobPreview = () => {
                 </div>
                 <span className="text-sm text-black">Success Rate</span>
               </div>
-              <div className="font-bold text-lg text-black">98%</div>
+              <div className="font-bold text-lg text-black">
+                {userData.successRate}%
+              </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
@@ -117,7 +151,9 @@ const CreateJobPreview = () => {
                 <Users size={16} className="mr-2" />
                 <span className="text-sm text-black">Jobs Sold</span>
               </div>
-              <div className="font-bold text-lg text-black">156</div>
+              <div className="font-bold text-lg text-black">
+                {userData.jobsSold}
+              </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
@@ -135,7 +171,9 @@ const CreateJobPreview = () => {
                 </svg>
                 <span className="text-sm text-black">Rehired</span>
               </div>
-              <div className="font-bold text-lg text-black">42 times</div>
+              <div className="font-bold text-lg text-black">
+                {userData.rehired} times
+              </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
@@ -143,7 +181,9 @@ const CreateJobPreview = () => {
                 <Clock size={16} className="mr-2" />
                 <span className="text-sm text-black">Avg. Response</span>
               </div>
-              <div className="font-bold text-lg text-black">2 hours</div>
+              <div className="font-bold text-lg text-black">
+                {userData.avgResponse} hours
+              </div>
             </div>
           </div>
         </div>
