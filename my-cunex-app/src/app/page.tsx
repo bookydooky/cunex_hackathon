@@ -1,11 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import {
-  FiBox,
-  FiPlus,
-  FiEdit,
-} from "react-icons/fi";
+import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { GiCutDiamond } from "react-icons/gi";
 import { MdFoodBank, MdLocationOn } from "react-icons/md";
@@ -26,7 +22,6 @@ import BottomNavigation from "./components/BottomNavigation";
 import Notification from "./components/notification";
 
 export default function Home() {
-
   const router = useRouter();
   const handleCreateJobClick = () => {
     router.push("/create-job");
@@ -36,7 +31,7 @@ export default function Home() {
   };
   const handleServiceClick = (path: string) => {
     router.push(path);
-  }
+  };
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -91,12 +86,18 @@ export default function Home() {
           <div className="flex space-x-2">
             <div
               className={`rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer transition-colors
-              ${showNotifications ? "bg-gray-300" : "bg-gray-100 hover:bg-gray-300"}`}
+              ${
+                showNotifications
+                  ? "bg-gray-300"
+                  : "bg-gray-100 hover:bg-gray-300"
+              }`}
               onClick={() => setShowNotifications(!showNotifications)}
             >
               <FaBell className="text-gray-400 text-lg" />
             </div>
-            {showNotifications && <Notification/>}
+            {showNotifications && (
+              <Notification setShowNotifications={setShowNotifications} />
+            )}
 
             {/* Profile */}
             <div
@@ -160,8 +161,16 @@ export default function Home() {
             {[
               { icon: FiBox, label: "Item Delivery" },
               { icon: MdFoodBank, label: "Food Delivery" },
-              { icon: BiCube, label: "3D Printing", path:'/service/fabrication/3d' },
-              { icon: GiCutDiamond, label: "Laser Cutting", path:'/service/fabrication/lasercut' },
+              {
+                icon: BiCube,
+                label: "3D Printing",
+                path: "/service/fabrication/3d",
+              },
+              {
+                icon: GiCutDiamond,
+                label: "Laser Cutting",
+                path: "/service/fabrication/lasercut",
+              },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div

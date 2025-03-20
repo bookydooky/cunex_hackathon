@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
@@ -10,7 +10,27 @@ const ImageUpload = () => {
   const [file, setFile] = useState(null); // State to hold the file object
   const fileInputRef = useRef(null);
   const router = useRouter(); // Don't forget to use the router for navigation
+  const [acceptStatus, setAcceptStatus] = useState(null); // State to track jh.accept status
+  useEffect(() => {
+    const fetchAcceptStatus = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/getJobStatus/${historyId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch job status");
+        }
+        const data = await response.json();
+        setAcceptStatus(data.accept); // Set the accept status
+      } catch (error) {
+        console.error("Error fetching job status:", error);
+      }
+    };
 
+    if (historyId) {
+      fetchAcceptStatus();
+    }
+  }, [historyId]);
   const handleDrop = (e) => {
     preventDefaults(e);
 
@@ -160,8 +180,13 @@ const ImageUpload = () => {
           />
 
           <button
-            className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded transition-colors"
+            className={`font-bold py-2 px-6 rounded transition-colors ${
+              acceptStatus === null
+                ? "bg-gray-400 cursor-not-allowed text-white"
+                : "bg-pink-500 hover:bg-pink-600 text-white"
+            }`}
             onClick={handleFileSubmit}
+            disabled={acceptStatus === null}
           >
             Submit
           </button>

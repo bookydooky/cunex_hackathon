@@ -287,11 +287,11 @@ app.get("/getOngoingJobs", (req, res) => {
   // Query job history with banner and buyer information
   const jobData = `
     SELECT jh.*, jb.bannerName, jb.price, jb.duration,
-           u.firstName, u.lastName
+           u.firstName, u.lastName, jh.accept
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
-    WHERE jh.sellerId = ? and jh.progress < 3
+    WHERE jh.sellerId = ? AND NOT (COALESCE(jh.accept,-1) = 1 OR (jh.progress = 3 AND COALESCE(jh.accept,-1) = 0))
   `;
   con.query(jobData, [userId], (err, result) => {
     if (err) {
@@ -323,7 +323,7 @@ app.post("/addSubmittedImages", async (req, res) => {
       // After images are inserted, update the progress in jobHistory table
       const updateProgressSql = `
         UPDATE jobHistory
-        SET progress = progress + 1
+        SET progress = progress + 1, accept = NULL
         WHERE historyId = ?
       `;
       con.query(updateProgressSql, [historyId], (updateErr, updateResult) => {
@@ -352,11 +352,11 @@ app.get("/getCompletedJobs", (req, res) => {
   // Query job history with banner and buyer information
   const jobData = `
     SELECT jh.*, jb.bannerName, jb.price, jb.duration,
-           u.firstName, u.lastName
+           u.firstName, u.lastName, jh.accept
     FROM jobHistory jh
     LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
     LEFT JOIN users u ON jh.buyerId = u.userId
-    WHERE jh.sellerId = ? and jh.progress >= 3
+    WHERE jh.sellerId = ? AND (COALESCE(jh.accept,-1) = 1 OR (jh.progress = 3 AND COALESCE(jh.accept,-1) = 0))
   `;
   con.query(jobData, [userId], (err, result) => {
     if (err) {
@@ -364,6 +364,229 @@ app.get("/getCompletedJobs", (req, res) => {
       return res.status(500).json({ error: "Database error" });
     }
     res.json({ jobs: result });
+  });
+});
+app.get("/getSubmittedImages", (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ error: "Missing User" });
+  }
+  const q = `
+    SELECT jh.historyId, jb.bannerName, u.firstName, u.lastName, si.imageURL, si.submittedImageId
+    FROM jobHistory jh
+    LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
+    LEFT JOIN users u ON jh.sellerId = u.userId
+    LEFT JOIN submittedImages si ON jh.historyId = si.historyId
+    WHERE jh.buyerId = ? AND si.checked = 0`;
+  con.query(q, [userId], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(result);
+  });
+});
+app.post("/acceptImage", async (req, res) => {
+  const { historyId, submittedImageId } = req.body; // Get historyId from request body
+
+  if (!historyId) {
+    return res.status(400).json({ error: "Cannot Find Your Work" });
+  }
+
+  try {
+    // Start a transaction to ensure data consistency
+    con.beginTransaction((err) => {
+      if (err) {
+        console.error("Transaction error:", err);
+        return res.status(500).json({ error: "Transaction error" });
+      }
+
+      // Update jobHistory table
+      const updateJobHistory =
+        "UPDATE jobHistory SET accept = ? WHERE historyId = ?";
+      con.query(updateJobHistory, [true, historyId], (err, result) => {
+        if (err) {
+          return con.rollback(() => {
+            console.error("Database error:", err);
+            res.status(500).json({ error: "Database error" });
+          });
+        }
+
+        if (result.affectedRows === 0) {
+          return con.rollback(() => {
+            res.status(404).json({ error: "Job not found" });
+          });
+        }
+
+        // Update salesParams table: increment jobsSold and totalJobs
+        const updateSalesParams = `UPDATE salesParams sp
+        JOIN (
+            SELECT sellerId
+            FROM jobHistory
+            WHERE historyId = ? 
+        ) jh ON sp.userId = jh.sellerId
+        SET sp.jobsSold = sp.jobsSold + 1, 
+            sp.totalJobs = sp.totalJobs + 1, 
+            sp.successRate = (sp.jobsSold + 1) / (sp.totalJobs + 1) * 100`;
+
+        con.query(updateSalesParams, [historyId], (err, result) => {
+          if (err) {
+            return con.rollback(() => {
+              console.error("Database error:", err);
+              res.status(500).json({ error: "Database error" });
+            });
+          }
+
+          const updateImageQuery = `
+          UPDATE submittedImages 
+          SET checked = TRUE 
+          WHERE submittedImageId = ?`;
+          con.query(updateImageQuery, [submittedImageId], (err, result) => {
+            if (err) {
+              return con.rollback(() => {
+                console.error("Database error:", err);
+                res.status(500).json({ error: "Database error" });
+              });
+            }
+            if (result.affectedRows === 0) {
+              return res.status(404).json({ error: "Image not found" });
+            }
+            console.log("Image accepted and marked as checked:", {
+              submittedImageId,
+            });
+          });
+          // Commit transaction if both queries succeed
+          con.commit((err) => {
+            if (err) {
+              return con.rollback(() => {
+                console.error("Transaction commit error:", err);
+                res.status(500).json({ error: "Transaction commit error" });
+              });
+            }
+
+            res.json({
+              success: true,
+              message: "Job Accepted Successfully, Sales Updated",
+            });
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/denyImage", async (req, res) => {
+  const { historyId, submittedImageId } = req.body; // Get historyId from request body
+
+  if (!historyId) {
+    return res.status(400).json({ error: "Cannot Find Your Work" });
+  }
+
+  try {
+    // Start a transaction to ensure data consistency
+    con.beginTransaction((err) => {
+      if (err) {
+        console.error("Transaction error:", err);
+        return res.status(500).json({ error: "Transaction error" });
+      }
+
+      // Update jobHistory table
+      const updateJobHistory =
+        "UPDATE jobHistory SET accept = ? WHERE historyId = ?";
+      con.query(updateJobHistory, [false, historyId], (err, result) => {
+        if (err) {
+          return con.rollback(() => {
+            console.error("Database error:", err);
+            res.status(500).json({ error: "Database error" });
+          });
+        }
+
+        if (result.affectedRows === 0) {
+          return con.rollback(() => {
+            res.status(404).json({ error: "Job not found" });
+          });
+        }
+
+        // Update salesParams table: increment jobsSold and totalJobs
+        const updateSalesParams = `UPDATE salesParams sp
+        JOIN (
+            SELECT sellerId
+            FROM jobHistory
+            WHERE historyId = ? AND progress = 3
+        ) jh ON sp.userId = jh.sellerId
+        SET sp.totalJobs = sp.totalJobs + 1, 
+            sp.successRate = (sp.jobsSold) / (sp.totalJobs + 1) * 100`;
+        con.query(updateSalesParams, [historyId], (err, result) => {
+          if (err) {
+            return con.rollback(() => {
+              console.error("Database error:", err);
+              res.status(500).json({ error: "Database error" });
+            });
+          }
+          const updateImageQuery = `
+          UPDATE submittedImages 
+          SET checked = TRUE 
+          WHERE submittedImageId = ?`;
+          con.query(updateImageQuery, [submittedImageId], (err, result) => {
+            if (err) {
+              return con.rollback(() => {
+                console.error("Database error:", err);
+                res.status(500).json({ error: "Database error" });
+              });
+            }
+            if (result.affectedRows === 0) {
+              return res.status(404).json({ error: "Image not found" });
+            }
+            console.log("Image accepted and marked as checked:", {
+              submittedImageId,
+            });
+          });
+          // Commit transaction if both queries succeed
+          con.commit((err) => {
+            if (err) {
+              return con.rollback(() => {
+                console.error("Transaction commit error:", err);
+                res.status(500).json({ error: "Transaction commit error" });
+              });
+            }
+
+            res.json({
+              success: true,
+              message: "Job Denied Successfully, Sales Updated",
+            });
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+app.get("/getJobStatus/:historyId", (req, res) => {
+  const { historyId } = req.params;
+
+  // Query to fetch job status details including the accept field
+  const statusQuery =
+    "SELECT jh.accept, jh.historyId " +
+    "FROM jobHistory jh " +
+    "WHERE jh.historyId = ?";
+
+  con.query(statusQuery, [historyId], (err, result) => {
+    if (err) {
+      console.error("Error fetching job status:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Job history not found" });
+    }
+
+    // Return job status details
+    res.json(result[0]);
   });
 });
 app.listen(3001, () => {

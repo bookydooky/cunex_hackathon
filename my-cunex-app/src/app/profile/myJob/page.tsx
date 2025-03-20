@@ -142,7 +142,13 @@ export default function MyJobsPage() {
                   {/* Progress bar */}
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-pink-500 h-2 rounded-full"
+                      className={`h-2 rounded-full ${
+                        job.accept === null
+                          ? "bg-blue-500"
+                          : job.accept === 0
+                          ? "bg-red-500"
+                          : "bg-pink-500"
+                      }`}
                       style={{ width: `${job.progress * 33.33}%` }}
                     ></div>
                   </div>
@@ -203,8 +209,14 @@ export default function MyJobsPage() {
                   </div>
 
                   {/* Completed indicator */}
-                  <div className="inline-block bg-green-100 text-green-600 text-xs py-1 px-2 rounded-full">
-                    Completed
+                  <div
+                    className={`inline-block text-xs py-1 px-2 rounded-full ${
+                      job.accept === 1
+                        ? "bg-green-100 text-green-600" // Completed
+                        : "bg-red-100 text-red-600" // Failed
+                    }`}
+                  >
+                    {job.accept === 1 ? "Completed" : "Failed"}
                   </div>
                 </div>
 
