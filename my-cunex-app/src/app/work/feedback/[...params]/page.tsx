@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout

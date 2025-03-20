@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, use } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Share2 } from "lucide-react";
 
 export default function AllJobs({ params }: { params: { id: string } }) {
   const [jobs, setJobs] = useState([]);
@@ -32,26 +32,28 @@ export default function AllJobs({ params }: { params: { id: string } }) {
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-white mx-auto shadow-lg">
+    <div className="flex flex-col h-screen bg-gray-100 mx-auto shadow-lg overflow-y-auto">
       {/* App Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between border-b bg-white">
         <div className="flex items-center">
           <ArrowLeft
-            className="mr-4 text-pink-500"
-            onClick={() => router.back()}
+            className="mr-4 text-Pink hover:text-darkPink transition-transform
+            transform active:scale-90"
+            onClick={() => router.push("/")}
           />
           <div className="flex items-center">
-            <div className="font-bold text-lg">
-              <span className="text-pink-500">CU</span>
-              <span className="text-gray-700">NEX</span>
-            </div>
-            <div className="h-6 border-l border-gray-300 mx-3"></div>
-            <div className="text-pink-500 text-xl font-medium">All Jobs</div>
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-12"
+            />
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
+            <div className="text-Pink text-xl font-medium">All Jobs</div>
           </div>
         </div>
-        <Share2 className="text-gray-700" />
+        <Share2 className="text-Gray" />
       </div>
-      <div className="min-h-screen p-6 bg-gray-100">
+      <div className="p-6">
         {loading ? (
           <p className="text-gray-500">Loading jobs...</p>
         ) : (
@@ -69,11 +71,11 @@ export default function AllJobs({ params }: { params: { id: string } }) {
                   alt={job.bannerName}
                   className="w-full h-40 object-cover rounded-md"
                 />
-                <h2 className="text-lg text-black font-semibold mt-2">
+                <h2 className="text-lg text-Gray font-semibold mt-2">
                   {job.bannerName}
                 </h2>
                 <p className="text-gray-500 text-sm">{job.typeOfWork}</p>
-                <p className="text-pink-500 font-bold">${job.price}</p>
+                <p className="text-Pink font-bold">${job.price}</p>
               </div>
             ))}
           </div>

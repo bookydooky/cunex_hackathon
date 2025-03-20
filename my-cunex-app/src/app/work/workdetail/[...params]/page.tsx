@@ -48,7 +48,7 @@ const WorkDetailPreview = () => {
     <WorkLayout jobData={jobData} userId={userId}>
       <div className="flex-1 overflow-auto p-4">
         <div className="mb-4">
-          <h2 className="text-xl text-pink-500 font-medium mb-1">
+          <h2 className="text-xl text-Pink font-medium mb-1">
             {jobData.bannerName}
           </h2>
           <p className="text-gray-600">
@@ -58,7 +58,7 @@ const WorkDetailPreview = () => {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-lg text-black font-bold mb-2">
+          <h3 className="text-lg text-Gray font-bold mb-2">
             Project Description
           </h3>
           <p className="text-gray-700">{jobData.bannerdesc}</p>
@@ -70,15 +70,15 @@ const WorkDetailPreview = () => {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-lg text-black font-bold mb-2">Tools</h3>
+          <h3 className="text-lg text-Gray font-bold mb-2">Tools</h3>
           <div className="flex flex-wrap gap-2">
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
+            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
               Figma
             </div>
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
+            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
               Adobe XD
             </div>
-            <div className="bg-pink-100 text-pink-500 px-6 py-3 rounded-lg">
+            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
               InVision
             </div>
           </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
@@ -18,11 +18,12 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useRouter } from "next/navigation";
-import BottomNavigation from "./components/BottomNavigation";
 import Notification from "./components/notification";
 import axios from "axios";
+import { GlobalStateContext } from "./context/GlobalState";
 
 export default function Home() {
+  const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
   const handleCreateJobClick = () => {
     router.push(`/create-job/${profile.userId}`);
@@ -30,8 +31,10 @@ export default function Home() {
   const handleSeeAllClick = () => {
     router.push(`/seeAll/None/${profile.userId}`);
   };
-  const handleServiceClick = (path: string) => {
-    router.push(path);
+  const handleServiceClick = (label: string) => {
+    if (label.includes("3D Printing")) setService("3d");
+    else if (label.includes("Laser Cutting")) setService("lasercut");
+    router.push("/service/startorder");
   };
   const [latestJobs, setLatestJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -82,13 +85,8 @@ export default function Home() {
       {/* Header */}
       <div className="bg-white p-4 shadow-md">
         <div className="flex justify-between items-center">
-          <div className="text-lg font-bold text-pink-500">
-            <img
-              src="/assets/CUNEX-logo.png"
-              alt="CUNEX Logo"
-              className="h-8"
-            />
-          </div>
+          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
               <input
@@ -129,10 +127,10 @@ export default function Home() {
           </div>
         </div>
         {/* Location and Weather */}
-        <div className="mt-2 text-sm text-gray-600 flex items-center">
-          <MdLocationOn className="text-pink-500" />
+        <div className="mt-2 text-sm text-Gray flex items-center">
+          <MdLocationOn className="text-Pink" />
           <span className="ml-1">Chulalongkorn University</span>
-          <TiWeatherPartlySunny className="ml-4 text-pink-500" />
+          <TiWeatherPartlySunny className="ml-4 text-Pink" />
           <span className="ml-1">27°C</span>
         </div>
       </div>
@@ -159,12 +157,12 @@ export default function Home() {
               }
             >
               <div
-                className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-300 rounded-full p-4 w-16 h-16 flex items-center justify-center
+                className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-200 rounded-full p-4 w-16 h-16 flex items-center justify-center
               transition-transform transform active:scale-90"
               >
-                <item.icon className="text-pink-500 text-2xl" />
+                <item.icon className="text-Pink text-2xl" />
               </div>
-              <span className="text-xs text-gray-600 mt-1 text-center">
+              <span className="text-xs text-Gray mt-1 text-center">
                 {item.label}
               </span>
             </div>
@@ -174,7 +172,7 @@ export default function Home() {
         {/* Request Services */}
         <div className="mt-6 bg-white px-4 py-3 rounded-lg shadow-md">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg text-gray-600 font-bold mb-2">
+            <h2 className="text-lg text-Gray font-bold mb-2">
               Request Services
             </h2>
           </div>
@@ -182,26 +180,18 @@ export default function Home() {
             {[
               { icon: FiBox, label: "Item Delivery" },
               { icon: MdFoodBank, label: "Food Delivery" },
-              {
-                icon: BiCube,
-                label: "3D Printing",
-                path: "/service/fabrication/3d",
-              },
-              {
-                icon: GiCutDiamond,
-                label: "Laser Cutting",
-                path: "/service/fabrication/lasercut",
-              },
+              { icon: BiCube, label: "3D Printing" },
+              { icon: GiCutDiamond, label: "Laser Cutting" },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div
-                  onClick={() => handleServiceClick(item.path)}
+                  onClick={() => handleServiceClick(item.label)}
                   className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
                 transition-transform transform active:scale-90"
                 >
-                  <item.icon className="text-black text-2xl" />
+                  <item.icon className="text-Gray text-2xl" />
                 </div>
-                <span className="text-xs text-gray-600 mt-1 text-center">
+                <span className="text-xs text-Gray mt-1 text-center">
                   {item.label}
                 </span>
               </div>
@@ -212,11 +202,9 @@ export default function Home() {
         {/* Latest Jobs */}
         <div className="mt-6 mb-15 mx-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg text-gray-600 font-bold mb-2">
-              Latest Jobs
-            </h2>
+            <h2 className="text-lg text-Gray font-bold mb-2">Latest Jobs</h2>
             <h2
-              className="text-sm text-pink-500 font-bold mb-2"
+              className="text-sm text-Pink font-bold mb-2 hover:underline cursor-pointer"
               onClick={handleSeeAllClick}
             >
               See All
@@ -228,7 +216,7 @@ export default function Home() {
                 onClick={handleCreateJobClick}
                 className="transition-transform transform hover:scale-110 active:scale-90"
               >
-                <FiPlus className="text-pink-400 text-3xl" />
+                <FiPlus className="text-Pink text-3xl" />
               </button>
             </div>
             {loading
@@ -267,14 +255,13 @@ export default function Home() {
                         }}
                       />
                     </div>
-                    <span className="text-xs text-gray-600 mt-1 text-center">
+                    <span className="text-xs text-Gray mt-1 text-center">
                       {job.bannerName}
                     </span>
                   </div>
                 ))}
           </div>
         </div>
-        <BottomNavigation />
       </div>
     </div>
   );

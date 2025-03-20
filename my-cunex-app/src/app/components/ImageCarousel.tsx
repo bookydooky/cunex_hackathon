@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const ImageCarousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -48,13 +48,13 @@ const ImageCarousel = ({ images }) => {
           {images.map((image, index) => (
             <div
               key={index}
-              className="min-w-full flex justify-center items-center p-12"
+              className="min-w-full flex justify-center items-center p-6"
             >
-              <div className="bg-white rounded-lg shadow-sm p-8 w-full max-w-md">
+              <div className="bg-white rounded-lg shadow-sm p-8 max-w-md">
                 <img
                   src={image.src}
                   alt={image.alt || "Carousel image"}
-                  className="max-h-64 mx-auto"
+                  className="max-h-[150px] mx-auto"
                 />
                 {image.caption && (
                   <div className="text-center mt-4 font-bold text-xl">
@@ -90,7 +90,7 @@ const ImageCarousel = ({ images }) => {
       </div>
 
       {/* Optional: Dots for navigation */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+      <div className="flex justify-center gap-2">
         {images.map((_, index) => (
           <button
             key={index}

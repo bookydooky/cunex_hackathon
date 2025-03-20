@@ -112,8 +112,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           {teamMembers.length > 0 ? (
             <div className="flex flex-col gap-y-5 bg-gray-100 px-6 py-4 rounded-lg">
               {teamMembers.map((member, index) => {
-                let workTypeOrName = member.split(" ")[0]; // First word (either "###WorkType" or Name)
-                let numOrLastName = member.split(" ")[1]; // Second word (either number or last name)
+                const workTypeOrName = member.split(" ")[0]; // First word (either "###WorkType" or Name)
+                const numOrLastName = member.split(" ")[1]; // Second word (either number or last name)
 
                 let isSearchFormat = workTypeOrName.startsWith("###");
 

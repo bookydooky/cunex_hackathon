@@ -64,32 +64,31 @@ const CreateJobPreview = () => {
   if (!userData) return <p>Loading user details...</p>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100">
       {/* App Header */}
-      <div className="px-4 py-5 flex items-center justify-between bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
         <div className="flex items-center">
           <button
             onClick={handlePreviousPage}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
             <img
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
-              className="h-8"
+              className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 text-xl font-medium">Create Job</div>
+            <div className="text-Pink text-xl font-medium">Create Job</div>
           </div>
         </div>
-        <Share2 className="text-black" />
+        <Share2 className="text-Gray" />
       </div>
-
       {/* Progress Bar */}
       <div className="flex px-4 mt-4">
-        <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
+        <div className="h-1 bg-Pink flex-1 rounded-full mr-2"></div>
         <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
       </div>
 
@@ -98,15 +97,15 @@ const CreateJobPreview = () => {
         <div className="bg-white p-4 rounded-lg mb-8">
           <div className="flex items-start mb-6">
             <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
-              <Users size={28} className="text-pink-300" />
+              <Users size={28} className="text-Pink" />
             </div>
             <div className="ml-4">
-              <div className="font-bold text-xl text-black">
+              <div className="font-bold text-xl text-Gray">
                 {userData.firstName} {userData.lastName}
               </div>
               <div className="flex items-center">
                 <div className="text-yellow-400">★</div>
-                <div className="ml-1 font-medium text-black">
+                <div className="ml-1 font-medium text-Gray">
                   {userData.rating}
                 </div>
               </div>
@@ -116,7 +115,7 @@ const CreateJobPreview = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="bg-pink-50 p-4 rounded-lg">
-              <div className="flex items-center text-pink-500 mb-1">
+              <div className="flex items-center text-Pink mb-1">
                 <div className="w-4 h-4 mr-2">
                   <svg
                     viewBox="0 0 24 24"
@@ -139,25 +138,25 @@ const CreateJobPreview = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-sm text-black">Success Rate</span>
+                <span className="text-sm text-Gray">Success Rate</span>
               </div>
-              <div className="font-bold text-lg text-black">
+              <div className="font-bold text-lg text-Gray">
                 {userData.successRate}%
               </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
-              <div className="flex items-center text-pink-500 mb-1">
+              <div className="flex items-center text-Pink mb-1">
                 <Users size={16} className="mr-2" />
-                <span className="text-sm text-black">Jobs Sold</span>
+                <span className="text-sm text-Gray">Jobs Sold</span>
               </div>
-              <div className="font-bold text-lg text-black">
+              <div className="font-bold text-lg text-Gray">
                 {userData.jobsSold}
               </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
-              <div className="flex items-center text-pink-500 mb-1">
+              <div className="flex items-center text-Pink mb-1">
                 <svg
                   viewBox="0 0 24 24"
                   width="16"
@@ -165,23 +164,23 @@ const CreateJobPreview = () => {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  className="mr-2 text-pink-500"
+                  className="mr-2 text-Pink"
                 >
                   <path d="M16 5v2a10 10 0 0 1-10 10h0c0-5.5 4.5-10 10-10h2m-2-2h7v7" />
                 </svg>
-                <span className="text-sm text-black">Rehired</span>
+                <span className="text-sm text-Gray">Rehired</span>
               </div>
-              <div className="font-bold text-lg text-black">
+              <div className="font-bold text-lg text-Gray">
                 {userData.rehired} times
               </div>
             </div>
 
             <div className="bg-pink-50 p-4 rounded-lg">
-              <div className="flex items-center text-pink-500 mb-1">
+              <div className="flex items-center text-Pink mb-1">
                 <Clock size={16} className="mr-2" />
-                <span className="text-sm text-black">Avg. Response</span>
+                <span className="text-sm text-Gray">Avg. Response</span>
               </div>
-              <div className="font-bold text-lg text-black">
+              <div className="font-bold text-lg text-Gray">
                 {userData.avgResponse} hours
               </div>
             </div>
@@ -191,17 +190,17 @@ const CreateJobPreview = () => {
         {/* Job Details Form */}
         <div className="bg-white p-4 rounded-lg mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-black">Job Details</h2>
+            <h2 className="text-xl font-bold text-Gray">Job Details</h2>
             <button
               onClick={handleCollaborateClick}
               className="mr-2 transition-transform transform active:scale-90"
             >
-              <Users size={25} className="text-pink-500 hover:text-pink-800" />
+              <Users size={25} className="text-Pink hover:text-darkPink" />
             </button>
           </div>
 
           <div className="mb-4">
-            <label className="block text-black mb-2">Work Title</label>
+            <label className="block text-Gray mb-2">Work Title</label>
             <input
               type="text"
               name="workTitle"
@@ -213,7 +212,7 @@ const CreateJobPreview = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-black mb-2">Type of Work</label>
+            <label className="block text-Gray mb-2">Type of Work</label>
             <div className="relative">
               <select
                 name="workType"
@@ -235,7 +234,7 @@ const CreateJobPreview = () => {
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                 <svg
-                  className="w-4 h-4 text-black"
+                  className="w-4 h-4 text-Gray"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -252,7 +251,7 @@ const CreateJobPreview = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-black mb-2">Price (THB)</label>
+            <label className="block text-Gray mb-2">Price (THB)</label>
             <input
               type="text"
               name="price"
@@ -264,7 +263,7 @@ const CreateJobPreview = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-black mb-2">Work Duration</label>
+            <label className="block text-Gray mb-2">Work Duration</label>
             <input
               type="text"
               name="duration"
@@ -276,7 +275,7 @@ const CreateJobPreview = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-black mb-2">Work Description</label>
+            <label className="block text-Gray mb-2">Work Description</label>
             <textarea
               name="description"
               value={jobDetails.description}
@@ -289,23 +288,10 @@ const CreateJobPreview = () => {
 
         <button
           onClick={handleNextPage}
-          className="w-full bg-pink-500 text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
-          transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+          className="w-full bg-Pink text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
+            transition-colors duration-200 ease-in-out hover:bg-darkPink transition-transform transform active:scale-90"
         >
           <span>Next</span>
-          <svg
-            className="ml-2 w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            ></path>
-          </svg>
         </button>
       </div>
       {/* Pop-up Window */}

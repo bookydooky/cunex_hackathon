@@ -55,22 +55,19 @@ export default function ProfilePage() {
   return (
     <div className="h-screen bg-gray-100">
       {/* Navigation bar */}
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
+      <div className="sticky top-0 right-0 left-0 px-4 py-2 flex justify-between items-center bg-white">
         <div className="flex items-center">
           <button
             onClick={() => router.push("/")}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
-          <div className="flex items-center">
-            <span className="text-pink-500 font-semibold text-xl">CU</span>
-            <span className="text-gray-800 font-bold text-xl">NEX</span>
-          </div>
+          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
           <div className="h-6 border-l border-gray-300 mx-5"></div>
-          <div className="text-pink-500 font-medium text-xl">Profile</div>
+          <div className="text-Pink font-medium text-xl">Profile</div>
         </div>
-        <Share2 className="text-black" />
+        <Share2 className="text-Gray" />
       </div>
 
       {/* Profile summary */}
@@ -94,7 +91,7 @@ export default function ProfilePage() {
 
           {/* Profile info */}
           <div className="flex flex-col items-start">
-            <h2 className="font-bold text-black text-xl">
+            <h2 className="font-bold text-Gray text-xl">
               {userData.firstName} {userData.lastName}
             </h2>
             <p className="text-gray-500 text-sm">
@@ -105,7 +102,7 @@ export default function ProfilePage() {
             </p>
             <p className="text-gray-500 text-sm">ID: {userData.studentId}</p>
             <div className="mt-2 flex justify-center">
-              <button className="border border-pink-500 text-pink-500 rounded-full px-6 py-1 w-50 text-sm">
+              <button className="border border-Pink text-Pink rounded-full px-6 py-1 w-50 text-sm">
                 Edit Profile
               </button>
             </div>
@@ -115,17 +112,17 @@ export default function ProfilePage() {
         {/* Stats */}
         <div className="flex border-t border-gray-100">
           <div className="flex-1 py-3 text-center border-r border-gray-100">
-            <p className="font-bold text-xl text-black">{userData.jobsSold}</p>
+            <p className="font-bold text-xl text-Gray">{userData.jobsSold}</p>
             <p className="text-gray-500 text-xs">Completed</p>
           </div>
           <div className="flex-1 py-3 text-center border-r border-gray-100">
-            <p className="font-bold text-xl text-black">
+            <p className="font-bold text-xl text-Gray">
               {userData.successRate} %
             </p>
             <p className="text-gray-500 text-xs">Success Rate</p>
           </div>
           <div className="flex-1 py-3 text-center">
-            <p className="font-bold text-xl text-black">{userData.rating}</p>
+            <p className="font-bold text-xl text-Gray">{userData.rating}</p>
             <p className="text-gray-500 text-xs">Rating</p>
           </div>
         </div>
@@ -139,9 +136,9 @@ export default function ProfilePage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-pink-500 text-sm">+</span>
+                  <span className="text-Pink text-sm">+</span>
                 </div>
-                <span className="text-gray-800">My Jobs</span>
+                <span className="text-Gray">My Jobs</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -164,9 +161,9 @@ export default function ProfilePage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-pink-500 text-sm">−</span>
+                  <span className="text-Pink text-sm">−</span>
                 </div>
-                <span className="text-gray-800">Payment Methods</span>
+                <span className="text-Gray">Payment Methods</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -189,9 +186,9 @@ export default function ProfilePage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-pink-500 text-sm">×</span>
+                  <span className="text-Pink text-sm">×</span>
                 </div>
-                <span className="text-gray-800">Order History</span>
+                <span className="text-Gray">Order History</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -214,9 +211,9 @@ export default function ProfilePage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-pink-500 text-sm">◯</span>
+                  <span className="text-Pink text-sm">◯</span>
                 </div>
-                <span className="text-gray-800">Settings</span>
+                <span className="text-Gray">Settings</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

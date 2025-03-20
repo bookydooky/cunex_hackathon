@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
 export default function Portfolio() {
@@ -152,52 +152,39 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Navigation bar */}
-      <div className="px-4 py-5 flex justify-between items-center bg-white">
+    <div className="flex flex-col h-screen bg-gray-100 overflow-y-auto">
+      {/* App Header */}
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
         <div className="flex items-center">
           <button
             onClick={handlePreviousPage}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
-          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-8" />
-          <div className="h-6 border-l border-gray-300 mx-5"></div>
-          <div className="text-pink-500 font-medium text-xl">Portfolio</div>
+          <div className="flex items-center">
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-12"
+            />
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
+            <div className="text-Pink text-xl font-medium">Create Job</div>
+          </div>
         </div>
-        <button className="text-black">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-          </svg>
-        </button>
+        <Share2 className="text-black" />
       </div>
-
-      {/* Divider lines */}
+      {/* Progress Bar */}
       <div className="flex px-4 mt-4">
-        <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
-        <div className="h-1 bg-pink-500 flex-1 rounded-full ml-2"></div>
+        <div className="h-1 bg-Pink flex-1 rounded-full mr-2"></div>
+        <div className="h-1 bg-Pink flex-1 rounded-full ml-2"></div>
       </div>
 
       {/* Main content */}
-      <div className="px-4 py-6">
+      <div className="flex-1 px-4 py-4">
         {/* Info box */}
         <div className="bg-gray-50 rounded-lg p-4 mb-8">
-          <h2 className="text-xl text-black font-bold mb-2">
+          <h2 className="text-xl text-Gray font-bold mb-2">
             Portfolio and Examples
           </h2>
           <p className="text-gray-600">
@@ -208,8 +195,8 @@ export default function Portfolio() {
 
           {/* Upload area */}
 
-          <div className="border-2 border-dashed border-pink-300 rounded-lg p-6 mt-4 flex flex-col items-center justify-center">
-            <div className="text-pink-500 mb-2">
+          <div className="border-2 border-dashed border-Pink rounded-lg p-6 mt-4 flex flex-col items-center justify-center">
+            <div className="text-Pink mb-2">
               <IoCloudUpload className="text-4xl" />
             </div>
             <p className="text-gray-500 text-center mb-4">
@@ -217,8 +204,8 @@ export default function Portfolio() {
             </p>
             <label
               htmlFor="file-upload"
-              className="bg-pink-500 text-white px-6 py-2 rounded-md cursor-pointer
-            transition-transform transition-colors transform hover:scale-105 active:scale-95 duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+              className="bg-Pink text-white px-6 py-2 rounded-md cursor-pointer
+            transition-transform transition-colors transform active:scale-90  hover:bg-darkPink"
             >
               Upload Files
             </label>
@@ -233,7 +220,7 @@ export default function Portfolio() {
         </div>
 
         {/* Portfolio grid */}
-        <h2 className="text-xl text-black font-bold mb-4">
+        <h2 className="text-xl text-Gray font-bold mb-4">
           Your Portfolio Previews
         </h2>
         {files.length === 0 ? (
@@ -268,18 +255,19 @@ export default function Portfolio() {
             ))}
           </div>
         )}
-
-        {/* Add portfolio button */}
+      </div>
+      {/* Add portfolio button */}
+      <div className="sticky bottom-0 left-0 right-0 px-4 py-4">
         <form onSubmit={handleSubmit}>
           <button
             type="submit"
             disabled={files.length === 0} // Disable button if no files are uploaded
-            className={`w-full py-4 rounded-lg text-lg font-semibold transition-colors duration-200 ease-in-out
-    ${
-      files.length === 0
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700"
-    }`}
+            className={`w-full py-4 rounded-lg text-lg font-medium transition-colors duration-200 ease-in-out
+              ${
+                files.length === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-pink-500 text-white hover:bg-pink-600 active:bg-pink-700"
+              }`}
           >
             Submit Portfolio
           </button>
