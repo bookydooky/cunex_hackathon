@@ -157,27 +157,27 @@ export default function Portfolio() {
             onClick={handlePreviousPage}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
             <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 text-xl font-medium">Create Job</div>
+            <div className="text-Pink text-xl font-medium">Create Job</div>
           </div>
         </div>
         <Share2 className="text-black" />
       </div>
       {/* Progress Bar */}
       <div className="flex px-4 mt-4">
-          <div className="h-1 bg-pink-500 flex-1 rounded-full mr-2"></div>
-          <div className="h-1 bg-pink-500 flex-1 rounded-full ml-2"></div>
+          <div className="h-1 bg-Pink flex-1 rounded-full mr-2"></div>
+          <div className="h-1 bg-Pink flex-1 rounded-full ml-2"></div>
       </div>
 
       {/* Main content */}
       <div className="flex-1 px-4 py-4">
         {/* Info box */}
         <div className="bg-gray-50 rounded-lg p-4 mb-8">
-          <h2 className="text-xl text-black font-bold mb-2">
+          <h2 className="text-xl text-Gray font-bold mb-2">
             Portfolio and Examples
           </h2>
           <p className="text-gray-600">
@@ -188,8 +188,8 @@ export default function Portfolio() {
 
           {/* Upload area */}
 
-          <div className="border-2 border-dashed border-pink-300 rounded-lg p-6 mt-4 flex flex-col items-center justify-center">
-            <div className="text-pink-500 mb-2">
+          <div className="border-2 border-dashed border-Pink rounded-lg p-6 mt-4 flex flex-col items-center justify-center">
+            <div className="text-Pink mb-2">
               <IoCloudUpload className="text-4xl" />
             </div>
             <p className="text-gray-500 text-center mb-4">
@@ -197,8 +197,8 @@ export default function Portfolio() {
             </p>
             <label
               htmlFor="file-upload"
-              className="bg-pink-500 text-white px-6 py-2 rounded-md cursor-pointer
-            transition-transform transition-colors transform hover:scale-105 active:scale-95 duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+              className="bg-Pink text-white px-6 py-2 rounded-md cursor-pointer
+            transition-transform transition-colors transform active:scale-90  hover:bg-darkPink"
             >
               Upload Files
             </label>
@@ -213,7 +213,7 @@ export default function Portfolio() {
         </div>
 
         {/* Portfolio grid */}
-        <h2 className="text-xl text-black font-bold mb-4">
+        <h2 className="text-xl text-Gray font-bold mb-4">
           Your Portfolio Previews
         </h2>
         {files.length === 0 ? (
@@ -255,7 +255,7 @@ export default function Portfolio() {
             <button
               type="submit"
               disabled={files.length === 0} // Disable button if no files are uploaded
-              className={`w-full py-4 rounded-lg text-lg font-semibold transition-colors duration-200 ease-in-out
+              className={`w-full py-4 rounded-lg text-lg font-medium transition-colors duration-200 ease-in-out
               ${
                 files.length === 0
                   ? "bg-gray-400 cursor-not-allowed"

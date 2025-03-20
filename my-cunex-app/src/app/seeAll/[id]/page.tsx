@@ -38,17 +38,17 @@ export default function AllJobs({ params }: { params: { id: string } }) {
       <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between border-b bg-white">
         <div className="flex items-center">
           <ArrowLeft
-            className="mr-4 text-pink-500 hover:text-pink-800 transition-transform
+            className="mr-4 text-Pink hover:text-darkPink transition-transform
             transform active:scale-90"
             onClick={() => router.push("/")}
           />
           <div className="flex items-center">
             <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
-            <div className="h-6 border-l border-gray-300 mx-3"></div>
-            <div className="text-pink-500 text-xl font-medium">All Jobs</div>
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
+            <div className="text-Pink text-xl font-medium">All Jobs</div>
           </div>
         </div>
-        <Share2 className="text-gray-700" />
+        <Share2 className="text-Gray" />
       </div>
       <div className="p-6">
         {loading ? (
@@ -66,11 +66,11 @@ export default function AllJobs({ params }: { params: { id: string } }) {
                   alt={job.bannerName}
                   className="w-full h-40 object-cover rounded-md"
                 />
-                <h2 className="text-lg text-black font-semibold mt-2">
+                <h2 className="text-lg text-Gray font-semibold mt-2">
                   {job.bannerName}
                 </h2>
                 <p className="text-gray-500 text-sm">{job.typeOfWork}</p>
-                <p className="text-pink-500 font-bold">${job.price}</p>
+                <p className="text-Pink font-bold">${job.price}</p>
               </div>
             ))}
           </div>

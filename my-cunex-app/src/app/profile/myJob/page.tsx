@@ -72,13 +72,13 @@ export default function MyJobsPage() {
               onClick={() => router.push("/profile")}
               className="transition-transform transform active:scale-90"
             >
-              <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+              <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
             </button>
             <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 font-medium text-xl">Profile</div>
+            <div className="text-Pink font-medium text-xl">Profile</div>
           </div>
-          <Share2 className="text-black" />
+          <Share2 className="text-Gray" />
         </div>
 
         {/* Tabs */}
@@ -86,7 +86,7 @@ export default function MyJobsPage() {
           <button
             className={`flex-1 py-3 text-center font-medium ${
               activeTab === "ongoing"
-                ? "text-pink-500 border-b-2 border-pink-500"
+                ? "text-Pink border-b-2 border-Pink"
                 : "text-gray-500"
             }`}
             onClick={() => setActiveTab("ongoing")}
@@ -96,7 +96,7 @@ export default function MyJobsPage() {
           <button
             className={`flex-1 py-3 text-center font-medium ${
               activeTab === "completed"
-                ? "text-pink-500 border-b-2 border-pink-500"
+                ? "text-Pink border-b-2 border-Pink"
                 : "text-gray-500"
             }`}
             onClick={() => setActiveTab("completed")}
@@ -116,10 +116,10 @@ export default function MyJobsPage() {
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-black">
+                    <h2 className="font-semibold text-Gray">
                       {job.bannerName}
                     </h2>
-                    <span className="text-pink-500 font-medium">
+                    <span className="text-Pink font-medium">
                       {job.price}
                     </span>
                   </div>
@@ -145,7 +145,7 @@ export default function MyJobsPage() {
                           ? "bg-blue-500"
                           : job.accept === 0
                           ? "bg-red-500"
-                          : "bg-pink-500"
+                          : "bg-Pink"
                       }`}
                       style={{ width: `${job.progress * 33.33}%` }}
                     ></div>
@@ -158,7 +158,7 @@ export default function MyJobsPage() {
                     Message
                   </button>
 
-                  <button className="flex-1 py-3 text-center text-pink-500 font-medium">
+                  <button className="flex-1 py-3 text-center text-Pink font-medium">
                     <Link href={`/profile/myJob/upload/${job.historyId}`}>
                       Update
                     </Link>
@@ -178,10 +178,10 @@ export default function MyJobsPage() {
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-black">
+                    <h2 className="font-semibold text-Gray">
                       {job.bannerName}
                     </h2>
-                    <span className="text-pink-500 font-medium">
+                    <span className="text-Pink font-medium">
                       {job.price}
                     </span>
                   </div>

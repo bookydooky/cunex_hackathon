@@ -22,15 +22,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-800" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
             <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 text-xl font-medium">Services</div>
+            <div className="text-Pink text-xl font-medium">Services</div>
           </div>
         </div>
-        <Share2 className="text-black" />
+        <Share2 className="text-Gray" />
       </div>
     
       {/* Page Content */}
