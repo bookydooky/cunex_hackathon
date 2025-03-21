@@ -21,8 +21,7 @@ export async function POST(request: NextRequest) {
     const values = images.map((imageUrl: any) => [historyId, imageUrl]);
     const insertSql = "INSERT INTO submittedImages (historyId, imageURL) VALUES ?";
     
-    const [insertResult] = await con.query(insertSql, [values]);
-
+    const [insertResult] = await con.query(insertSql, [values]) as any;
     // Update job progress in jobHistory table
     const updateProgressSql = `
       UPDATE jobHistory
