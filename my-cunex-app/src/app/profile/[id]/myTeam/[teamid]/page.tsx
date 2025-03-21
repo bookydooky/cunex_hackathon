@@ -19,7 +19,7 @@ export default function MessagePage() {
   const getCollaborations = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getBannersFromColabs?userId=${userId}`,
+        `/api/getBannersFromColabs?userId=${userId}`,
         {
           method: "GET",
           headers: {

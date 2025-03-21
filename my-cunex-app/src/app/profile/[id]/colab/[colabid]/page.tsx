@@ -24,15 +24,12 @@ export default function MessagePage() {
 
   const getCollaborations = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/getCollaborations?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/getCollaborations?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const result = await response.json();
       console.log("Server response:", result);
       setJobs(result);
@@ -52,7 +49,7 @@ export default function MessagePage() {
 
   const handleDeny = async (userId: string, bannerId: string) => {
     try {
-      const response = await fetch("http://localhost:3001/denyColab", {
+      const response = await fetch("/api/denyColab", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +73,7 @@ export default function MessagePage() {
 
   const handleAccept = async (userId: string, bannerId: string) => {
     try {
-      const response = await fetch("http://localhost:3001/acceptColab", {
+      const response = await fetch("/api/acceptColab", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

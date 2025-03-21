@@ -51,7 +51,7 @@ export default function UsersPage() {
   const getUsersDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getUserDetailsFromColab?bannerId=${bannerId}`,
+        `/api/getUserDetailsFromColab?bannerId=${bannerId}`,
         {
           method: "GET",
           headers: {
@@ -86,16 +86,13 @@ export default function UsersPage() {
   const handleAccept = async (userId: string, bannerId: string) => {
     try {
       // Make a POST request to accept the user
-      const response = await fetch(
-        "http://localhost:3001/acceptColabFromOwner",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId, bannerId }), // Sending userId in the request body
-        }
-      );
+      const response = await fetch("/api/acceptColabFromOwner", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, bannerId }), // Sending userId in the request body
+      });
 
       if (!response.ok) {
         throw new Error("Failed to accept user");
@@ -111,7 +108,7 @@ export default function UsersPage() {
   const handleDeny = async (userId: string, bannerId: string) => {
     try {
       // Make a POST request to deny the user
-      const response = await fetch("http://localhost:3001/denyColabFromOwner", {
+      const response = await fetch("/api/denyColabFromOwner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
