@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       WHERE userId = ? AND bannerId = ?
     `;
 
-    const [result] = await con.execute(denyQuery, [userId, bannerId]);
+    const [result] = (await con.execute(denyQuery, [userId, bannerId])) as any;
 
     if (result.affectedRows === 0) {
       return NextResponse.json(
