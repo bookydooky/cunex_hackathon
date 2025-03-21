@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
   });
 
   try {
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     await con.beginTransaction();
 
     // **1. Update jobHistory (Set accept to FALSE)**
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
       SET accept = ? 
       WHERE historyId = ?
     `;
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     const [jobResult] = await con.query(updateJobHistory, [false, historyId]);
 
     if ((jobResult as any).affectedRows === 0) {
@@ -49,6 +51,7 @@ export async function POST(request: NextRequest) {
       SET checked = TRUE 
       WHERE submittedImageId = ?
     `;
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     const [imageResult] = await con.query(updateImageQuery, [submittedImageId]);
 
     if ((imageResult as any).affectedRows === 0) {
@@ -63,6 +66,7 @@ export async function POST(request: NextRequest) {
       message: "Job Denied Successfully, Sales Updated",
     });
   } catch (error: any) {
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     await con.rollback();
     console.error("Error processing request:", error);
     return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });

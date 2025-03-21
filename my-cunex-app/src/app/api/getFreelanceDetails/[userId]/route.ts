@@ -1,23 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import mysql from 'mysql2/promise';
+import { NextRequest, NextResponse } from "next/server";
+import mysql from "mysql2/promise";
 
-export async function GET(req, { params }) {
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
+  const con = await mysql.createConnection({
+    host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
+    user: process.env.NEXT_PUBLIC_AWS_RDS_USER,
+    password: process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD,
+    database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
+  });
+
   const { userId } = params;
 
-  if (!userId) {
-    return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-  }
-
-  const dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-  };
-
   try {
-    const connection = await mysql.createConnection(dbConfig);
-
     // Query to fetch user details
     const userQuery = `
       SELECT u.firstName, u.lastName, u.facultyCode, u.studentYear, 
@@ -26,13 +20,6 @@ export async function GET(req, { params }) {
       LEFT JOIN faculties f ON u.facultyCode = f.facultyCode
       WHERE u.userId = ?
     `;
-    
-    const [userResult] = await connection.execute(userQuery, [userId]);
-
-    if (userResult.length === 0) {
-      await connection.end();
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     // Query to fetch sales parameters
     const salesQuery = `
@@ -40,9 +27,18 @@ export async function GET(req, { params }) {
       FROM salesParams 
       WHERE userId = ?
     `;
-    
-    const [salesResult] = await connection.execute(salesQuery, [userId]);
-    await connection.end();
+
+    // Fetch user details
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
+    const [userResult] = await con.execute(userQuery, [userId]);
+
+    if (userResult.length === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Fetch sales parameters
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
+    const [salesResult] = await con.execute(salesQuery, [userId]);
 
     // Merge user details with sales parameters
     const userData = {
@@ -52,7 +48,7 @@ export async function GET(req, { params }) {
 
     return NextResponse.json(userData);
   } catch (error) {
-    console.error('Error fetching freelance details:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error("Database error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

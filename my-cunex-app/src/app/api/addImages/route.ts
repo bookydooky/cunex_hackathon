@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
 
     // Insert the image data into the database
     const sql = "INSERT INTO images (bannerId, imageURL) VALUES ?";
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     const [result] = await con.query(sql, [values]);
 
     return NextResponse.json({

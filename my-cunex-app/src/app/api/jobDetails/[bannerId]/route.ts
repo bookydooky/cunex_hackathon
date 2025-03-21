@@ -19,6 +19,7 @@ export async function GET(request: NextRequest, { params }: { params: { bannerId
       WHERE bannerId = ?
     `;
 
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     const [jobResult] = await con.execute(jobQuery, [bannerId]);
 
     if (jobResult.length === 0) {
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest, { params }: { params: { bannerId
 
     // Query to fetch image URLs
     const imageQuery = "SELECT imageURL FROM images WHERE bannerId = ?";
+    //@ts-expect-error - TS doesn't know about the mysql2/promise API
     const [imageResult] = await con.execute(imageQuery, [bannerId]);
 
     // Extract image URLs into an array
