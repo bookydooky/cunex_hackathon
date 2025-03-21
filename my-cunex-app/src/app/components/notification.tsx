@@ -30,7 +30,7 @@ export default function Notification({
     const checkSubmittedImages = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/getSubmittedImages/?userId=${userId}`
+          `/api/getSubmittedImages/?userId=${userId}`
         );
         if (!response.ok) throw new Error("Failed to check images");
 
@@ -59,7 +59,7 @@ export default function Notification({
   const historyGroups = Object.entries(groupedNotifications);
   const handleAccept = async (historyId: number, submittedImageId: number) => {
     try {
-      const response = await fetch(`http://localhost:3001/acceptImage`, {
+      const response = await fetch(`api/acceptImage`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export default function Notification({
 
   const handleDeny = async (historyId: number, submittedImageId: number) => {
     try {
-      const response = await fetch(`http://localhost:3001/denyImage`, {
+      const response = await fetch(`/api/denyImage`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

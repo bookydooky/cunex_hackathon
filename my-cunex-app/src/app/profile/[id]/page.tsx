@@ -55,7 +55,7 @@ export default function ProfilePage() {
     const fetchUserDetail = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/getProfile/?userId=${userId}`
+          `/api/getProfile/?userId=${userId}`
         );
         if (!response.ok) throw new Error("Failed to fetch job details");
 

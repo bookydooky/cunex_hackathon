@@ -28,7 +28,7 @@ export default function Checkout() {
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/jobDetails/${bannerId}`
+          `/api/jobDetails/${bannerId}`
         );
         if (!response.ok) throw new Error("Failed to fetch job details");
 
@@ -46,7 +46,7 @@ export default function Checkout() {
 
   const handleAddPortfolio = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/confirmJob`, {
+      const response = await fetch(`/api/confirmJob`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

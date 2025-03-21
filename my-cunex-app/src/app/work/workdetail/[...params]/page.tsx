@@ -26,7 +26,7 @@ const WorkDetailPreview = () => {
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/jobDetails/${bannerId}`
+          `/api/jobDetails/${bannerId}`
         );
         if (!response.ok) throw new Error("Failed to fetch job details");
 
@@ -35,7 +35,7 @@ const WorkDetailPreview = () => {
       } catch (error) {
         console.error("Error fetching job details:", error);
       }
-    };
+    }; 
 
     fetchJobDetails();
   }, [bannerId]);

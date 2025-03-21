@@ -18,7 +18,7 @@ const ImageUpload = () => {
     const fetchAcceptStatus = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/getJobStatus/${historyId}`
+          `/api/getJobStatus/${historyId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch job status");
@@ -108,7 +108,7 @@ const ImageUpload = () => {
   const sendToServer = async (fileUrls: string[], historyId: string) => {
     console.log("Sent History Id: ", historyId);
     try {
-      const response = await fetch("http://localhost:3001/addSubmittedImages", {
+      const response = await fetch("/api/addSubmittedImages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

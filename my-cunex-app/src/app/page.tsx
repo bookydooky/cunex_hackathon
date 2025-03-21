@@ -72,7 +72,7 @@ export default function Home() {
       try {
         // Use the correct server endpoint
         const response = await fetch(
-          "http://localhost:3001/api/latest-jobs?limit=3"
+          "/api/latest-jobs?typeOfWork=None&limit=3"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch latest jobs");
@@ -87,7 +87,7 @@ export default function Home() {
     }
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/fetchProfile");
+        const response = await axios.get("/api/fetchProfile");
         console.log("Profile fetched successfully:", response.data);
         setProfile(response.data);
       } catch (err) {

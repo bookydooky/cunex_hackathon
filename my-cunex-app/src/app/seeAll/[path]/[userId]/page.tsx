@@ -25,8 +25,8 @@ export default function AllJobs() {
       try {
         const apiUrl =
           path === "None"
-            ? "http://localhost:3001/api/latest-jobs"
-            : `http://localhost:3001/api/latest-jobs?typeOfWork=${path}`;
+            ? "/api/latest-jobs"
+            : `/api/latest-jobs?typeOfWork=${path}`;
         const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");

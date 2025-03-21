@@ -59,7 +59,7 @@ export default function Portfolio() {
   const sendToServer = async (fileUrls: string[], bannerId: string | null) => {
     console.log("Sent Banner Id: ", bannerId);
     try {
-      const response = await fetch("http://localhost:3001/addImages", {
+      const response = await fetch("/api/addImages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function Portfolio() {
     console.log("Sending data to server:", workData);
 
     try {
-      const response = await fetch("http://localhost:3001/addPortfolio", {
+      const response = await fetch("/api/addPortfolio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

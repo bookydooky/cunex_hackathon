@@ -14,7 +14,7 @@ const WorkFeedback = () => {
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/jobDetails/${bannerId}`
+          `/api/jobDetails/${bannerId}`
         );
         if (!response.ok) throw new Error("Failed to fetch job details");
 

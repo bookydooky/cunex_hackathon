@@ -49,7 +49,7 @@ export default function MyJobsPage() {
   const getOngoingJobs = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getOngoingJobs?userId=${userId}`,
+        `/api/getOngoingJobs?userId=${userId}`,
         {
           method: "GET",
           headers: {
@@ -70,7 +70,7 @@ export default function MyJobsPage() {
   const getCompletedJobs = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getCompletedJobs?userId=${userId}`,
+        `/api/getCompletedJobs?userId=${userId}`,
         {
           method: "GET",
           headers: {
