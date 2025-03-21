@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2, Users, Clock } from "lucide-react";
+import Image from "next/image";
 import PopupWindow from "../../components/CollaborateWindow";
+
 interface UserProfileResponse {
   firstName: string;
   lastName: string;
@@ -23,6 +25,7 @@ const CreateJobPreview = () => {
   const params = useParams();
   const userId = params.id;
   const [userData, setUserData] = useState<UserProfileResponse | null>(null);
+
   useEffect(() => {
     if (!userId) return;
 
@@ -42,7 +45,7 @@ const CreateJobPreview = () => {
 
     fetchUserDetail();
   }, [userId]);
-  //Chien
+
   const [jobDetails, setJobDetails] = useState({
     workTitle: "",
     workType: "",
@@ -50,12 +53,14 @@ const CreateJobPreview = () => {
     duration: "",
     description: "",
   });
+
   useEffect(() => {
     const savedData = localStorage.getItem("jobDetails");
     if (savedData) {
       setJobDetails(JSON.parse(savedData));
     }
   }, []);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -63,6 +68,7 @@ const CreateJobPreview = () => {
   ) => {
     setJobDetails({ ...jobDetails, [e.target.name]: e.target.value });
   };
+
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const handleCollaborateClick = () => {
     setIsPopupVisible(true);
@@ -78,7 +84,7 @@ const CreateJobPreview = () => {
     console.log("Saved to localStorage:", jobDetails);
     router.push(`/portfolio/${userId}`);
   };
-  console.log(userId);
+
   if (!userData) return <p>Loading user details...</p>;
 
   return (
@@ -93,9 +99,11 @@ const CreateJobPreview = () => {
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
