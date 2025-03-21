@@ -92,6 +92,16 @@ export default function Portfolio() {
 
   const handleAddPortfolio = async () => {
     const jobDetails = JSON.parse(localStorage.getItem("jobDetails") || "{}");
+    const searchMembers = JSON.parse(
+      localStorage.getItem("searchMembers") || "[]"
+    );
+    const addMembers = JSON.parse(localStorage.getItem("addedMembers") || "[]");
+
+    // Clean up the values by removing numbers and spaces at the end
+    const cleanedColabTypes = searchMembers.map((item: string) => {
+      // Extract just the text part by removing trailing numbers and spaces
+      return item.replace(/\s*\d+$/, "");
+    });
     const workData = {
       userId: userId,
       workTitle: jobDetails.workTitle || "Untitled",
@@ -99,6 +109,8 @@ export default function Portfolio() {
       price: jobDetails.price || "0",
       duration: jobDetails.duration || "0",
       description: jobDetails.description || "No description",
+      colabType: cleanedColabTypes,
+      addMembers: addMembers,
     };
 
     console.log("Sending data to server:", workData);

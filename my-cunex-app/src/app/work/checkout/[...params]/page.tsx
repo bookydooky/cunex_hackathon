@@ -45,7 +45,7 @@ export default function Checkout() {
   if (!jobData) return <p>Loading job details...</p>;
   const handleAddPortfolio = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/confirmJob`, {
+      const response = await fetch(`/api/confirmJob`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

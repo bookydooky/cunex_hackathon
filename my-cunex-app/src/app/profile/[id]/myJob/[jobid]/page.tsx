@@ -44,15 +44,12 @@ export default function MyJobsPage() {
   const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
   const getOngoingJobs = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/getOngoingJobs?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/getOngoingJobs?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const result = await response.json();
       console.log("Server response:", result);
       setOngoingJobs(result.jobs);
@@ -64,15 +61,12 @@ export default function MyJobsPage() {
   };
   const getCompletedJobs = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/getCompletedJobs?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/getCompletedJobs?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const result = await response.json();
       console.log("Server response:", result);
       setCompletedJobs(result.jobs);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
 
 interface PopupWindowProps {
@@ -17,7 +17,32 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
       setNewMember("");
     }
   };
+  //Added--------------------------------------
+  useEffect(() => {
+    const storedTeamMembers = JSON.parse(
+      localStorage.getItem("teamMembers") || "[]"
+    );
 
+    if (!teamMembers) setTeamMembers(storedTeamMembers);
+  }, []);
+  const handleConfirm = () => {
+    localStorage.setItem("teamMembers", JSON.stringify(teamMembers));
+    const added = [];
+    const searched = [];
+
+    for (const team of teamMembers) {
+      if (team.startsWith("###")) {
+        searched.push(team.substring(3)); // Remove "###" prefix
+      } else {
+        added.push(team);
+      }
+    }
+    localStorage.setItem("addedMembers", JSON.stringify(added));
+    localStorage.setItem("searchMembers", JSON.stringify(searched));
+
+    onClose();
+  };
+  //----------------------------------
   const handleSearchMember = () => {
     const newSearch = `###${newSearchMember} ${newSearchTotal}`;
     if (newSearch.trim() !== "") {
@@ -45,7 +70,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           <h2 className="text-gray-600 mb-1">Add Team Members</h2>
           <input
             type="email"
-            placeholder="Email address"
+            placeholder="Student ID"
             value={newMember}
             onChange={(e) => setNewMember(e.target.value)}
             className="w-full p-3 border text-gray-800 border-gray-300 rounded-lg"
@@ -142,7 +167,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
                           <>
                             <span className="text-gray-800">{member}</span>
                             <span className="text-gray-500 text-sm">
-                              {member.split(" ")[0]}@example.com
+                              {member.split(" ")[0]}@student.chula.ac.th
                             </span>
                           </>
                         )}
@@ -172,7 +197,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
             Cancel
           </button>
           <button
-            onClick={onClose}
+            onClick={handleConfirm}
             className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg flex-1
           transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
           >

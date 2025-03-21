@@ -28,8 +28,16 @@ app.get("/", (req, res) => {
 
 app.post("/addPortfolio", (req, res) => {
   let newId;
-  const { userId, workTitle, workType, price, duration, description } =
-    req.body;
+  const {
+    userId,
+    workTitle,
+    workType,
+    price,
+    duration,
+    description,
+    colabType,
+    addMembers,
+  } = req.body;
 
   if (!workTitle || !workType || !price || !duration || !description) {
     return res.status(400).json({ error: "All fields required" });
@@ -75,10 +83,73 @@ app.post("/addPortfolio", (req, res) => {
         console.error("Database error:", err);
         return res.status(500).json({ error: "Database error" });
       }
+
       console.log("Portfolio added with bannerId:", newId);
-      res
-        .status(200)
-        .json({ message: "Portfolio added successfully", bannerId: newId });
+
+      // Build query dynamically based on the inputs
+      const colabTypeQuery =
+        colabType.length > 0
+          ? `typeOfWork IN (${colabType.map(() => "?").join(",")})`
+          : "1=0"; // If no colabTypes, return false condition
+
+      const addMembersQuery =
+        addMembers.length > 0
+          ? `studentId IN (${addMembers.map(() => "?").join(",")})`
+          : "1=0"; // If no addMembers, return false condition
+
+      const selectUsersQuery = `
+        SELECT DISTINCT userId 
+        FROM (
+          SELECT userId FROM jobBanners 
+          WHERE ${colabTypeQuery} AND userId != ?
+          
+          UNION
+          
+          SELECT userId FROM users 
+          WHERE ${addMembersQuery}
+        ) AS combined_users`;
+
+      // Parameter array for the query
+      const queryParams = [...colabType, userId];
+
+      // Only add addMembers parameters if there are any
+      if (addMembers.length > 0) {
+        queryParams.push(...addMembers);
+      }
+
+      con.query(selectUsersQuery, queryParams, (err, userResults) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res.status(500).json({ error: "Database error" });
+        }
+
+        if (userResults.length === 0) {
+          return res.status(200).json({
+            message:
+              "Portfolio added successfully, but no matching users found",
+            bannerId: newId,
+            usersWithSameWorkType: [],
+          });
+        }
+
+        // Step 4: Insert each userId into colabs table
+        const insertColabsQuery =
+          "INSERT INTO colabs (bannerId, userId) VALUES ?";
+        const colabValues = userResults.map((row) => [newId, row.userId]);
+
+        con.query(insertColabsQuery, [colabValues], (err, colabResult) => {
+          if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database error" });
+          }
+
+          res.status(200).json({
+            message: "Portfolio added successfully, and collaborations created",
+            bannerId: newId,
+            usersWithSameWorkType: userResults,
+          });
+        });
+      });
     });
   });
 });
@@ -721,7 +792,252 @@ app.get("/getProfile", (req, res) => {
     });
   });
 });
+app.get("/getCollaborations", (req, res) => {
+  const { userId } = req.query;
 
+  // Query to fetch collaboration details, excluding NULL historyId
+  const collaborationsQuery = `
+    SELECT 
+      jb.bannerId,
+      jb.bannerName, 
+      jb.price,
+      jb.duration, 
+      su.firstName AS sellerFirstName, 
+      su.lastName AS sellerLastName,
+      su.userId AS sellerId,
+      c.confirmedOrg,
+      c.confirmed
+    FROM colabs c
+    JOIN jobBanners jb ON c.bannerId = jb.bannerId
+    JOIN users su ON jb.userId = su.userId
+    WHERE c.userId = ? AND (c.confirmed IS NULL OR c.confirmedOrg = True OR (c.confirmed = True AND c.confirmedOrg IS NULL))
+  `;
+
+  con.query(collaborationsQuery, [userId], (err, collaborations) => {
+    if (err) {
+      console.error("Error fetching collaborations:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    // Format the data as needed
+    const formattedCollaborations = collaborations.map((collab) => ({
+      bannerId: collab.bannerId,
+      bannerName: collab.bannerName,
+      price: collab.price,
+      duration: collab.duration,
+      firstName: collab.sellerFirstName,
+      lastName: collab.sellerLastName,
+      Id: collab.sellerId,
+      confirmed: collab.confirmed,
+      confirmedOrg: collab.confirmedOrg,
+    }));
+
+    res.json(formattedCollaborations);
+  });
+});
+app.post("/denyColab", async (req, res) => {
+  try {
+    const { userId, bannerId } = req.body;
+
+    if (!userId || !bannerId) {
+      return res.status(400).json({ error: "Missing userId or bannerId" });
+    }
+
+    const denyQuery = `
+      UPDATE colabs
+      SET confirmed = FALSE
+      WHERE userId = ? AND bannerId = ?
+    `;
+
+    con.query(denyQuery, [userId, bannerId], (err, result) => {
+      if (err) {
+        console.error("Error denying collaboration:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Collaboration not found" });
+      }
+
+      res.json({ message: "Collaboration denied successfully" });
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    res.status(500).json({ error: "Unexpected server error" });
+  }
+});
+
+app.post("/acceptColab", (req, res) => {
+  const { userId, bannerId } = req.body;
+
+  const acceptQuery = `
+    UPDATE colabs
+    SET confirmed = TRUE
+    WHERE userId = ? AND bannerId = ?
+  `;
+
+  con.query(acceptQuery, [userId, bannerId], (err, result) => {
+    if (err) {
+      console.error("Error accepting collaboration:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Collaboration not found" });
+    }
+
+    res.json({ message: "Collaboration accepted successfully" });
+  });
+});
+
+app.get("/getBannersFromColabs", (req, res) => {
+  const { userId } = req.query;
+
+  // Query to fetch bannerId and bannerName where userId matches and bannerId is in colabs table
+  const bannersQuery = `
+  SELECT 
+    jb.bannerId,
+    jb.bannerName,
+    jb.price,
+    jb.duration,
+    jb.typeOfWork
+  FROM jobBanners jb
+  WHERE jb.userId = ? AND jb.bannerId IN (SELECT bannerId FROM colabs)
+`;
+
+  con.query(bannersQuery, [userId, userId], (err, banners) => {
+    if (err) {
+      console.error("Error fetching banners:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    // Format the data as needed
+    const formattedBanners = banners.map((banner) => ({
+      bannerId: banner.bannerId,
+      bannerName: banner.bannerName,
+      price: banner.price,
+      duration: banner.duration,
+      typeOfWork: banner.typeOfWork,
+    }));
+
+    res.json(formattedBanners);
+  });
+});
+app.get("/getUserDetailsFromColab", (req, res) => {
+  const { bannerId } = req.query;
+
+  // Query to fetch user details from users and faculties table based on the userId
+  const userDetailsQuery = `
+    SELECT 
+      u.userId,
+      u.firstName,
+      u.lastName,
+      u.studentId,
+      u.studentYear,
+      u.facultyCode,
+      f.facultyNameEN,
+      c.confirmedOrg
+    FROM colabs c
+    JOIN users u ON c.userId = u.userId
+    JOIN faculties f ON u.facultyCode = f.facultyCode
+    WHERE c.bannerId = ? AND c.confirmed = True AND (c.confirmedOrg = True OR c.confirmedOrg IS NULL)
+  `;
+
+  // Query to fetch distinct typeOfWork from jobBanners table based on the userId
+  const workTypesQuery = `
+    SELECT DISTINCT 
+      jb.typeOfWork
+    FROM jobBanners jb
+    WHERE jb.userId = ?
+  `;
+
+  // Execute the user details query
+  con.query(userDetailsQuery, [bannerId], (err, users) => {
+    if (err) {
+      console.error("Error fetching user details from colabs:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    // If no user found
+    if (users.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No user found for the specified bannerId" });
+    }
+
+    // For each user, fetch the distinct typeOfWork
+    const userPromises = users.map((user) => {
+      return new Promise((resolve, reject) => {
+        // Execute work types query for each user
+        con.query(workTypesQuery, [user.userId], (err, workTypes) => {
+          if (err) {
+            return reject(err);
+          }
+
+          // Attach the workTypes list to the user object
+          user.workTypes = workTypes.map((work) => work.typeOfWork);
+          resolve(user);
+        });
+      });
+    });
+
+    // Resolve all userPromises
+    Promise.all(userPromises)
+      .then((usersWithWorkTypes) => {
+        // Send the response with all users and their work types
+        res.json(usersWithWorkTypes);
+      })
+      .catch((err) => {
+        console.error("Error fetching work types:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      });
+  });
+});
+
+app.post("/acceptColabFromOwner", (req, res) => {
+  const { userId, bannerId } = req.body;
+
+  const acceptQuery = `
+    UPDATE colabs
+    SET confirmedOrg = TRUE
+    WHERE userId = ? AND bannerId = ?
+  `;
+
+  con.query(acceptQuery, [userId, bannerId], (err, result) => {
+    if (err) {
+      console.error("Error accepting collaboration:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Collaboration not found" });
+    }
+
+    res.json({ message: "Collaboration accepted successfully" });
+  });
+});
+app.post("/denyColabFromOwner", (req, res) => {
+  const { userId, bannerId } = req.body;
+
+  const acceptQuery = `
+    UPDATE colabs
+    SET confirmedOrg = FALSE
+    WHERE userId = ? AND bannerId = ?
+  `;
+
+  con.query(acceptQuery, [userId, bannerId], (err, result) => {
+    if (err) {
+      console.error("Error accepting collaboration:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Collaboration not found" });
+    }
+
+    res.json({ message: "Collaboration denied successfully" });
+  });
+});
 app.listen(3001, () => {
   console.log("Server running on port 3001");
 });

@@ -175,6 +175,61 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
+        {/* Team up Requests*/}
+        <div
+          className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
+      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+        >
+          <Link href={`/profile/${userId}/colab/${userId}`}>
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                  <span className="text-Pink text-sm">+</span>
+                </div>
+                <span className="text-Gray">Team Up Requests</span>
+              </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </Link>
+        </div>
+        <div
+          className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
+      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+        >
+          <Link href={`/profile/${userId}/myTeam/${userId}`}>
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                  <span className="text-Pink text-sm">+</span>
+                </div>
+                <span className="text-Gray">My Team</span>
+              </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </Link>
+        </div>
         {/* Payment Methods */}
         <div className="bg-white rounded-lg mb-3 shadow-sm">
           <Link href="/payment-methods">
