@@ -61,7 +61,7 @@ const WorkAbout = () => {
     const fetchFreelanceDetails = async () => {
       try {
         const response = await fetch(
-          `api/getFreelanceDetails/${jobData.userId}`
+          `/api/getFreelanceDetails/${jobData.userId}`
         );
         if (!response.ok) throw new Error("Failed to fetch job details");
 
