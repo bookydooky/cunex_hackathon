@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 
 interface Image {
   src: string;
@@ -61,9 +62,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               className="min-w-full flex justify-center items-center p-6"
             >
               <div className="bg-white rounded-lg shadow-sm p-8 max-w-md">
-                <img
+                <Image
                   src={image.src}
                   alt={image.alt || "Carousel image"}
+                  layout="responsive"
+                  width={500}
+                  height={300}
                   className="max-h-[150px] mx-auto"
                 />
                 {image.caption && (
