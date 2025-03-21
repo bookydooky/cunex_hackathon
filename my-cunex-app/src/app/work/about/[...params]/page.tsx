@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Users, Clock } from "lucide-react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
+
 interface JobDetailResponse {
   bannerId: string;
   userId: string;
@@ -13,6 +14,7 @@ interface JobDetailResponse {
   bannerdesc: string;
   images: string[]; // Array of image URLs
 }
+
 interface FreelanceDetailsResponse {
   firstName: string;
   lastName: string;
@@ -28,10 +30,8 @@ interface FreelanceDetailsResponse {
 }
 
 const WorkAbout = () => {
-  const router = useRouter();
   const params = useParams();
-  if (!params?.params) return <p>Loading...</p>;
-  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
+  const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
   const [freelanceData, setFreelanceData] =
     useState<FreelanceDetailsResponse | null>(null);
@@ -55,9 +55,10 @@ const WorkAbout = () => {
 
     fetchJobDetails();
   }, [bannerId]);
+
   useEffect(() => {
-    console.log(jobData);
     if (!jobData?.userId) return;
+
     const fetchFreelanceDetails = async () => {
       try {
         const response = await fetch(
@@ -76,6 +77,7 @@ const WorkAbout = () => {
   }, [jobData]);
 
   if (!jobData || !freelanceData) return <p>Loading job details...</p>;
+
   function getAcademicYearLevel(
     entryYear: number,
     currentAcademicYear: number
@@ -100,6 +102,7 @@ const WorkAbout = () => {
       return "Advanced year / Graduate";
     }
   }
+
   return (
     <WorkLayout jobData={jobData} userId={userId}>
       <div className="p-4">

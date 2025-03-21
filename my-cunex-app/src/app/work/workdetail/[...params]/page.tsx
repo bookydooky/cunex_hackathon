@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import { useParams } from "next/navigation"; // Import useParams
+
 interface JobDetailResponse {
   bannerId: string;
   userId: string;
@@ -13,10 +14,10 @@ interface JobDetailResponse {
   bannerdesc: string;
   images: string[]; // Array of image URLs
 }
+
 const WorkDetailPreview = () => {
   const params = useParams();
-  if (!params?.params) return <p>Loading...</p>;
-  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
+  const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
 
   useEffect(() => {
@@ -40,17 +41,6 @@ const WorkDetailPreview = () => {
   }, [bannerId]);
 
   if (!jobData) return <p>Loading job details...</p>;
-
-  // const carouselImages = jobData.images
-  //   ? jobData.images.map((img) => ({ src: img, alt: jobData.bannerName }))
-  //   : [
-  //       {
-  //         // Fallback image if no images are available
-  //         src: "/placeholder.jpg",
-  //         alt: jobData.bannerName,
-  //         caption: jobData.bannerName,
-  //       },
-  //     ];
 
   return (
     <WorkLayout jobData={jobData} userId={userId}>

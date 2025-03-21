@@ -337,7 +337,7 @@ export default function ReviewAndPayPage() {
                     Complete Order
                   </button>
                   <p className="text-xs text-center text-Gray mt-3">
-                    You won't be charged until we confirm your order
+                    You won&#39;t be charged until we confirm your order
                   </p>
                 </div>
               </div>

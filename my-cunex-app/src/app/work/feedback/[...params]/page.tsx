@@ -1,15 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-
+import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
+
 const WorkFeedback = () => {
-  const router = useRouter();
-
   const params = useParams();
-  if (!params?.params) return <p>Loading...</p>;
-
-  const [bannerId, userId] = params.params; // ✅ Get id dynamically  const router = useRouter();
+  const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState(null);
 
   useEffect(() => {
@@ -33,6 +29,7 @@ const WorkFeedback = () => {
   }, [bannerId]);
 
   if (!jobData) return <p>Loading job details...</p>;
+
   return (
     <WorkLayout jobData={jobData} userId={userId}>
       <div className="flex flex-col p-4">
@@ -152,7 +149,7 @@ const WorkFeedback = () => {
             </div>
             <p className="italic text-Gray text-sm">
               Maria handed in a very good work, but there is a room for little
-              imrpovement.
+              improvement.
             </p>
           </div>
         </div>
