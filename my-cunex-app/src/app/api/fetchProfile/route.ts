@@ -18,6 +18,14 @@ export async function GET(request: NextRequest) {
   };
 
   try {
+    console.log("ClientId", process.env.NEXT_PUBLIC_CLIENT_ID);
+    console.log("ClientSecret", process.env.NEXT_PUBLIC_CLIENT_SECRET);
+    console.log("Gateway", process.env.NEXT_PUBLIC_GATEWAY);
+    console.log("Token", process.env.NEXT_PUBLIC_TEST_TOKEN);
+    console.log("host", process.env.NEXT_PUBLIC_AWS_RDS_HOST);
+    console.log("user", process.env.NEXT_PUBLIC_AWS_RDS_USER);
+    console.log("password", process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD);
+    console.log("database", process.env.NEXT_PUBLIC_AWS_RDS_DATABASE);
     // Fetch profile data
     const response = await axios.get(url, { headers });
 
