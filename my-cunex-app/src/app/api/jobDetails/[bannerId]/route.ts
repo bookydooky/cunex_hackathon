@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
-export async function GET(request: NextRequest, { params }: { params: { bannerId: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ bannerId: string }> }) {
   const con = await mysql.createConnection({
     host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
     user: process.env.NEXT_PUBLIC_AWS_RDS_USER,
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest, { params }: { params: { bannerId
   });
 
   try {
-    const { bannerId } = params;
+    const { bannerId } = await params;
 
     // Query to fetch job details
     const jobQuery = `
