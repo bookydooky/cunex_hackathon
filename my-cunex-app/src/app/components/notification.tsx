@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 interface NotificationProps {
   userId: string;
@@ -14,10 +15,6 @@ interface SubmittedImage {
   submittedImageId: number;
 }
 
-interface GetSubmittedImagesResponse {
-  data: SubmittedImage[];
-  error?: string;
-}
 export default function Notification({
   userId,
   setShowNotifications,
@@ -120,10 +117,12 @@ export default function Notification({
               key={notif.submittedImageId}
               className="flex items-center mb-2 pb-2"
             >
-              <img
+              <Image
                 src={notif.imageURL}
                 alt={notif.bannerName}
-                className="w-10 h-10 rounded-full"
+                width={40}
+                height={40}
+                className="rounded-full"
               />
               <span className="ml-2 flex-1 text-xs text-gray-700">
                 {notif.bannerName}
