@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import ESLintPlugin from "eslint-webpack-plugin";
 
 const nextConfig: NextConfig = {
   images: {
@@ -8,19 +9,13 @@ const nextConfig: NextConfig = {
       'cdn-icons-png.flaticon.com'
     ],
   },
-  webpack: (config, { dev }) => {
-    if (!dev) {
-      // Disable linting during production build
-      config.module.rules.push({
-        test: /\.(js|jsx|ts|tsx)$/,
-        loader: 'eslint-loader',
-        options: {
-          emitWarning: true,
-          emitError: false,
-        },
-        enforce: 'pre',
-      });
-    }
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  webpack(config) {
+    config.plugins.push(new ESLintPlugin({
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
+    }));
     return config;
   },
   /* other config options here */
