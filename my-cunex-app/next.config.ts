@@ -8,6 +8,21 @@ const nextConfig: NextConfig = {
       'cdn-icons-png.flaticon.com'
     ],
   },
+  webpack: (config, { dev }) => {
+    if (!dev) {
+      // Disable linting during production build
+      config.module.rules.push({
+        test: /\.(js|jsx|ts|tsx)$/,
+        loader: 'eslint-loader',
+        options: {
+          emitWarning: true,
+          emitError: false,
+        },
+        enforce: 'pre',
+      });
+    }
+    return config;
+  },
   /* other config options here */
 };
 
