@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Update jobHistory table
-    const [jobHistoryUpdate]: any = await con.query(
+    const [jobHistoryUpdate]: [mysql.ResultSetHeader] = await con.query(
       "UPDATE jobHistory SET accept = ? WHERE historyId = ?",
       [true, historyId]
     );
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     await con.query(salesUpdateQuery, [historyId]);
 
     // Update submittedImages table: mark image as checked
-    const [imageUpdate]: any = await con.query(
+    const [imageUpdate]: [mysql.ResultSetHeader] = await con.query(
       "UPDATE submittedImages SET checked = TRUE WHERE submittedImageId = ?",
       [submittedImageId]
     );

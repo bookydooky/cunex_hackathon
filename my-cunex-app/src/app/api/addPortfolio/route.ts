@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
 
     let newId;
     if (rows.length > 0) {
-      let lastId = rows[0].bannerId.replace(/^0+/, ""); // Remove leading zeros
-      let nextId = parseInt(lastId, 10) + 1; // Increment by 1
+      const lastId = rows[0].bannerId.replace(/^0+/, ""); // Remove leading zeros
+      const nextId = parseInt(lastId, 10) + 1; // Increment by 1
       newId = nextId.toString().padStart(20, "0"); // Ensure 20-character format
     } else {
       newId = "00000000000000000001"; // Start from 1 with zero padding
