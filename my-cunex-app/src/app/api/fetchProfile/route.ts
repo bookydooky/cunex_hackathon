@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const { userId, studentId, firstNameEN, lastNameEN, facultyCode, studentYear } = profile;
 
     // Check if the user exists in the database
-    const [userResult] = await con.query("SELECT * FROM users WHERE userId = ?", [userId]);
+    const [userResult] = await con.query("SELECT * FROM users WHERE userId = ?", [userId]) as any;
 
     if (userResult.length > 0) {
       // User already exists

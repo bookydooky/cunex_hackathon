@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       WHERE jh.buyerId = ? AND si.checked = 0
     `;
 
-    const [result] = await con.query(q, [userId]);
+    const [result] = await con.query(q, [userId]) as any;
 
     return NextResponse.json(result);
   } catch (error) {
