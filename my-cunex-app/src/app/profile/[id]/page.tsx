@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function ProfilePage() {
   interface UserProfile {
@@ -80,7 +81,13 @@ export default function ProfilePage() {
           >
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
-          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+          <Image
+            src="/assets/CUNEX-logo.png"
+            alt="CUNEX Logo"
+            width={48}
+            height={48}
+            className="h-12"
+          />
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-Pink font-medium text-xl">Profile</div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Share2 } from "lucide-react";
+import Image from "next/image";
 
 export default function AllJobs() {
   interface Job {
@@ -18,6 +19,7 @@ export default function AllJobs() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { path, userId } = useParams(); // ✅ Get both parameters
+
   useEffect(() => {
     async function fetchJobs() {
       try {
@@ -38,7 +40,7 @@ export default function AllJobs() {
       }
     }
     fetchJobs();
-  }, []);
+  }, [path]);
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 mx-auto shadow-lg overflow-y-auto">
@@ -51,9 +53,11 @@ export default function AllJobs() {
             onClick={() => router.push("/")}
           />
           <div className="flex items-center">
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
@@ -75,9 +79,11 @@ export default function AllJobs() {
                   router.push(`/work/workdetail/${job.bannerId}/${userId}`)
                 }
               >
-                <img
+                <Image
                   src={job.imageURL || "https://via.placeholder.com/150"}
                   alt={job.bannerName}
+                  width={150}
+                  height={150}
                   className="w-full h-40 object-cover rounded-md"
                 />
                 <h2 className="text-lg text-Gray font-semibold mt-2">
