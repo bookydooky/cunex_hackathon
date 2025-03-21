@@ -1,38 +1,58 @@
-import { NextRequest, NextResponse } from "next/server";
-import mysql from "mysql2/promise";
+import { NextRequest, NextResponse } from 'next/server';
+import mysql from 'mysql2/promise';
 
-export async function GET(request: NextRequest) {
-  const con = await mysql.createConnection({
-    host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
-    user: process.env.NEXT_PUBLIC_AWS_RDS_USER,
-    password: process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD,
-    database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
-  });
-
-  // Get the userId from the URL params
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
+export async function GET(req, { params }) {
+  const { userId } = params;
 
   if (!userId) {
-    return NextResponse.json({ error: "Missing User" }, { status: 400 });
+    return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
   }
 
-  try {
-    // Query to get freelance details
-    const query = `
-      SELECT * FROM freelancers WHERE userId = ?
-    `;
-    const [rows]:any = await con.query(query, [userId]);
+  const dbConfig = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  };
 
-    if (rows.length === 0) {
-      return NextResponse.json({ error: "Freelancer not found" }, { status: 404 });
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+
+    // Query to fetch user details
+    const userQuery = `
+      SELECT u.firstName, u.lastName, u.facultyCode, u.studentYear, 
+             f.facultyNameEN 
+      FROM users u
+      LEFT JOIN faculties f ON u.facultyCode = f.facultyCode
+      WHERE u.userId = ?
+    `;
+    
+    const [userResult] = await connection.execute(userQuery, [userId]);
+
+    if (userResult.length === 0) {
+      await connection.end();
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ freelancer: rows[0] });
+    // Query to fetch sales parameters
+    const salesQuery = `
+      SELECT successRate, jobsSold, rehired, avgResponse, bio, rating 
+      FROM salesParams 
+      WHERE userId = ?
+    `;
+    
+    const [salesResult] = await connection.execute(salesQuery, [userId]);
+    await connection.end();
+
+    // Merge user details with sales parameters
+    const userData = {
+      ...userResult[0],
+      ...salesResult[0],
+    };
+
+    return NextResponse.json(userData);
   } catch (error) {
-    console.error("Database error:", error);
-    return NextResponse.json({ error: "Database error" }, { status: 500 });
-  } finally {
-    await con.end();
+    console.error('Error fetching freelance details:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

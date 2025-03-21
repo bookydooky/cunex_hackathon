@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
 export async function POST(request: NextRequest) {
-  const { historyId, submittedImageId } = await request.json(); // Get data from the request body
+  const { historyId, submittedImageId } = await request.json();
 
   if (!historyId) {
     return NextResponse.json({ error: "Cannot Find Your Work" }, { status: 400 });
@@ -16,87 +16,57 @@ export async function POST(request: NextRequest) {
   });
 
   try {
-    // Start a transaction to ensure data consistency
-    await new Promise<void>((resolve, reject) => {
-      con.beginTransaction((err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
+    await con.beginTransaction();
 
-    // Update jobHistory table to mark the job as denied
+    // **1. Update jobHistory (Set accept to FALSE)**
     const updateJobHistory = `
-      UPDATE jobHistory SET accept = ? WHERE historyId = ?
+      UPDATE jobHistory 
+      SET accept = ? 
+      WHERE historyId = ?
     `;
-    const [jobResult]:any = await con.query(updateJobHistory, [false, historyId]);
+    const [jobResult] = await con.query(updateJobHistory, [false, historyId]);
 
-    if (jobResult.affectedRows === 0) {
-      await new Promise<void>((resolve, reject) => {
-        con.rollback((err) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve();
-        });
-      });
-      return NextResponse.json({ error: "Job not found" }, { status: 404 });
+    if ((jobResult as any).affectedRows === 0) {
+      throw new Error("Job not found");
     }
 
-    // Update salesParams table: adjust totalJobs and successRate
+    // **2. Update salesParams (Only if progress = 3)**
     const updateSalesParams = `
       UPDATE salesParams sp
       JOIN (
-          SELECT sellerId
-          FROM jobHistory
+          SELECT sellerId 
+          FROM jobHistory 
           WHERE historyId = ? AND progress = 3
       ) jh ON sp.userId = jh.sellerId
-      SET sp.totalJobs = sp.totalJobs + 1,
+      SET sp.totalJobs = sp.totalJobs + 1, 
           sp.successRate = (sp.jobsSold) / (sp.totalJobs + 1) * 100
     `;
     await con.query(updateSalesParams, [historyId]);
 
-    // Update submittedImages table: mark the image as checked
+    // **3. Mark image as checked**
     const updateImageQuery = `
-      UPDATE submittedImages
-      SET checked = TRUE
+      UPDATE submittedImages 
+      SET checked = TRUE 
       WHERE submittedImageId = ?
     `;
-    const [imageResult]:any = await con.query(updateImageQuery, [submittedImageId]);
+    const [imageResult] = await con.query(updateImageQuery, [submittedImageId]);
 
-    if (imageResult.affectedRows === 0) {
-      await new Promise<void>((resolve, reject) => {
-        con.rollback((err) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve();
-        });
-      });
-      return NextResponse.json({ error: "Image not found" }, { status: 404 });
+    if ((imageResult as any).affectedRows === 0) {
+      throw new Error("Image not found");
     }
 
-    // Commit the transaction if everything succeeds
+    // **Commit Transaction**
     await con.commit();
 
     return NextResponse.json({
       success: true,
       message: "Job Denied Successfully, Sales Updated",
     });
-
-  } catch (error) {
+  } catch (error: any) {
+    await con.rollback();
     console.error("Error processing request:", error);
-    await new Promise<void>((resolve, reject) => {
-      con.rollback((err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    }); // Rollback the transaction in case of an error
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
   } finally {
-    await con.end(); // Close the connection
+    await con.end();
   }
 }

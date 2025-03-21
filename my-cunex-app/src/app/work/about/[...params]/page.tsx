@@ -38,7 +38,6 @@ const WorkAbout = () => {
 
   useEffect(() => {
     if (!bannerId) return;
-
     const fetchJobDetails = async () => {
       try {
         const response = await fetch(

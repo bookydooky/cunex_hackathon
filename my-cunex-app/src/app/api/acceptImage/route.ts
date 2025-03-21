@@ -20,24 +20,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Start transaction
-    await con.beginTransaction((err) => {
-      if (err) {
-        throw err;
-      }
-    });
+    await con.beginTransaction();
 
     // Update jobHistory table
-    const [jobHistoryUpdate]: [mysql.ResultSetHeader] = await con.query(
+    const [jobHistoryUpdate] = await con.query<mysql.ResultSetHeader>(
       "UPDATE jobHistory SET accept = ? WHERE historyId = ?",
       [true, historyId]
     );
 
     if (jobHistoryUpdate.affectedRows === 0) {
-      await con.rollback((err) => {
-        if (err) {
-          console.error("Rollback error:", err);
-        }
-      });
+      await con.rollback();
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
 
@@ -53,17 +45,13 @@ export async function POST(request: NextRequest) {
     await con.query(salesUpdateQuery, [historyId]);
 
     // Update submittedImages table: mark image as checked
-    const [imageUpdate]: [mysql.ResultSetHeader] = await con.query(
+    const [imageUpdate] = await con.query<mysql.ResultSetHeader>(
       "UPDATE submittedImages SET checked = TRUE WHERE submittedImageId = ?",
       [submittedImageId]
     );
 
     if (imageUpdate.affectedRows === 0) {
-      await con.rollback((err) => {
-        if (err) {
-          console.error("Rollback error:", err);
-        }
-      });
+      await con.rollback();
       return NextResponse.json({ error: "Image not found" }, { status: 404 });
     }
 
@@ -76,11 +64,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error processing request:", error);
-    await con.rollback((err) => {
-      if (err) {
-        console.error("Rollback error:", err);
-      }
-    });
+    await con.rollback();
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   } finally {
     await con.end();
