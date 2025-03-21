@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
       password: process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD,
       database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
     });
-    const [collaborations] = await connection.execute(query, [userId]);
+    const [collaborations] = (await connection.execute(query, [userId])) as any;
 
     const formattedCollaborations = collaborations.map(
       (collab: Collaboration) => ({

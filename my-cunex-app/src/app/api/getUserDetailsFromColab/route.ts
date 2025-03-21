@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       WHERE c.bannerId = ? AND c.confirmed = True AND (c.confirmedOrg = True OR c.confirmedOrg IS NULL)
     `;
 
-    const [users] = await con.execute(userDetailsQuery, [bannerId]);
+    const [users] = (await con.execute(userDetailsQuery, [bannerId])) as any;
 
     if (users.length === 0) {
       return NextResponse.json(

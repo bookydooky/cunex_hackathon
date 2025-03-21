@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
       database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
     });
 
-    const [banners] = await connection.execute(
+    const [banners] = (await connection.execute(
       `SELECT 
         jb.bannerId,
         jb.bannerName,
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
       FROM jobBanners jb
       WHERE jb.userId = ? AND jb.bannerId IN (SELECT bannerId FROM colabs)`,
       [userId]
-    );
+    )) as any;
 
     await connection.end();
 
