@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
       database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
     });
 
-    const [result] = await connection.execute(
+    const [result] = (await connection.execute(
       `UPDATE colabs SET confirmed = FALSE WHERE userId = ? AND bannerId = ?`,
       [userId, bannerId]
-    );
+    )) as any;
 
     await connection.end();
 
