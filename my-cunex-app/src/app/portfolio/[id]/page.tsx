@@ -3,19 +3,14 @@ import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
 import { ArrowLeft, X, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function Portfolio() {
   const params = useParams();
   const userId = params.id;
-  const [portfolioItems, setPortfolioItems] = useState<File[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
-  //Chien
   const [files, setFiles] = useState<{ file: File; preview: string }[]>([]); // Store multiple files
-
-  const [uploading, setUploading] = useState(false);
-
-  const [bannerId, setbannerId] = useState(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
@@ -32,8 +27,6 @@ export default function Portfolio() {
       console.error("No files selected for upload");
       return;
     }
-
-    setUploading(true);
 
     try {
       const formData = new FormData();
@@ -59,7 +52,6 @@ export default function Portfolio() {
     } catch (error) {
       console.error("Error uploading files:", error);
     } finally {
-      setUploading(false);
       setFiles([]); // Clear files after upload
     }
   };
@@ -67,7 +59,7 @@ export default function Portfolio() {
   const sendToServer = async (fileUrls: string[], bannerId: string | null) => {
     console.log("Sent Banner Id: ", bannerId);
     try {
-      const response = await fetch("http://localhost:3001/addImages", {
+      const response = await fetch("/api/addImages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +108,7 @@ export default function Portfolio() {
     console.log("Sending data to server:", workData);
 
     try {
-      const response = await fetch("http://localhost:3001/addPortfolio", {
+      const response = await fetch("/api/addPortfolio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -127,19 +119,17 @@ export default function Portfolio() {
       console.log("Server response:", result);
 
       if (result.bannerId) {
-        setbannerId(result.bannerId); // Still update the state for other uses
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+        }, 3000); // Hide the pop-up after 3 seconds
+
+        setTimeout(() => {
+          router.push("/");
+        }, 1500);
+
+        return result; // Return the result to get the bannerId
       }
-
-      setShowPopup(true);
-      setTimeout(() => {
-        setShowPopup(false);
-      }, 3000); // Hide the pop-up after 3 seconds
-
-      setTimeout(() => {
-        router.push("/");
-      }, 1500);
-
-      return result; // Return the result to get the bannerId
     } catch (error) {
       console.error("Error submitting portfolio:", error);
       throw error; // Re-throw to handle in the calling function
@@ -157,7 +147,6 @@ export default function Portfolio() {
       console.error("Error submitting portfolio:", error);
     }
   };
-  //---------------------------------------------------------------------
 
   const handlePreviousPage = () => {
     router.back();
@@ -175,9 +164,11 @@ export default function Portfolio() {
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
@@ -202,11 +193,10 @@ export default function Portfolio() {
           <p className="text-gray-600">
             These pictures will provide the customers a brief view of what kind
             of product/service they will receive. You can also attach your
-            portfolio for your own creditibility.
+            portfolio for your own credibility.
           </p>
 
           {/* Upload area */}
-
           <div className="border-2 border-dashed border-Pink rounded-lg p-6 mt-4 flex flex-col items-center justify-center">
             <div className="text-Pink mb-2">
               <IoCloudUpload className="text-4xl" />
@@ -253,12 +243,13 @@ export default function Portfolio() {
                   >
                     <X size={20} />
                   </button>
-                  <img
+                  <Image
                     src={file.preview}
                     alt={`Portfolio Item ${index + 1}`}
+                    width={96}
+                    height={96}
                     className="w-full h-24 object-cover rounded-md mb-2"
                   />
-                  {/*<p className="text-sm text-gray-600">{file.file.name}</p>*/}
                 </div>
                 <p className="text-sm text-gray-600">
                   Portfolio Item {index + 1}
@@ -292,7 +283,7 @@ export default function Portfolio() {
       )}
       {showPopup && files.length == 0 && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg">
-          Can't add empty portfolio!
+          Can&apos;t add empty portfolio!
         </div>
       )}
     </div>

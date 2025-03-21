@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import { ArrowLeft, Share2 } from 'lucide-react';
+import Image from 'next/image';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -25,7 +26,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
           </button>
           <div className="flex items-center">
-            <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+            <Image
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              width={48}
+              height={48}
+              className="h-12"
+            />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-Pink text-xl font-medium">Services</div>
           </div>

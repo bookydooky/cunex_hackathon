@@ -18,6 +18,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Notification from "./components/notification";
 import axios from "axios";
 import { GlobalStateContext } from "./context/GlobalState";
@@ -71,7 +72,7 @@ export default function Home() {
       try {
         // Use the correct server endpoint
         const response = await fetch(
-          "http://localhost:3001/api/latest-jobs?limit=3"
+          "/api/latest-jobs?typeOfWork=None&limit=3"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch latest jobs");
@@ -86,7 +87,7 @@ export default function Home() {
     }
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/fetchProfile");
+        const response = await axios.get("/api/fetchProfile");
         console.log("Profile fetched successfully:", response.data);
         setProfile(response.data);
       } catch (err) {
@@ -109,7 +110,13 @@ export default function Home() {
       {/* Header */}
       <div className="bg-white p-4 shadow-md">
         <div className="flex justify-between items-center">
-          <img src="/assets/CUNEX-logo.png" alt="CUNEX Logo" className="h-12" />
+          <Image
+            src="/assets/CUNEX-logo.png"
+            alt="CUNEX Logo"
+            width={48}
+            height={48}
+            className="h-12"
+          />
 
           <div className="flex-1 mx-2">
             <div className="bg-gray-100 rounded-full px-3 py-2 flex items-center h-10 w-full">
@@ -268,9 +275,11 @@ export default function Home() {
                         )
                       }
                     >
-                      <img
+                      <Image
                         src={job.imageURL}
                         alt={job.bannerName || `Job ${idx}`}
+                        width={96}
+                        height={96}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement; // Type assertion

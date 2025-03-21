@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       WHERE jh.sellerId = ? AND NOT (COALESCE(jh.accept,-1) = 1 OR (jh.progress = 3 AND COALESCE(jh.accept,-1) = 0))
     `;
 
-    const [rows] = await con.execute(jobData, [userId]);
+    const [rows] = (await con.execute(jobData, [userId])) as any;
     return NextResponse.json({ jobs: rows });
   } catch (error) {
     console.error("Database error:", error);

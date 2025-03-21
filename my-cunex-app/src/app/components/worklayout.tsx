@@ -2,7 +2,9 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
+import Image from "next/image";
 import ImageCarousel from "./ImageCarousel";
+
 interface JobDetailResponse {
   bannerId: string;
   userId: string;
@@ -13,6 +15,7 @@ interface JobDetailResponse {
   bannerdesc: string;
   images: string[]; // Array of image URLs
 }
+
 interface WorkDetailLayoutProps {
   jobData: JobDetailResponse;
   userId: string;
@@ -59,9 +62,11 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
             onClick={() => handleNavigation("/")}
           />
           <div className="flex items-center">
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
@@ -74,7 +79,6 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
       </div>
 
       {/* Logo Image Carousel */}
-
       <ImageCarousel images={carouselImages} />
 
       {/* Tab Navigation */}

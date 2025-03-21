@@ -1,9 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
+import Image from "next/image";
+
 export default function MyJobsPage() {
   interface OngoingJob {
     historyId: number;
@@ -36,13 +38,15 @@ export default function MyJobsPage() {
     firstName?: string;
     lastName?: string;
   }
+
   const params = useParams();
-  const userId = params.id; // ✅ Get id dynamically  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("ongoing");
+  const userId = params.id;
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState("ongoing");
   const [ongoingJobs, setOngoingJobs] = useState<OngoingJob[]>([]);
   const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
-  const getOngoingJobs = async () => {
+
+  const getOngoingJobs = useCallback(async () => {
     try {
       const response = await fetch(`/api/getOngoingJobs?userId=${userId}`, {
         method: "GET",
@@ -58,8 +62,9 @@ export default function MyJobsPage() {
       console.error("Error Finding Ongoing Jobs", error);
       throw error; // Re-throw to handle in the calling function
     }
-  };
-  const getCompletedJobs = async () => {
+  }, [userId]);
+
+  const getCompletedJobs = useCallback(async () => {
     try {
       const response = await fetch(`/api/getCompletedJobs?userId=${userId}`, {
         method: "GET",
@@ -72,15 +77,16 @@ export default function MyJobsPage() {
       setCompletedJobs(result.jobs);
       return result; // Return the result to get the bannerId
     } catch (error) {
-      console.error("Error Finding Ongoing Jobs", error);
+      console.error("Error Finding Completed Jobs", error);
       throw error; // Re-throw to handle in the calling function
     }
-  };
+  }, [userId]);
+
   useEffect(() => {
     getOngoingJobs();
     getCompletedJobs();
     console.log("userId", userId);
-  }, []);
+  }, [getOngoingJobs, getCompletedJobs, userId]);
 
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
@@ -94,9 +100,11 @@ export default function MyJobsPage() {
             >
               <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
             </button>
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>

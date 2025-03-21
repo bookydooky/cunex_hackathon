@@ -2,6 +2,7 @@
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
+import Image from "next/image";
 
 export default function ServiceSelectionPage() {
   const { service } = useContext(GlobalStateContext);
@@ -51,16 +52,14 @@ export default function ServiceSelectionPage() {
 
           {/* 3D Printing Option */}
           {service === "3d" && (
-            <div
-              className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
-                    border-pink-500
-                "
-            >
+            <div className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all border-pink-500">
               <div className="bg-pink-100 p-6 flex justify-center items-center">
                 <div className="text-6xl">
-                  <img
+                  <Image
                     src="https://cdn-icons-png.flaticon.com/512/2844/2844942.png"
                     alt="3D printing vector"
+                    width={80}
+                    height={80}
                     className="h-20"
                   />
                 </div>
@@ -83,16 +82,14 @@ export default function ServiceSelectionPage() {
           )}
           {/* Laser Cutting Option */}
           {service === "lasercut" && (
-            <div
-              className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all ${
-                  border-pink-500
-                "
-            >
+            <div className="border-2 rounded-xl overflow-hidden cursor-pointer transition-all border-pink-500">
               <div className="bg-pink-100 p-6 flex justify-center items-center">
                 <div className="text-6xl">
-                  <img
+                  <Image
                     src="https://cdn-icons-png.flaticon.com/512/2162/2162509.png"
                     alt="Laser cutting vector"
+                    width={80}
+                    height={80}
                     className="h-20"
                   />
                 </div>
@@ -116,9 +113,7 @@ export default function ServiceSelectionPage() {
 
           <div className="mt-10 text-center">
             <button
-              className="bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium transition-all ${
-                 hover:bg-darkPink transition-transform transform active:scale-90 active:bg-darkPink
-              "
+              className="bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium transition-all hover:bg-darkPink transition-transform transform active:scale-90 active:bg-darkPink"
               onClick={() => {
                 router.push("/service/detail");
               }}
