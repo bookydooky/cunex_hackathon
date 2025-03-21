@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
-
+interface User {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  studentId: string;
+  studentYear: string;
+  facultyCode: string;
+  facultyNameEN: string;
+  confirmedOrg: boolean | null;
+  workTypes?: string[]; // Optional property to hold work types
+}
 export async function GET(request: NextRequest) {
   const con = await mysql.createConnection({
     host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
@@ -49,9 +59,13 @@ export async function GET(request: NextRequest) {
       WHERE jb.userId = ?
     `;
 
-    const userPromises = users.map(async (user) => {
-      const [workTypes] = await con.execute(workTypesQuery, [user.userId]);
-      user.workTypes = workTypes.map((work) => work.typeOfWork);
+    const userPromises = users.map(async (user: User) => {
+      const [workTypes] = (await con.execute(workTypesQuery, [
+        user.userId,
+      ])) as any;
+      user.workTypes = workTypes.map(
+        (work: { typeOfWork: string }) => work.typeOfWork
+      );
       return user;
     });
 
