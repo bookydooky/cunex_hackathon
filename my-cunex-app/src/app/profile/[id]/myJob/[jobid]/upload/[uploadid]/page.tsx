@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeft, Share2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
 
 const ImageUpload = () => {
   const params = useParams();
@@ -11,6 +12,7 @@ const ImageUpload = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter(); // Don't forget to use the router for navigation
   const [acceptStatus, setAcceptStatus] = useState<boolean | null>(null); // Explicitly set type
+
   useEffect(() => {
     console.log("History Id: ", historyId);
     const fetchAcceptStatus = async () => {
@@ -32,6 +34,7 @@ const ImageUpload = () => {
       fetchAcceptStatus();
     }
   }, [historyId]);
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     preventDefaults(e);
 
@@ -131,9 +134,11 @@ const ImageUpload = () => {
             <ArrowLeft className="mr-4 text-Pink hover:text-pink-800" />
           </button>
           <div className="flex items-center">
-            <img
+            <Image
               src="/assets/CUNEX-logo.png"
               alt="CUNEX Logo"
+              width={48}
+              height={48}
               className="h-12"
             />
           </div>
@@ -166,9 +171,11 @@ const ImageUpload = () => {
             {/* Display selected image if available */}
             {imageSrc && (
               <div className="mt-4">
-                <img
+                <Image
                   src={imageSrc}
                   alt="Selected"
+                  width={400}
+                  height={300}
                   className="w-full h-auto object-cover rounded-lg"
                 />
               </div>
