@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
-export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
+export async function GET(request: NextRequest,   { params }: { params: Promise<{ userId: string }> }) {
   const con = await mysql.createConnection({
     host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
     user: process.env.NEXT_PUBLIC_AWS_RDS_USER,
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: { userId: 
     database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
   });
 
-  const { userId } = params;
+  const { userId } = await params;
 
   try {
     // Query to fetch user details
