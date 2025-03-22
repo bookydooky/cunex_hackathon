@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -145,12 +145,11 @@ const ImageUpload = () => {
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-Pink font-medium text-xl">Upload Image</div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
 
       <div className="flex-1 flex justify-center items-center p-4">
         <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-md text-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          <h2 className="text-xl font-semibold text-Gray mb-2">
             Upload Your Picture
           </h2>
           <p className="text-gray-600 mb-6">
@@ -193,8 +192,8 @@ const ImageUpload = () => {
           <button
             className={`font-medium w-full py-2 px-6 rounded-lg transition-colors ${
               acceptStatus === null
-                ? "bg-gray-400 cursor-not-allowed text-white"
-                : "bg-pink-500 hover:bg-pink-600 text-white transition-transform transform active:scale-90 active:bg-darkPink"
+                ? "bg-Pink/50 cursor-not-allowed text-white"
+                : "bg-Pink hover:bg-darkPink text-white transition-transform transform active:scale-90 active:bg-darkPink"
             }`}
             onClick={handleFileSubmit}
             disabled={acceptStatus === null}

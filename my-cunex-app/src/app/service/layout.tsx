@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
-import { ArrowLeft, Share2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -37,7 +37,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <div className="text-Pink text-xl font-medium">Services</div>
           </div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
     
       {/* Page Content */}

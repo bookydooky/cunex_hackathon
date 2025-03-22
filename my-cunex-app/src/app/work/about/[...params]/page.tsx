@@ -117,7 +117,7 @@ const WorkAbout = () => {
 
         {/* Profile Header */}
         <div className="flex items-center mt-2 mb-4">
-          <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden border-4 border-pink-400">
+          <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden border-4 border-Pink">
             <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
               120 x 120
             </div>

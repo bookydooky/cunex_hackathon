@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import ImageCarousel from "./ImageCarousel";
 
@@ -55,7 +55,7 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
   return (
     <div className="flex flex-col h-screen bg-white mx-auto shadow-lg relative">
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between border-b">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center">
           <ArrowLeft
             className="mr-4 text-Pink hover:text-darkPink transition-transform transform active:scale-90"
@@ -75,14 +75,13 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
             </div>
           </div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
 
       {/* Logo Image Carousel */}
       <ImageCarousel images={carouselImages} />
 
       {/* Tab Navigation */}
-      <div className="flex border-b">
+      <div className="flex">
         <button
           onClick={() =>
             handleNavigation(`/work/workdetail/${jobData.bannerId}/${userId}`)
@@ -125,7 +124,8 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
       <div className="flex-1 overflow-y-auto mx-2 pb-16">{children}</div>
       <div className="absolute bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4">
         <button
-          className="flex-grow bg-Pink hover:bg-darkPink text-white py-4 rounded-lg font-medium"
+          className="flex-grow bg-Pink hover:bg-darkPink text-white py-4 rounded-lg font-medium
+          transition-transform transform active:scale-90"
           onClick={() =>
             handleNavigation(`/work/checkout/${jobData.bannerId}/${userId}`)
           }

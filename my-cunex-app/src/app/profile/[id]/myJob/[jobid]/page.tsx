@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
 import Image from "next/image";
@@ -110,7 +110,6 @@ export default function MyJobsPage() {
             <div className="h-6 border-l border-gray-300 mx-5"></div>
             <div className="text-Pink font-medium text-xl">Profile</div>
           </div>
-          <Share2 className="text-Gray" />
         </div>
 
         {/* Tabs */}
@@ -148,7 +147,7 @@ export default function MyJobsPage() {
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-Gray">
+                    <h2 className="font-semibold text-xl text-Gray">
                       {job.bannerName}
                     </h2>
                     <span className="text-Pink font-medium">{job.price}</span>
@@ -213,7 +212,7 @@ export default function MyJobsPage() {
               >
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
-                    <h2 className="font-semibold text-Gray">
+                    <h2 className="font-semibold text-xl text-Gray">
                       {job.bannerName}
                     </h2>
                     <span className="text-Pink font-medium">{job.price}</span>

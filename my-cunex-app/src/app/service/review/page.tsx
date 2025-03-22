@@ -155,25 +155,25 @@ export default function ReviewAndPayPage() {
 
                 <div className="space-y-3">
                   <div
-                    className={`border rounded-lg p-4 flex items-center cursor-pointer ${
+                    className={`border rounded-lg p-4 flex items-center cursor-pointer text-Gray ${
                       paymentMethod === "credit-card"
-                        ? "bordet-Pink bg-pink-50"
-                        : "border-gray-200"
+                        ? "border-Pink text-Pink"
+                        : "border-gray-300"
                     }`}
                     onClick={() => setPaymentMethod("credit-card")}
                   >
                     <div
                       className={`w-5 h-5 rounded-full border ${
                         paymentMethod === "credit-card"
-                          ? "bordet-Pink"
+                          ? "border-Pink"
                           : "border-gray-300"
                       } flex items-center justify-center mr-3`}
                     >
                       {paymentMethod === "credit-card" && (
-                        <div className="w-3 h-3 rounded-full bt-Pink"></div>
+                        <div className="w-3 h-3 rounded-full bg-Pink"></div>
                       )}
                     </div>
-                    <div className="flex-grow text-Gray">Credit Card</div>
+                    <div className="flex-grow">Credit Card</div>
                     <div className="flex gap-2">
                       <div className="w-10 h-6 bg-blue-500 rounded"></div>
                       <div className="w-10 h-6 bg-red-500 rounded"></div>
@@ -182,9 +182,9 @@ export default function ReviewAndPayPage() {
                   </div>
 
                   <div
-                    className={`border rounded-lg p-4 flex items-center cursor-pointer ${
+                    className={`border rounded-lg p-4 flex items-center cursor-pointer text-Gray ${
                       paymentMethod === "paypal"
-                        ? "bordet-Pink bg-pink-50"
+                        ? "border-Pink text-Pink"
                         : "border-gray-200"
                     }`}
                     onClick={() => setPaymentMethod("paypal")}
@@ -192,15 +192,15 @@ export default function ReviewAndPayPage() {
                     <div
                       className={`w-5 h-5 rounded-full border ${
                         paymentMethod === "paypal"
-                          ? "bordet-Pink"
+                          ? "border-Pink"
                           : "border-gray-300"
                       } flex items-center justify-center mr-3`}
                     >
                       {paymentMethod === "paypal" && (
-                        <div className="w-3 h-3 rounded-full bt-Pink"></div>
+                        <div className="w-3 h-3 rounded-full bg-Pink"></div>
                       )}
                     </div>
-                    <div className="flex-grow text-Gray">PayPal</div>
+                    <div className="flex-grow">PayPal</div>
                     <div className="w-16 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
                       PayPal
                     </div>
@@ -326,7 +326,7 @@ export default function ReviewAndPayPage() {
 
                 <div className="pt-4">
                   <button
-                    className={`w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-semibold transition-all ${
+                    className={`w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium transition-all ${
                       agreeToTerms
                         ? "hover:bg-darkPink hover:shadow-lg transition-transform transform active:scale-90 active:bg-darkPink"
                         : "opacity-50 cursor-not-allowed"

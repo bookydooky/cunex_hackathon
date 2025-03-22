@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, Share2, MessageSquare } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 export default function MessagePage() {
@@ -54,7 +54,7 @@ export default function MessagePage() {
               onClick={() => router.back()}
               className="transition-transform transform active:scale-90"
             >
-              <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-700" />
+              <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
             </button>
             <img
               src="/assets/CUNEX-logo.png"
@@ -62,9 +62,8 @@ export default function MessagePage() {
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 font-medium text-xl">My Team</div>
+            <div className="text-Pink font-medium text-xl">My Team</div>
           </div>
-          <Share2 className="text-gray-500" />
         </div>
       </div>
 
@@ -76,14 +75,14 @@ export default function MessagePage() {
             className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
           >
             <div className="p-4">
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex justify-between items-start mb-1">
                 <h2 className="font-semibold text-gray-700">
                   {job.bannerName}
                 </h2>
-                <span className="text-pink-500 font-medium">${job.price}</span>
+                <span className="text-Pink font-medium">${job.price}</span>
               </div>
 
-              <div className="flex justify-between items-center mb-3">
+              <div className="flex justify-between items-center mb-1">
                 <p className="text-gray-500 text-sm">
                   Duration: {job.duration} days
                 </p>

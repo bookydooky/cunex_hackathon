@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, Share2, MessageSquare } from "lucide-react";
+import { ArrowLeft, MessageSquare } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 
 export default function MessagePage() {
@@ -106,7 +106,7 @@ export default function MessagePage() {
               onClick={() => router.back()}
               className="transition-transform transform active:scale-90"
             >
-              <ArrowLeft className="mr-4 text-pink-500 hover:text-pink-700" />
+              <ArrowLeft className="mr-4 text-Pink hover:darkPink" />
             </button>
             <img
               src="/assets/CUNEX-logo.png"
@@ -114,9 +114,8 @@ export default function MessagePage() {
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-pink-500 font-medium text-xl">Team ups</div>
+            <div className="text-Pink font-medium text-xl">Team ups</div>
           </div>
-          <Share2 className="text-gray-500" />
         </div>
       </div>
 
@@ -138,18 +137,18 @@ export default function MessagePage() {
             ) : (
               <>
                 <div className="p-4">
-                  <div className="flex justify-between items-start mb-3">
+                  <div className="flex justify-between items-start mb-1">
                     <h2 className="font-semibold text-gray-700">
                       {job.bannerName}
                     </h2>
-                    <span className="text-pink-500 font-medium">
+                    <span className="text-Pink font-medium">
                       {job.price}
                     </span>
                   </div>
                   <p className="text-gray-500 text-sm mb-1">
                     Job Owner: {job.firstName} {job.lastName}
                   </p>
-                  <div className="flex justify-between items-center mb-3">
+                  <div className="flex justify-between items-center mb-1">
                     <p className="text-gray-500 text-sm">
                       Duration: {job.duration}
                     </p>
@@ -158,7 +157,7 @@ export default function MessagePage() {
 
                 <div className="flex border-t border-gray-100">
                   <button className="w-full py-3 text-center text-gray-700 flex items-center justify-center hover:bg-gray-50 active:bg-gray-100">
-                    <MessageSquare className="w-5 h-5 mr-2 text-pink-500" />
+                    <MessageSquare className="w-5 h-5 mr-2 text-Pink" />
                     Message
                   </button>
                 </div>
@@ -167,7 +166,7 @@ export default function MessagePage() {
                     className="w-1/2 py-3 text-center text-green-600 font-medium hover:bg-green-50 active:bg-green-100"
                     onClick={() => handleAccept(userId, job.bannerId)}
                   >
-                    Submit
+                    Accept
                   </button>
                   <button
                     className="w-1/2 py-3 text-center text-red-600 font-medium hover:bg-red-50 active:bg-red-100"

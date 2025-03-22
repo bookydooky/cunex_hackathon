@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
 export default function AllJobs() {
@@ -45,7 +45,7 @@ export default function AllJobs() {
   return (
     <div className="flex flex-col h-screen bg-gray-100 mx-auto shadow-lg overflow-y-auto">
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between border-b bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white">
         <div className="flex items-center">
           <ArrowLeft
             className="mr-4 text-Pink hover:text-darkPink transition-transform
@@ -64,7 +64,6 @@ export default function AllJobs() {
             <div className="text-Pink text-xl font-medium">All Jobs</div>
           </div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
       <div className="p-6">
         {loading ? (

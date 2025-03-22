@@ -125,11 +125,11 @@ export default function UploadPagePreview() {
                     className={`border-2 ${
                       selectedMaterial === material.id
                         ? "border-Pink bg-pink-50"
-                        : "border-pink-200"
+                        : "border-gray-300"
                     } rounded-lg p-4 text-center cursor-pointer transition-all hover:border-Pink hover:bg-pink-50`}
                     onClick={() => handleMaterialSelect(material.id)}
                   >
-                    <div className="text-2xl mb-2">{material.icon}</div>
+                    {/* <div className="text-2xl mb-2">{material.icon}</div> */}
                     <div className="text-Gray">{material.name}</div>
                   </div>
                 ))}
@@ -146,7 +146,7 @@ export default function UploadPagePreview() {
               <textarea
                 id="size"
                 name="size"
-                className="w-full p-3 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-Pink text-Gray"
+                className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-Pink text-Gray"
                 rows={3}
                 placeholder="Please enter your desired dimensions, color, and any specific details about scale or measurements."
               ></textarea>
@@ -162,7 +162,7 @@ export default function UploadPagePreview() {
               <textarea
                 id="additional"
                 name="additional"
-                className="w-full p-3 border-2 border-pink-200 rounded-lg focus:outline-none focus:border-Pink text-Gray"
+                className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-Pink text-Gray"
                 rows={4}
                 placeholder="Enter any finishing requirements, painting instructions, special considerations or other notes for your project."
               ></textarea>
@@ -171,7 +171,7 @@ export default function UploadPagePreview() {
             <button
               type="button"
               onClickCapture={() => router.push("/service/review")}
-              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-semibold transition-transform transform 
+              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium transition-transform transform 
               hover:bg-darkPink hover:shadow-lg active:scale-90 active:bg-darkPink"
             >
               Continue to Review

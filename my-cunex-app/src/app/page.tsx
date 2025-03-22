@@ -60,6 +60,14 @@ export default function Home() {
   const handleServiceClick = (label: string) => {
     if (label.includes("3D Printing")) setService("3d");
     else if (label.includes("Laser Cutting")) setService("lasercut");
+    else {
+      setService("delivery");
+      setIsPopupVisible(true)
+      setTimeout(() => {
+        setIsPopupVisible(false);
+      }, 3000); // Hide the pop-up after 3 seconds;
+      return;
+    }
     router.push("/service/startorder");
   };
   const [latestJobs, setLatestJobs] = useState<Job[]>([]);
@@ -73,6 +81,7 @@ export default function Home() {
     facultyCode: "",
     studentYear: "",
   });
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -319,6 +328,15 @@ export default function Home() {
                 ))}
           </div>
         </div>
+        {/* Popup for Delivery Service */}
+        {isPopupVisible && (
+        <div className="flex justify-center">
+          <div className="fixed bottom-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+            Service not available yet!
+          </div>
+        </div>
+        )}
+
       </div>
     </div>
   );
