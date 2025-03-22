@@ -62,7 +62,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
     <div className="fixed inset-0 flex items-end justify-center bg-black/50">
       <div className="bg-white w-full rounded-lg shadow-lg flex flex-col px-8 py-8">
         <div className="flex justify-center">
-          <h2 className="text-xl text-black font-bold mb-6">
+          <h2 className="text-xl text-Gray font-bold mb-6">
             Collaborate with Others
           </h2>
         </div>
@@ -73,11 +73,12 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
             placeholder="Student ID"
             value={newMember}
             onChange={(e) => setNewMember(e.target.value)}
-            className="w-full p-3 border text-gray-800 border-gray-300 rounded-lg"
+            className="w-full p-3 border text-gray-800 border-gray-300 rounded-lg
+            focus:border-Pink focus:outline-none"
           />
           <button
-            className="mt-2 bg-pink-500 text-white text-sm px-4 py-1 rounded-full
-             transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+            className="mt-2 bg-Pink text-white text-sm px-4 py-1 rounded-full
+             transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink"
             onClick={handleAddMember}
           >
             Add
@@ -88,7 +89,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           <div className="relative w-1/2">
             <select
               name="workType"
-              className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-Gray
+              focus:border-Pink focus:outline-none"
               onChange={(e) => setNewSearchMember(e.target.value)}
               value={newSearchMember}
             >
@@ -108,7 +110,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           <div className="relative w-1/20">
             <select
               name="collaborators"
-              className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black
+              focus:border-Pink focus:outline-none"
               onChange={(e) => setNewSearchTotal(e.target.value)}
               value={newSearchTotal}
             >
@@ -125,8 +128,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
         </div>
         <div className="mb-3">
           <button
-            className="mt-2 bg-pink-500 text-white text-sm px-4 py-1 rounded-full
-             transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+            className="mt-2 bg-Pink text-white text-sm px-4 py-1 rounded-full
+             transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink"
             onClick={handleSearchMember}
           >
             Add
@@ -198,8 +201,8 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
           </button>
           <button
             onClick={handleConfirm}
-            className="mt-4 bg-pink-500 text-white py-2 px-4 rounded-lg flex-1
-          transition-colors duration-200 ease-in-out hover:bg-pink-600 active:bg-pink-700"
+            className="mt-4 bg-Pink text-white py-2 px-4 rounded-lg flex-1
+          transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink"
           >
             Confirm
           </button>

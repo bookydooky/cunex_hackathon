@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -91,26 +91,27 @@ export default function ProfilePage() {
           <div className="h-6 border-l border-gray-300 mx-5"></div>
           <div className="text-Pink font-medium text-xl">Profile</div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
 
       {/* Profile summary */}
       <div className="bg-white mx-4 mt-4 rounded-lg shadow-sm overflow-hidden">
         <div className="p-4 flex w-full items-center justify-center gap-x-5">
           {/* Profile image */}
-          <div className="w-30 h-30 bg-gray-100 rounded-full flex items-center justify-center mr-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-300"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <div className="flex flex-col items-center">
+            <div className="w-30 h-30 bg-gray-100 rounded-full flex items-center justify-center mr-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8 text-gray-300"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
           </div>
 
           {/* Profile info */}
@@ -126,8 +127,8 @@ export default function ProfilePage() {
             </p>
             <p className="text-gray-500 text-sm">ID: {userData.studentId}</p>
             <div className="mt-2 flex justify-center">
-              <button className="border border-Pink text-Pink rounded-full px-6 py-1 w-50 text-sm">
-                Edit Profile
+              <button className="border border-Pink text-Pink rounded-full px-6 py-1 w-50 text-[10px]">
+                Edit Profile Picture
               </button>
             </div>
           </div>
@@ -182,38 +183,11 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-        {/* Team up Requests*/}
+        {/* My Team */}
         <div
           className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
-      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
-        >
-          <Link href={`/profile/${userId}/colab/${userId}`}>
-            <div className="p-4 flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-Pink text-sm">+</span>
-                </div>
-                <span className="text-Gray">Team Up Requests</span>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </Link>
-        </div>
-        <div
-          className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
-      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
-        >
+          transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+            >
           <Link href={`/profile/${userId}/myTeam/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
@@ -237,65 +211,18 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-        {/* Payment Methods */}
-        <div className="bg-white rounded-lg mb-3 shadow-sm">
-          <Link href="/payment-methods">
+        {/* Team up Requests */}
+        <div
+          className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
+      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+        >
+          <Link href={`/profile/${userId}/colab/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-Pink text-sm">−</span>
+                  <span className="text-Pink text-sm">+</span>
                 </div>
-                <span className="text-Gray">Payment Methods</span>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </Link>
-        </div>
-        {/* Order History */}
-        <div className="bg-white rounded-lg mb-3 shadow-sm">
-          <Link href="/order-history">
-            <div className="p-4 flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-Pink text-sm">×</span>
-                </div>
-                <span className="text-Gray">Order History</span>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </Link>
-        </div>
-        {/* Settings */}
-        <div className="bg-white rounded-lg mb-3 shadow-sm">
-          <Link href="/settings">
-            <div className="p-4 flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-Pink text-sm">◯</span>
-                </div>
-                <span className="text-Gray">Settings</span>
+                <span className="text-Gray">Team Up Requests</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
@@ -89,7 +89,6 @@ export default function Checkout() {
             <div className="text-Pink text-xl font-medium">Checkout</div>
           </div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
 
       {/* Order Summary */}
@@ -117,8 +116,8 @@ export default function Checkout() {
           <div className="text-gray-800 font-medium">{jobData.price} THB</div>
         </div>
         <div className="flex justify-between pt-4 border-t">
-          <span className="font-bold text-Gray">Total</span>
-          <span className="font-bold text-Gray">{jobData.price} THB</span>
+          <span className="font-bold text-Pink">Total</span>
+          <span className="font-bold text-Pink">{jobData.price} THB</span>
         </div>
       </div>
 
@@ -206,19 +205,22 @@ export default function Checkout() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Name
             </label>
-            <input type="text" className="w-full p-2 border rounded-md" />
+            <input type="text" className="w-full p-2 border border-gray-300 rounded-md
+            focus:border-Pink outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
-            <input type="email" className="w-full p-2 border rounded-md" />
+            <input type="email" className="w-full p-2 border border-gray-300 rounded-md
+            focus:border-Pink outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Company
             </label>
-            <input type="text" className="w-full p-2 border rounded-md" />
+            <input type="text" className="w-full p-2 border border-gray-300 rounded-md
+            focus:border-Pink outline-none" />
           </div>
         </div>
       </div>
@@ -226,7 +228,8 @@ export default function Checkout() {
       {/* Confirm Payment Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
         <button
-          className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink transition duration-200"
+          className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink
+          transition-transform transform active:scale-90"
           onClick={handleAddPortfolio}
         >
           Confirm Payment

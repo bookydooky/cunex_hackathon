@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
-import { ArrowLeft, X, Share2 } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -175,7 +175,6 @@ export default function Portfolio() {
             <div className="text-Pink text-xl font-medium">Portfolio</div>
           </div>
         </div>
-        <Share2 className="text-black" />
       </div>
       {/* Progress Bar */}
       <div className="flex px-4 mt-4">
@@ -268,7 +267,7 @@ export default function Portfolio() {
             className={`w-full py-4 rounded-lg text-lg font-medium
               ${
                 files.length === 0
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? "bg-Pink/50 text-white cursor-not-allowed"
                   : "bg-Pink text-white hover:bg-darkPink active:bg-darkPink transition-transform transform active:scale-90"
               }`}
           >

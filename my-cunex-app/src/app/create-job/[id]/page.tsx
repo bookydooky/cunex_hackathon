@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Share2, Users, Clock } from "lucide-react";
+import { ArrowLeft, Users, Clock } from "lucide-react";
 import Image from "next/image";
 import PopupWindow from "../../components/CollaborateWindow";
 
@@ -110,7 +110,6 @@ const CreateJobPreview = () => {
             <div className="text-Pink text-xl font-medium">Create Job</div>
           </div>
         </div>
-        <Share2 className="text-Gray" />
       </div>
       {/* Progress Bar */}
       <div className="flex px-4 mt-4">
@@ -236,7 +235,8 @@ const CreateJobPreview = () => {
               value={jobDetails.workTitle}
               onChange={handleChange}
               placeholder="Enter the title of the work"
-              className="w-full p-3 border border-gray-300 rounded-lg text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg text-Gray
+              focus:border-Pink focus:outline-none"
             />
           </div>
 
@@ -247,7 +247,8 @@ const CreateJobPreview = () => {
                 name="workType"
                 value={jobDetails.workType}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black"
+                className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-Gray
+                focus:border-Pink focus:outline-none"
               >
                 <option value="" disabled>
                   Select work type
@@ -287,7 +288,8 @@ const CreateJobPreview = () => {
               value={jobDetails.price}
               onChange={handleChange}
               placeholder="Enter price in Thai Baht"
-              className="w-full p-3 border border-gray-300 rounded-lg text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg text-black
+              focus:border-Pink focus:outline-none"
             />
           </div>
 
@@ -299,7 +301,8 @@ const CreateJobPreview = () => {
               value={jobDetails.duration}
               onChange={handleChange}
               placeholder="e.g. 2 hours, 3 days"
-              className="w-full p-3 border border-gray-300 rounded-lg text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg text-black
+              focus:border-Pink focus:outline-none"
             />
           </div>
 
@@ -310,7 +313,8 @@ const CreateJobPreview = () => {
               value={jobDetails.description}
               onChange={handleChange}
               placeholder="Describe the job details"
-              className="w-full p-3 border border-gray-300 rounded-lg h-24 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg h-24 text-black
+              focus:border-Pink focus:outline-none"
             />
           </div>
         </div>
