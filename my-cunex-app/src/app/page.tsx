@@ -44,10 +44,18 @@ export default function Home() {
   const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
   const handleCreateJobClick = () => {
-    router.push(`/create-job/${profile.userId}`);
+    if (profile?.userId) {
+      router.push(`/create-job/${profile.userId}`);
+    } else {
+      console.warn("Profile is missing or incomplete.");
+    }
   };
   const handleSeeAllClick = () => {
-    router.push(`/seeAll/None/${profile.userId}`);
+    if (profile?.userId) {
+      router.push(`/seeAll/None/${profile.userId}`);
+    } else {
+      console.warn("Profile is missing or incomplete.");
+    }
   };
   const handleServiceClick = (label: string) => {
     if (label.includes("3D Printing")) setService("3d");
@@ -136,7 +144,13 @@ export default function Home() {
                   ? "bg-gray-300"
                   : "bg-gray-100 hover:bg-gray-300"
               }`}
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={() => {
+                if (profile?.userId) {
+                  setShowNotifications(!showNotifications);
+                } else {
+                  console.warn("Profile is missing or incomplete.");
+                }
+              }}
             >
               <FaBell className="text-gray-400 text-lg" />
             </div>
@@ -149,7 +163,13 @@ export default function Home() {
 
             {/* Profile */}
             <div
-              onClick={() => router.push(`/profile/${profile.userId}`)}
+              onClick={() => {
+                if (profile?.userId) {
+                  router.push(`/profile/${profile.userId}`);
+                } else {
+                  console.warn("Profile is missing or incomplete.");
+                }
+              }}
               className="bg-gray-100 rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer
             transition-transform hover:bg-gray-300 active:scale-90 active:bg-gray-300"
             >
@@ -183,9 +203,13 @@ export default function Home() {
             <div
               key={idx}
               className="flex flex-col items-center"
-              onClick={() =>
-                router.push(`/seeAll/${item.path}/${profile.userId}`)
-              }
+              onClick={() => {
+                if (profile?.userId) {
+                  router.push(`/seeAll/${item.path}/${profile.userId}`);
+                } else {
+                  console.warn("Profile is missing or incomplete.");
+                }
+              }}
             >
               <div
                 className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-200 rounded-full p-4 w-16 h-16 flex items-center justify-center

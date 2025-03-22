@@ -18,35 +18,60 @@ export async function GET(request: NextRequest) {
   };
 
   try {
-    console.log("ClientId", process.env.NEXT_PUBLIC_CLIENT_ID);
-    console.log("ClientSecret", process.env.NEXT_PUBLIC_CLIENT_SECRET);
-    console.log("Gateway", process.env.NEXT_PUBLIC_GATEWAY);
-    console.log("Token", process.env.NEXT_PUBLIC_TEST_TOKEN);
-    console.log("host", process.env.NEXT_PUBLIC_AWS_RDS_HOST);
-    console.log("user", process.env.NEXT_PUBLIC_AWS_RDS_USER);
-    console.log("password", process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD);
-    console.log("database", process.env.NEXT_PUBLIC_AWS_RDS_DATABASE);
     // Fetch profile data
     const response = await axios.get(url, { headers });
 
     const profile = response.data;
-    const { userId, studentId, firstNameEN, lastNameEN, facultyCode, studentYear } = profile;
+    const {
+      userId,
+      studentId,
+      firstNameEN,
+      lastNameEN,
+      facultyCode,
+      facultyNameEN,
+      facultyNameTH,
+      studentYear,
+    } = profile;
 
     // Check if the user exists in the database
-    const [userResult] = await con.query("SELECT * FROM users WHERE userId = ?", [userId]) as any;
+    const [userResult] = (await con.query(
+      "SELECT * FROM users WHERE userId = ?",
+      [userId]
+    )) as any;
 
     if (userResult.length > 0) {
       // User already exists
       console.log("User already exists:", userId);
       return NextResponse.json(response.data);
     }
+    // Check if facultyCode exists in the faculties table
+    const [facultyResult] = (await con.query(
+      "SELECT * FROM faculties WHERE facultyCode = ?",
+      [facultyCode]
+    )) as any;
 
+    if (facultyResult.length === 0) {
+      // Insert faculty details if not already in the database
+      const insertFacultyQuery = `
+        INSERT INTO faculties (facultyCode, facultyNameEN, facultyNameTH)
+        VALUES (?, ?, ?)
+      `;
+      const facultyValues = [facultyCode, facultyNameEN, facultyNameTH];
+      await con.query(insertFacultyQuery, facultyValues);
+    }
     // Insert into 'users' table
     const insertUserQuery = `
       INSERT INTO users (userId, studentId, firstName, lastName, facultyCode, studentYear)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const userValues = [userId, studentId, firstNameEN, lastNameEN, facultyCode, studentYear];
+    const userValues = [
+      userId,
+      studentId,
+      firstNameEN,
+      lastNameEN,
+      facultyCode,
+      studentYear,
+    ];
 
     await con.query(insertUserQuery, userValues);
 
@@ -71,7 +96,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response.data); // Send back the profile data
   } catch (error) {
     console.error("Error fetching profile:", error);
-    return NextResponse.json({ error: "Error fetching profile" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error fetching profile" },
+      { status: 500 }
+    );
   } finally {
     await con.end();
   }
