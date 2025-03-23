@@ -88,7 +88,7 @@ const CreateJobPreview = () => {
   if (!userData) return <p>Loading user details...</p>;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 overflow-y-auto">
       {/* App Header */}
       <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
         <div className="flex items-center">
@@ -96,7 +96,7 @@ const CreateJobPreview = () => {
             onClick={handlePreviousPage}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
           </button>
           <div className="flex items-center">
             <Image
@@ -117,7 +117,7 @@ const CreateJobPreview = () => {
         <div className="h-1 bg-gray-200 flex-1 rounded-full ml-2"></div>
       </div>
 
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 p-4">
         {/* User Profile Section */}
         <div className="bg-white p-4 rounded-lg mb-8">
           <div className="flex items-start mb-6">
@@ -322,7 +322,7 @@ const CreateJobPreview = () => {
         <button
           onClick={handleNextPage}
           className="w-full bg-Pink text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
-            transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink transition-transform transform active:scale-90"
+            transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink"
         >
           <span>Next</span>
         </button>

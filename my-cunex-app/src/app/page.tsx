@@ -311,8 +311,8 @@ export default function Home() {
                       <Image
                         src={job.imageURL}
                         alt={job.bannerName || `Job ${idx}`}
-                        width={96}
-                        height={96}
+                        width={1280}
+                        height={1280}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement; // Type assertion

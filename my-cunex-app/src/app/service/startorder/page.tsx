@@ -113,7 +113,8 @@ export default function ServiceSelectionPage() {
 
           <div className="mt-10 text-center">
             <button
-              className="bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium transition-all hover:bg-darkPink transition-transform transform active:scale-90 active:bg-darkPink"
+              className="bg-Pink text-white py-3 px-8 w-full rounded-full text-lg font-medium
+              transition-colors hover:bg-darkPink active:bg-darkPink"
               onClick={() => {
                 router.push("/service/detail");
               }}

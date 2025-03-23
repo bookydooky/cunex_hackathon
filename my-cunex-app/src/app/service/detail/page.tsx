@@ -2,6 +2,7 @@
 import { useState, useRef, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
+import { IoCloudUpload } from "react-icons/io5";
 
 export default function UploadPagePreview() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -84,8 +85,8 @@ export default function UploadPagePreview() {
                 } rounded-lg p-8 text-center cursor-pointer transition-all hover:border-Pink hover:bg-pink-50`}
                 onClick={() => fileInputRef.current?.click()}
               >
-                <div className="text-4xl mb-4">
-                  {selectedFile ? "✅" : "📤"}
+                <div className="flex text-4xl text-Pink mb-2 justify-center">
+                  {selectedFile ? "✅" : <IoCloudUpload/>}
                 </div>
                 {selectedFile ? (
                   <p className="text-Gray">
@@ -171,8 +172,8 @@ export default function UploadPagePreview() {
             <button
               type="button"
               onClickCapture={() => router.push("/service/review")}
-              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium transition-transform transform 
-              hover:bg-darkPink hover:shadow-lg active:scale-90 active:bg-darkPink"
+              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium
+              hover:bg-darkPink active:bg-darkPink transition-colors"
             >
               Continue to Review
             </button>

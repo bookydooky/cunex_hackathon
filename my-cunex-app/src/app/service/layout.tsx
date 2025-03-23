@@ -23,7 +23,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
           </button>
           <div className="flex items-center">
             <Image

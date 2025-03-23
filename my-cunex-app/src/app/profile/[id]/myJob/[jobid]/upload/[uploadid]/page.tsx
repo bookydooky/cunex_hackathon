@@ -193,7 +193,7 @@ const ImageUpload = () => {
             className={`font-medium w-full py-2 px-6 rounded-lg transition-colors ${
               acceptStatus === null
                 ? "bg-Pink/50 cursor-not-allowed text-white"
-                : "bg-Pink hover:bg-darkPink text-white transition-transform transform active:scale-90 active:bg-darkPink"
+                : "bg-Pink hover:bg-darkPink text-white active:bg-darkPink"
             }`}
             onClick={handleFileSubmit}
             disabled={acceptStatus === null}

@@ -106,7 +106,7 @@ export default function MessagePage() {
               onClick={() => router.back()}
               className="transition-transform transform active:scale-90"
             >
-              <ArrowLeft className="mr-4 text-Pink hover:darkPink" />
+              <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
             </button>
             <img
               src="/assets/CUNEX-logo.png"

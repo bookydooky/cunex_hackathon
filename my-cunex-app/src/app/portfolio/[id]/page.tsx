@@ -161,7 +161,7 @@ export default function Portfolio() {
             onClick={handlePreviousPage}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
           </button>
           <div className="flex items-center">
             <Image
@@ -206,7 +206,7 @@ export default function Portfolio() {
             <label
               htmlFor="file-upload"
               className="bg-Pink text-white px-6 py-2 rounded-md cursor-pointer
-            transition-transform transition-colors transform active:scale-90  hover:bg-darkPink active:bg-darkPink"
+            transition-transform transition-colors transform active:scale-95  hover:bg-darkPink active:bg-darkPink"
             >
               Upload Files
             </label>
@@ -233,12 +233,12 @@ export default function Portfolio() {
             {files.map((file, index) => (
               <div
                 key={index}
-                className="border-2 rounded-lg p-2 flex flex-col items-center"
+                className="border-1 border-Gray rounded-lg p-2 flex flex-col items-center"
               >
                 <div className="w-full h-24 bg-gray-200 rounded-md mb-2 flex items-center justify-center relative">
                   <button
                     onClick={() => handleRemoveFile(index)}
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                    className="absolute top-0 right-0 text-red-500 hover:text-red-700 active:text-red-700"
                   >
                     <X size={20} />
                   </button>
@@ -259,7 +259,7 @@ export default function Portfolio() {
         )}
       </div>
       {/* Add portfolio button */}
-      <div className="sticky bottom-0 left-0 right-0 px-4 py-4">
+      <div className="sticky bottom-0 left-0 right-0 px-4 py-4 bg-gray-100">
         <form onSubmit={handleSubmit}>
           <button
             type="submit"
@@ -268,7 +268,7 @@ export default function Portfolio() {
               ${
                 files.length === 0
                   ? "bg-Pink/50 text-white cursor-not-allowed"
-                  : "bg-Pink text-white hover:bg-darkPink active:bg-darkPink transition-transform transform active:scale-90"
+                  : "bg-Pink text-white hover:bg-darkPink active:bg-darkPink"
               }`}
           >
             Submit Portfolio

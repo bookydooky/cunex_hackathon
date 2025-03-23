@@ -208,7 +208,7 @@ export default function ReviewAndPayPage() {
                 </div>
 
                 {paymentMethod === "credit-card" && (
-                  <div className="mt-4 p-4 bg-pink-50 rounded-lg">
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
                     <div className="grid grid-cols-1 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-Gray mb-1">
@@ -216,7 +216,7 @@ export default function ReviewAndPayPage() {
                         </label>
                         <input
                           type="text"
-                          className="w-full p-2 border border-pink-200 rounded focus:outline-none focus:bordet-Pink"
+                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
                           placeholder="1234 5678 9012 3456"
                         />
                       </div>
@@ -227,7 +227,7 @@ export default function ReviewAndPayPage() {
                           </label>
                           <input
                             type="text"
-                            className="w-full p-2 border border-pink-200 rounded focus:outline-none focus:bordet-Pink"
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
                             placeholder="MM/YY"
                           />
                         </div>
@@ -237,7 +237,7 @@ export default function ReviewAndPayPage() {
                           </label>
                           <input
                             type="text"
-                            className="w-full p-2 border border-pink-200 rounded focus:outline-none focus:bordet-Pink"
+                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
                             placeholder="123"
                           />
                         </div>
@@ -248,7 +248,7 @@ export default function ReviewAndPayPage() {
                         </label>
                         <input
                           type="text"
-                          className="w-full p-2 border border-pink-200 rounded focus:outline-none focus:bordet-Pink"
+                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
                           placeholder="John Doe"
                         />
                       </div>
@@ -328,7 +328,7 @@ export default function ReviewAndPayPage() {
                   <button
                     className={`w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium transition-all ${
                       agreeToTerms
-                        ? "hover:bg-darkPink hover:shadow-lg transition-transform transform active:scale-90 active:bg-darkPink"
+                        ? "hover:bg-darkPink hover:shadow-lg active:bg-darkPink"
                         : "opacity-50 cursor-not-allowed"
                     }`}
                     disabled={!agreeToTerms}

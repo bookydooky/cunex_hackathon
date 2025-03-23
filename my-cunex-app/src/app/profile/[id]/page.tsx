@@ -79,7 +79,7 @@ export default function ProfilePage() {
             onClick={() => router.push("/")}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
           </button>
           <Image
             src="/assets/CUNEX-logo.png"
@@ -158,7 +158,7 @@ export default function ProfilePage() {
         {/* My Jobs */}
         <div
           className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
-      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+          transition-colors active:bg-gray-200"
         >
           <Link href={`/profile/${userId}/myJob/${userId}`}>
             <div className="p-4 flex items-center justify-between">
@@ -186,7 +186,7 @@ export default function ProfilePage() {
         {/* My Team */}
         <div
           className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
-          transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+          transition-colors active:bg-gray-200"
             >
           <Link href={`/profile/${userId}/myTeam/${userId}`}>
             <div className="p-4 flex items-center justify-between">
@@ -214,7 +214,7 @@ export default function ProfilePage() {
         {/* Team up Requests */}
         <div
           className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
-      transition-colors active:bg-gray-200 transition-transform transform active:scale-95"
+      transition-colors active:bg-gray-200"
         >
           <Link href={`/profile/${userId}/colab/${userId}`}>
             <div className="p-4 flex items-center justify-between">

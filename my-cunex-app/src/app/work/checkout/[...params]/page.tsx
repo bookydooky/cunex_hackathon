@@ -75,7 +75,7 @@ export default function Checkout() {
             onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
-            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink" />
+            <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
           </button>
           <div className="flex items-center">
             <Image
@@ -115,7 +115,7 @@ export default function Checkout() {
           </div>
           <div className="text-gray-800 font-medium">{jobData.price} THB</div>
         </div>
-        <div className="flex justify-between pt-4 border-t">
+        <div className="flex justify-between pt-4 border-t border-gray-500">
           <span className="font-bold text-Pink">Total</span>
           <span className="font-bold text-Pink">{jobData.price} THB</span>
         </div>
@@ -229,7 +229,7 @@ export default function Checkout() {
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
         <button
           className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink
-          transition-transform transform active:scale-90"
+          active:bg-darkPink"
           onClick={handleAddPortfolio}
         >
           Confirm Payment

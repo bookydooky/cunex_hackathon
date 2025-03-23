@@ -48,7 +48,7 @@ export default function AllJobs() {
       <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white">
         <div className="flex items-center">
           <ArrowLeft
-            className="mr-4 text-Pink hover:text-darkPink transition-transform
+            className="mr-4 text-Pink hover:text-darkPink active:text-darkPink transition-transform
             transform active:scale-90"
             onClick={() => router.push("/")}
           />

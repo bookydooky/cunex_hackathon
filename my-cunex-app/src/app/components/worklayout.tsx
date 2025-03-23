@@ -58,7 +58,8 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
       <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center">
           <ArrowLeft
-            className="mr-4 text-Pink hover:text-darkPink transition-transform transform active:scale-90"
+            className="mr-4 text-Pink hover:text-darkPink active:text-darkPink
+            transition-transform transform active:scale-90"
             onClick={() => handleNavigation("/")}
           />
           <div className="flex items-center">
@@ -121,11 +122,11 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto mx-2 pb-16">{children}</div>
-      <div className="absolute bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4">
+      <div className="flex-1 overflow-y-auto mx-2">{children}</div>
+      <div className="sticky bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4">
         <button
-          className="flex-grow bg-Pink hover:bg-darkPink text-white py-4 rounded-lg font-medium
-          transition-transform transform active:scale-90"
+          className="flex-grow bg-Pink hover:bg-darkPink active:bg-darkPink
+           text-white py-4 rounded-lg font-medium"
           onClick={() =>
             handleNavigation(`/work/checkout/${jobData.bannerId}/${userId}`)
           }

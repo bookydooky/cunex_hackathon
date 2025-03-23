@@ -189,7 +189,7 @@ export default function MyJobsPage() {
 
                   <button
                     className="flex-1 py-3 text-center text-Pink font-medium
-                  hover:underline active:underline"
+                  hover:underline active:text-darkPink"
                   >
                     <Link
                       href={`/profile/${userId}/myJob/${userId}/upload/${job.historyId}`}

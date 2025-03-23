@@ -27,10 +27,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full bg-gray-50">
       {/* Left Arrow */}
       <div
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer
+        active:bg-gray-100"
         onClick={goToPrevious}
       >
         <svg
@@ -61,14 +62,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               key={index}
               className="min-w-full flex justify-center items-center p-6"
             >
-              <div className="bg-white rounded-lg shadow-sm p-8 max-w-md">
+              <div className="bg-white rounded-lg shadow-sm p-4 max-w-md">
                 <Image
                   src={image.src}
                   alt={image.alt || "Carousel image"}
                   layout="responsive"
-                  width={500}
-                  height={300}
-                  className="max-h-[150px] mx-auto"
+                  width={1280}
+                  height={1280}
+                  className="max-h-[300px] max-w-[250px] object-cover"
                 />
                 {image.caption && (
                   <div className="text-center mt-4 font-bold text-xl">
@@ -83,7 +84,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
 
       {/* Right Arrow */}
       <div
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer
+        active:bg-gray-100"
         onClick={goToNext}
       >
         <svg
@@ -104,7 +106,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       </div>
 
       {/* Optional: Dots for navigation */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 mb-4">
         {images.map((_, index) => (
           <button
             key={index}
