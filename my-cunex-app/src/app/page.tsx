@@ -113,6 +113,9 @@ export default function Home() {
     };
     fetchProfile();
     fetchLatestJobs();
+    localStorage.removeItem("teamMembers");
+    localStorage.removeItem("addedMembers");
+    localStorage.removeItem("searchMembers");
   }, []);
   if (!profile) return <p>Loading user details...</p>;
 
