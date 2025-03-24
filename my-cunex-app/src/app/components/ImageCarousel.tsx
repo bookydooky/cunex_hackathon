@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import { X } from 'lucide-react';
 
 interface Image {
   src: string;
@@ -13,6 +14,7 @@ interface ImageCarouselProps {
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -51,6 +53,26 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
         </svg>
       </div>
 
+      {/* Modal for full image */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <button
+              className="absolute top-2 right-2 text-red-400"
+              onClick={() => setIsModalOpen(false)}
+            >
+              <X/>
+            </button>
+            <Image
+              src={images[currentIndex].src}
+              alt={images[currentIndex].alt || "Full image"}
+              layout="responsive"
+              width={1280}
+              height={1280}
+              className="max-h-[70vh] object-contain"
+            />
+        </div>
+      )}
+
       {/* Main carousel area */}
       <div className="w-full overflow-hidden">
         <div
@@ -62,21 +84,20 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               key={index}
               className="min-w-full flex justify-center items-center p-6"
             >
-              <div className="bg-white rounded-lg shadow-sm p-4 max-w-md">
                 <Image
                   src={image.src}
                   alt={image.alt || "Carousel image"}
                   layout="responsive"
                   width={1280}
                   height={1280}
-                  className="max-h-[300px] max-w-[250px] object-cover"
+                  className="max-h-[30vh] object-contain cursor-pointer"
+                  onClick={() => setIsModalOpen(true)}
                 />
                 {image.caption && (
                   <div className="text-center mt-4 font-bold text-xl">
                     {image.caption}
                   </div>
                 )}
-              </div>
             </div>
           ))}
         </div>

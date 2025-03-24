@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
+import ReloadWindow from '@/app/components/ReloadWindow'
 
 const WorkFeedback = () => {
   const params = useParams();
@@ -28,7 +29,7 @@ const WorkFeedback = () => {
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <p>Loading job details...</p>;
+  if (!jobData) return <ReloadWindow/>;
 
   return (
     <WorkLayout jobData={jobData} userId={userId}>

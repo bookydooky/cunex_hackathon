@@ -2,12 +2,29 @@
 import { useState, useContext } from "react";
 import { GlobalStateContext } from "@/app/context/GlobalState";
 import { useRouter } from "next/navigation";
+import { FiClipboard } from "react-icons/fi";
 
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
+  const [copySuccess, setCopySuccess] = useState('');
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const { service } = useContext(GlobalStateContext);
   const router = useRouter();
+  const promtpay = '092-XXX-XXX';
+  const bankaccount = '038-xxxxxx-x'
+
+
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setCopySuccess('Copied!');
+        setTimeout(() => setCopySuccess(''), 2000); // Clear the message after 2 seconds
+      },
+      (err) => {
+        setCopySuccess('Failed to copy!');
+      }
+    );
+  };
 
   // Sample order data that would come from previous steps
   const orderDetails = {
@@ -148,7 +165,7 @@ export default function ReviewAndPayPage() {
                 </div>
               </div>
 
-              <div className="border-b border-pink-100 pb-6 mb-6">
+              <div className="border-b border-pink-100 mb-6">
                 <h3 className="text-lg font-semibold text-Pink mb-4">
                   Payment Method
                 </h3>
@@ -156,106 +173,72 @@ export default function ReviewAndPayPage() {
                 <div className="space-y-3">
                   <div
                     className={`border rounded-lg p-4 flex items-center cursor-pointer text-Gray ${
-                      paymentMethod === "credit-card"
+                      paymentMethod === "bankaccount"
                         ? "border-Pink text-Pink"
                         : "border-gray-300"
                     }`}
-                    onClick={() => setPaymentMethod("credit-card")}
+                    onClick={() => setPaymentMethod("bankaccount")}
                   >
                     <div
                       className={`w-5 h-5 rounded-full border ${
-                        paymentMethod === "credit-card"
+                        paymentMethod === "bankaccount"
                           ? "border-Pink"
                           : "border-gray-300"
                       } flex items-center justify-center mr-3`}
                     >
-                      {paymentMethod === "credit-card" && (
+                      {paymentMethod === "bankaccount" && (
                         <div className="w-3 h-3 rounded-full bg-Pink"></div>
                       )}
                     </div>
-                    <div className="flex-grow">Credit Card</div>
-                    <div className="flex gap-2">
-                      <div className="w-10 h-6 bg-blue-500 rounded"></div>
-                      <div className="w-10 h-6 bg-red-500 rounded"></div>
-                      <div className="w-10 h-6 bg-Gray rounded"></div>
-                    </div>
+                    <div className="flex-grow">Bank Account</div>
                   </div>
 
                   <div
                     className={`border rounded-lg p-4 flex items-center cursor-pointer text-Gray ${
-                      paymentMethod === "paypal"
+                      paymentMethod === "promptpay"
                         ? "border-Pink text-Pink"
                         : "border-gray-200"
                     }`}
-                    onClick={() => setPaymentMethod("paypal")}
+                    onClick={() => setPaymentMethod("promptpay")}
                   >
                     <div
                       className={`w-5 h-5 rounded-full border ${
-                        paymentMethod === "paypal"
+                        paymentMethod === "promptpay"
                           ? "border-Pink"
                           : "border-gray-300"
                       } flex items-center justify-center mr-3`}
                     >
-                      {paymentMethod === "paypal" && (
+                      {paymentMethod === "promptpay" && (
                         <div className="w-3 h-3 rounded-full bg-Pink"></div>
                       )}
                     </div>
-                    <div className="flex-grow">PayPal</div>
-                    <div className="w-16 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
-                      PayPal
-                    </div>
+                    <div className="flex-grow">PromtPay</div>
+                    <img src='https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png'
+                    className='h-[30px]'/>
                   </div>
+                  {paymentMethod === "promptpay" && (
+                  <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
+                    <span className="text-gray-700">Account Number: 
+                      <span> {promtpay}</span>
+                    </span>
+                    <button onClick={() => handleCopyToClipboard(promtpay)}>
+                      <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
+                    </button>
+                  </div>
+                  )}
+                  {paymentMethod === "bankaccount" && (
+                    <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
+                      <span className="text-gray-700">
+                        Account Number: SCB <span>{bankaccount}</span>
+                      </span>
+                      <button onClick={() => handleCopyToClipboard(bankaccount)}>
+                        <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
+                      </button>
+                    </div>
+                  )}
                 </div>
-
-                {paymentMethod === "credit-card" && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                    <div className="grid grid-cols-1 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-Gray mb-1">
-                          Card Number
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
-                          placeholder="1234 5678 9012 3456"
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-Gray mb-1">
-                            Expiration Date
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
-                            placeholder="MM/YY"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-Gray mb-1">
-                            CVC
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
-                            placeholder="123"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-Gray mb-1">
-                          Cardholder Name
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-Pink"
-                          placeholder="John Doe"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
+
 
               <div className="flex items-center mb-6">
                 <input
@@ -277,7 +260,7 @@ export default function ReviewAndPayPage() {
                 </label>
               </div>
             </div>
-
+            
             {/* Order Summary Column */}
             <div className="col-span-1">
               <div className="bg-pink-50 rounded-lg p-6 w-full">
@@ -342,6 +325,13 @@ export default function ReviewAndPayPage() {
                 </div>
               </div>
             </div>
+            {copySuccess && (
+            <div className="flex justify-center">
+              <div className="fixed bottom-4 bg-gray-100 text-Gray px-4 py-2 rounded-md shadow-lg font-medium">
+                {copySuccess}
+              </div>
+            </div>
+            )}
           </div>
         </div>
       </div>
