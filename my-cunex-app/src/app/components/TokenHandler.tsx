@@ -10,7 +10,7 @@ export default function TokenHandler({
 }) {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-
+  console.log("TokenHandler token:", token);
   useEffect(() => {
     if (token) {
       localStorage.setItem("TOKEN", token);

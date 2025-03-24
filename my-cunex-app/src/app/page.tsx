@@ -107,7 +107,12 @@ export default function Home() {
     }
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("/api/fetchProfile");
+        const token = localStorage.getItem("TOKEN");
+        const response = await axios.get("/api/fetchProfile", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Sending token in Authorization header
+          },
+        });
         console.log("Profile fetched successfully:", response.data);
         setProfile(response.data);
       } catch (err) {

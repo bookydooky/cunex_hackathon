@@ -9,7 +9,9 @@ export async function GET(request: NextRequest) {
     password: process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD,
     database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
   });
-  const token = localStorage.getItem("TOKEN");
+  const token = request.headers.get("Authorization")?.replace("Bearer ", "");
+
+  // Ensure the token is available
   if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
