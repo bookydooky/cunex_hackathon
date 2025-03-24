@@ -9,8 +9,11 @@ export async function GET(request: NextRequest) {
     password: process.env.NEXT_PUBLIC_AWS_RDS_PASSWORD,
     database: process.env.NEXT_PUBLIC_AWS_RDS_DATABASE,
   });
-
-  const url = `${process.env.NEXT_PUBLIC_GATEWAY}/profile?token=${process.env.NEXT_PUBLIC_TEST_TOKEN}`;
+  const token = localStorage.getItem("TOKEN");
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const url = `${process.env.NEXT_PUBLIC_GATEWAY}/profile?token=${token}`;
   const headers = {
     "Content-Type": "application/json",
     ClientId: process.env.NEXT_PUBLIC_CLIENT_ID,

@@ -17,7 +17,7 @@ import {
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Notification from "./components/notification";
 import axios from "axios";
@@ -62,7 +62,7 @@ export default function Home() {
     else if (label.includes("Laser Cutting")) setService("lasercut");
     else {
       setService("delivery");
-      setIsPopupVisible(true)
+      setIsPopupVisible(true);
       setTimeout(() => {
         setIsPopupVisible(false);
       }, 3000); // Hide the pop-up after 3 seconds;
@@ -82,6 +82,16 @@ export default function Home() {
     studentYear: "",
   });
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [gotToken, setGotToken] = useState(false);
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("TOKEN", token); // Store in localStorage
+      setGotToken(true);
+    }
+  }, [token]);
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -116,7 +126,7 @@ export default function Home() {
     localStorage.removeItem("teamMembers");
     localStorage.removeItem("addedMembers");
     localStorage.removeItem("searchMembers");
-  }, []);
+  }, [gotToken]);
   if (!profile) return <p>Loading user details...</p>;
 
   return (
@@ -333,13 +343,12 @@ export default function Home() {
         </div>
         {/* Popup for Delivery Service */}
         {isPopupVisible && (
-        <div className="flex justify-center">
-          <div className="fixed bottom-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
-            Service not available yet!
+          <div className="flex justify-center">
+            <div className="fixed bottom-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+              Service not available yet!
+            </div>
           </div>
-        </div>
         )}
-
       </div>
     </div>
   );
