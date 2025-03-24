@@ -7,15 +7,13 @@ const WorkFeedback = () => {
   const params = useParams();
   const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState(null);
-
+  const [feedback, setFeedback] = useState([]);
   useEffect(() => {
     if (!bannerId) return;
 
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(
-          `/api/jobDetails/${bannerId}`
-        );
+        const response = await fetch(`/api/jobDetails/${bannerId}`);
         if (!response.ok) throw new Error("Failed to fetch job details");
 
         const data = await response.json();
@@ -24,134 +22,110 @@ const WorkFeedback = () => {
         console.error("Error fetching job details:", error);
       }
     };
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await fetch(`/api/getFeedbacks/${bannerId}`);
+        if (!response.ok) throw new Error("Failed to fetch feedbacks");
+        const data = await response.json();
+        setFeedback(data);
+      } catch (error) {
+        console.error("Error fetching feedbacks:", error);
+      }
+    };
 
     fetchJobDetails();
+    fetchFeedbacks();
   }, [bannerId]);
 
   if (!jobData) return <p>Loading job details...</p>;
+  const overallRating =
+    feedback.length > 0
+      ? feedback
+          .map((f) => Number(f.rating)) // Convert to number explicitly
+          .filter((r) => !isNaN(r) && r !== null && r !== undefined) // Remove invalid ratings
+          .reduce((sum, r, _, arr) => sum + r / arr.length, 0)
+          .toFixed(1)
+      : null;
+
+  // Function to render stars with half-star support
+  const renderStars = (rating) => {
+    if (rating === null) return <p className="text-gray-500">No Ratings</p>; // ✅ Handle no ratings case
+    console.log("overallRating:", overallRating);
+    const roundedRating = Math.round(rating * 2) / 2;
+    console.log("Rating:", roundedRating);
+
+    const fullStars = Math.floor(roundedRating);
+    const hasHalfStar = roundedRating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    console.log(hasHalfStar, fullStars, emptyStars);
+    return (
+      <div className="flex">
+        {Array(fullStars)
+          .fill()
+          .map((_, i) => (
+            <span key={i} className="text-yellow-400 text-xl">
+              ★
+            </span>
+          ))}
+        {hasHalfStar && (
+          <div className="relative inline-block">
+            <span
+              className="absolute left-0 top-0 overflow-hidden"
+              style={{ width: "50%" }}
+            >
+              <span className="text-yellow-400 text-xl">★</span>
+            </span>
+            <span className="text-gray-300 text-xl">★</span>
+          </div>
+        )}
+        {Array(emptyStars)
+          .fill()
+          .map((_, i) => (
+            <span key={`empty-${i}`} className="text-gray-300 text-xl">
+              ★
+            </span>
+          ))}
+      </div>
+    );
+  };
 
   return (
     <WorkLayout jobData={jobData} userId={userId}>
       <div className="flex flex-col p-4">
         {/* Overall Rating */}
         <div className="flex items-center mb-6">
-          <h2 className="text-xl text-Gray font-semibold mr-3">4.5</h2>
-          <div className="flex items-center mr-3">
-            <span className="text-yellow-400 text-xl">★</span>
-            <span className="text-yellow-400 text-xl">★</span>
-            <span className="text-yellow-400 text-xl">★</span>
-            <span className="text-yellow-400 text-xl">★</span>
-            <span
-              className=" text-yellow-400 text-xl"
-              style={{ clipPath: "inset(0 50% 0 0)" }}
-            >
-              ★
-            </span>
-          </div>
-          <span className="text-gray-500">(4 reviews)</span>
+          <h2 className="text-xl text-gray-700 font-semibold mr-3">
+            {overallRating !== null ? overallRating : "No Ratings"}
+          </h2>
+          {renderStars(overallRating)}
+          <span className="text-gray-500 ml-2">
+            ({feedback.length} {feedback.length === 1 ? "review" : "reviews"})
+          </span>
         </div>
 
         {/* Review Cards */}
         <div className="flex-1 overflow-y-auto space-y-4">
-          {/* Review Card 1 */}
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between mb-1">
-              <div>
-                <h3 className="font-bold text-lg text-Gray">John Doe</h3>
-                <p className="text-gray-500">Fintech Solutions</p>
-              </div>
-              <div className="flex">
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-              </div>
-            </div>
-            <p className="italic text-Gray text-sm">
-              Maria transformed our banking app with an incredible user-centered
-              design. Her work significantly improved our user engagement.
-            </p>
-          </div>
-
-          {/* Review Card 2 */}
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between mb-1">
-              <div>
-                <h3 className="font-bold text-lg text-Gray">Sarah Smith</h3>
-                <p className="text-gray-500">Global Retail Inc.</p>
-              </div>
-              <div className="flex">
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <div className="relative -ml-4">
-                  <span
-                    className="absolute left-0 top-0 text-yellow-400"
-                    style={{ clipPath: "inset(0 50% 0 0)" }}
-                  >
-                    ★
-                  </span>
-                  <span className="text-gray-300">★</span>
+          {feedback.length > 0 ? (
+            feedback.map((review, index) => (
+              <div
+                key={index}
+                className="border border-gray-200 rounded-lg p-4"
+              >
+                <div className="flex justify-between mb-1">
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-800">
+                      {review.firstName} {review.lastName}
+                    </h3>
+                    <p className="text-gray-500">{review.facultyNameEN}</p>
+                  </div>
+                  {renderStars(review.rating)}
                 </div>
+                <p className="italic text-gray-700 text-sm">{review.detail}</p>
               </div>
-            </div>
-            <p className="italic text-Gray text-sm">
-              Excellent attention to detail and a deep understanding of user
-              experience. Highly recommended!
-            </p>
-          </div>
-
-          {/* Review Card 3 */}
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between mb-1">
-              <div>
-                <h3 className="font-bold text-lg text-Gray">Pasut Chien</h3>
-                <p className="text-gray-500">Chulalongkorn Univeristy</p>
-              </div>
-              <div className="flex">
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <div className="relative -ml-4">
-                  <span
-                    className="absolute left-0 top-0 text-yellow-400"
-                    style={{ clipPath: "inset(0 50% 0 0)" }}
-                  >
-                    ★
-                  </span>
-                  <span className="text-gray-300">★</span>
-                </div>
-              </div>
-            </div>
-            <p className="italic text-Gray text-sm">
-              Excellent Work! We are so pleased with the result!
-            </p>
-          </div>
-
-          {/* Review Card 4 */}
-          <div className="border border-gray-200 rounded-lg p-4">
-            <div className="flex justify-between mb-1">
-              <div>
-                <h3 className="font-bold text-lg text-Gray">Book Pannawich</h3>
-                <p className="text-gray-500">Chulalongkorn Univeristy</p>
-              </div>
-              <div className="flex">
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-                <span className="text-yellow-400">★</span>
-              </div>
-            </div>
-            <p className="italic text-Gray text-sm">
-              Maria handed in a very good work, but there is a room for little
-              improvement.
-            </p>
-          </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No feedback available yet.</p> // ✅ Handle empty feedback array correctly
+          )}
         </div>
       </div>
     </WorkLayout>

@@ -22,6 +22,7 @@ import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Notification from "./components/notification";
+import FeedbackPopup from "./components/FeedbackPopup";
 import axios from "axios";
 import { GlobalStateContext } from "./context/GlobalState";
 
@@ -43,7 +44,8 @@ export default function Home() {
     imageURL: string;
   }
   const [gotToken, setGotToken] = useState(false);
-
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+  const [clickedBannerId, setClickedBannerId] = useState("");
   const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
   const handleCreateJobClick = () => {
@@ -125,6 +127,9 @@ export default function Home() {
     localStorage.removeItem("addedMembers");
     localStorage.removeItem("searchMembers");
   }, [gotToken]);
+  useEffect(() => {
+    localStorage.setItem("userId", profile.userId);
+  }, [profile]);
   if (!profile) return <p>Loading user details...</p>;
 
   return (
@@ -181,9 +186,16 @@ export default function Home() {
               <Notification
                 userId={profile.userId}
                 setShowNotifications={setShowNotifications}
+                setShowFeedbackPopup={setShowFeedbackPopup}
+                setClickedBannerId={setClickedBannerId}
               />
             )}
-
+            {showFeedbackPopup && (
+              <FeedbackPopup
+                setShowFeedbackPopup={setShowFeedbackPopup}
+                clickedBannerId={clickedBannerId}
+              />
+            )}
             {/* Profile */}
             <div
               onClick={() => {

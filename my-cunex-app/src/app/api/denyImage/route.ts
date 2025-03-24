@@ -5,7 +5,10 @@ export async function POST(request: NextRequest) {
   const { historyId, submittedImageId } = await request.json();
 
   if (!historyId) {
-    return NextResponse.json({ error: "Cannot Find Your Work" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Cannot Find Your Work" },
+      { status: 400 }
+    );
   }
 
   const con = await mysql.createConnection({
@@ -43,7 +46,14 @@ export async function POST(request: NextRequest) {
       SET sp.totalJobs = sp.totalJobs + 1, 
           sp.successRate = (sp.jobsSold) / (sp.totalJobs + 1) * 100
     `;
-    await con.query(updateSalesParams, [historyId]);
+    const [salesResult] = (await con.query(updateSalesParams, [
+      historyId,
+    ])) as any;
+
+    const salesUpdated =
+      (salesResult as any).affectedRows > 0
+        ? "SalesParams updated"
+        : "SalesParams not updated";
 
     // **3. Mark image as checked**
     const updateImageQuery = `
@@ -64,12 +74,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Job Denied Successfully, Sales Updated",
+      salesStatus: salesUpdated,
     });
   } catch (error: any) {
     //@ts-expect-error - TS doesn't know about the mysql2/promise API
     await con.rollback();
     console.error("Error processing request:", error);
-    return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Server error" },
+      { status: 500 }
+    );
   } finally {
     await con.end();
   }

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
     const q = `
       SELECT jh.historyId, jb.bannerName, u.firstName, u.lastName, 
-             si.imageURL, si.submittedImageId
+             si.imageURL, si.submittedImageId, jb.bannerId
       FROM jobHistory jh
       LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
       LEFT JOIN users u ON jh.sellerId = u.userId
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       WHERE jh.buyerId = ? AND si.checked = 0
     `;
 
-    const [result] = await con.query(q, [userId]) as any;
+    const [result] = (await con.query(q, [userId])) as any;
 
     return NextResponse.json(result);
   } catch (error) {

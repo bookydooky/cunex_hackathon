@@ -5,6 +5,8 @@ import Image from "next/image";
 interface NotificationProps {
   userId: string;
   setShowNotifications: (show: boolean) => void;
+  setShowFeedbackPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickedBannerId: React.Dispatch<React.SetStateAction<string>>;
 }
 interface SubmittedImage {
   historyId: number;
@@ -13,11 +15,14 @@ interface SubmittedImage {
   lastName: string;
   imageURL: string;
   submittedImageId: number;
+  bannerId: string;
 }
 
 export default function Notification({
   userId,
   setShowNotifications,
+  setShowFeedbackPopup,
+  setClickedBannerId,
 }: NotificationProps) {
   const [currentNotis, setCurrentNotis] = useState<SubmittedImage[]>([]);
   const handleCloseNotifications = () => {
@@ -57,8 +62,14 @@ export default function Notification({
 
   // Convert the grouped object to an array for rendering
   const historyGroups = Object.entries(groupedNotifications);
-  const handleAccept = async (historyId: number, submittedImageId: number) => {
+  const handleAccept = async (
+    historyId: number,
+    submittedImageId: number,
+    bannerId: string
+  ) => {
     try {
+      setClickedBannerId(bannerId);
+
       const response = await fetch(`api/acceptImage`, {
         method: "POST",
         headers: {
@@ -74,13 +85,19 @@ export default function Notification({
       const data = await response.json();
       handleCloseNotifications();
       console.log("Response:", data);
+      setShowFeedbackPopup(true);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  const handleDeny = async (historyId: number, submittedImageId: number) => {
+  const handleDeny = async (
+    historyId: number,
+    submittedImageId: number,
+    bannerId: string
+  ) => {
     try {
+      setClickedBannerId(bannerId);
       const response = await fetch(`/api/denyImage`, {
         method: "POST",
         headers: {
@@ -94,6 +111,10 @@ export default function Notification({
       }
 
       const data = await response.json();
+      const salesStatus = data.salesStatus;
+      if (salesStatus === "SalesParams updated") {
+        setShowFeedbackPopup(true);
+      }
       console.log("Response:", data);
       handleCloseNotifications();
     } catch (error) {
@@ -131,7 +152,11 @@ export default function Notification({
                 className="bg-green-400 hover:bg-green-500 active:bg-green-500
                 text-white px-2 py-1 rounded text-xs mr-1 ml-2"
                 onClick={() =>
-                  handleAccept(notif.historyId, notif.submittedImageId)
+                  handleAccept(
+                    notif.historyId,
+                    notif.submittedImageId,
+                    notif.bannerId
+                  )
                 }
               >
                 Accept
@@ -140,7 +165,11 @@ export default function Notification({
                 className="bg-red-400 hover:bg-red-500 active:bg-red-500
                 text-white px-2 py-1 rounded text-xs"
                 onClick={() =>
-                  handleDeny(notif.historyId, notif.submittedImageId)
+                  handleDeny(
+                    notif.historyId,
+                    notif.submittedImageId,
+                    notif.bannerId
+                  )
                 }
               >
                 Deny
