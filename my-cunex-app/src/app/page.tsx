@@ -1,6 +1,8 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
+import React, { Suspense, useState, useEffect, useContext } from "react";
 import Head from "next/head";
+import TokenHandler from "./components/TokenHandler";
+
 import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
 import { GiCutDiamond } from "react-icons/gi";
@@ -17,7 +19,7 @@ import {
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoPersonSharp } from "react-icons/io5";
 import { TiWeatherPartlySunny } from "react-icons/ti";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Notification from "./components/notification";
 import axios from "axios";
@@ -40,6 +42,7 @@ export default function Home() {
     firstImageId: number;
     imageURL: string;
   }
+  const [gotToken, setGotToken] = useState(false);
 
   const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
@@ -82,16 +85,6 @@ export default function Home() {
     studentYear: "",
   });
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [gotToken, setGotToken] = useState(false);
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem("TOKEN", token); // Store in localStorage
-      setGotToken(true);
-    }
-  }, [token]);
 
   useEffect(() => {
     // Fetch latest jobs when component mounts
@@ -131,6 +124,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
+      <Suspense fallback={<div>Loading...</div>}>
+        <TokenHandler setGotToken={setGotToken} />
+      </Suspense>
       <Head>
         <title>CU FASTWORK</title>
         <meta name="description" content="CU FASTWORK App" />
