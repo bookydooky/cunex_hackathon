@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
-import ReloadWindow from '@/app/components/ReloadWindow'
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 interface JobDetailResponse {
   bannerId: string;
@@ -13,6 +13,9 @@ interface JobDetailResponse {
   duration: string; // Duration in days, or another appropriate unit
   typeOfWork: string;
   bannerdesc: string;
+  bank: string;
+  accountNumber: string;
+  phoneNumber: string;
   images: string[]; // Array of image URLs
 }
 
@@ -28,9 +31,7 @@ export default function Checkout() {
 
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(
-          `/api/jobDetails/${bannerId}`
-        );
+        const response = await fetch(`/api/jobDetails/${bannerId}`);
         if (!response.ok) throw new Error("Failed to fetch job details");
 
         const data = await response.json();
@@ -43,7 +44,7 @@ export default function Checkout() {
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <ReloadWindow/>;
+  if (!jobData) return <ReloadWindow />;
 
   const handleAddPortfolio = async () => {
     try {
@@ -184,13 +185,15 @@ export default function Checkout() {
 
       {paymentMethod === "PromptPay" && (
         <div className="px-4 mb-4">
-          <span className="text-gray-700">Account Number: 092-XXX-XXX</span>
+          <span className="text-gray-700">
+            Account Number: {jobData.phoneNumber}
+          </span>
         </div>
       )}
       {paymentMethod === "Bank Account" && (
         <div className="px-4 mb-4">
           <span className="text-gray-700">
-            Account Number: SCB 038-xxxxxx-x
+            Account Number: {jobData.bank} {jobData.accountNumber}
           </span>
         </div>
       )}

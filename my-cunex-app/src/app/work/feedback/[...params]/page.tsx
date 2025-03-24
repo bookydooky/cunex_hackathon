@@ -4,11 +4,20 @@ import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import ReloadWindow from "@/app/components/ReloadWindow";
 
+interface Feedback {
+  rating: number;
+  detail: string;
+  firstName: string;
+  lastName: string;
+  facultyNameEN: string;
+  studentYear: string; // Adjust type based on the actual data type
+}
+
 const WorkFeedback = () => {
   const params = useParams();
   const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState(null);
-  const [feedback, setFeedback] = useState([]);
+  const [feedback, setFeedback] = useState<Feedback[]>([]);
   useEffect(() => {
     if (!bannerId) return;
 
@@ -49,7 +58,7 @@ const WorkFeedback = () => {
       : null;
 
   // Function to render stars with half-star support
-  const renderStars = (rating) => {
+  const renderStars = (rating: number) => {
     if (rating === null) return <p className="text-gray-500">No Ratings</p>; // ✅ Handle no ratings case
     console.log("overallRating:", overallRating);
     const roundedRating = Math.round(rating * 2) / 2;
@@ -62,10 +71,10 @@ const WorkFeedback = () => {
     return (
       <div className="flex">
         {Array(fullStars)
-          .fill()
-          .map((_, i) => (
+          .fill("★") // Fill with the full star
+          .map((star, i) => (
             <span key={i} className="text-yellow-400 text-xl">
-              ★
+              {star}
             </span>
           ))}
         {hasHalfStar && (
@@ -80,10 +89,10 @@ const WorkFeedback = () => {
           </div>
         )}
         {Array(emptyStars)
-          .fill()
-          .map((_, i) => (
+          .fill("★") // Fill with the empty star
+          .map((star, i) => (
             <span key={`empty-${i}`} className="text-gray-300 text-xl">
-              ★
+              {star}
             </span>
           ))}
       </div>
@@ -98,7 +107,7 @@ const WorkFeedback = () => {
           <h2 className="text-xl text-gray-700 font-semibold mr-3">
             {overallRating !== null ? overallRating : "No Ratings"}
           </h2>
-          {renderStars(overallRating)}
+          {renderStars(overallRating as any)}
           <span className="text-gray-500 ml-2">
             ({feedback.length} {feedback.length === 1 ? "review" : "reviews"})
           </span>

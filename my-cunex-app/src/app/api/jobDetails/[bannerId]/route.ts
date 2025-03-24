@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ bannerId: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ bannerId: string }> }
+) {
   const con = await mysql.createConnection({
     host: process.env.NEXT_PUBLIC_AWS_RDS_HOST,
     user: process.env.NEXT_PUBLIC_AWS_RDS_USER,
@@ -14,9 +17,23 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // Query to fetch job details
     const jobQuery = `
-      SELECT bannerId, userId, bannerName, price, duration, typeOfWork, bannerdesc 
-      FROM jobBanners 
-      WHERE bannerId = ?
+    SELECT 
+        jb.bannerId, 
+        jb.userId, 
+        jb.bannerName, 
+        jb.price, 
+        jb.duration, 
+        jb.typeOfWork, 
+        jb.bannerdesc,
+        u.bank,
+        u.accountNumber,
+        u.phoneNumber
+    FROM 
+        jobBanners jb
+    JOIN 
+        users u ON jb.userId = u.userId
+    WHERE 
+        jb.bannerId = ?
     `;
 
     //@ts-expect-error - TS doesn't know about the mysql2/promise API
@@ -41,6 +58,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
   } catch (error) {
     console.error("Error fetching job details:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

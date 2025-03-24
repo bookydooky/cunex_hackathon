@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Users, Clock } from "lucide-react";
+import { ArrowLeft, Users, Clock, XCircle } from "lucide-react";
 import Image from "next/image";
 import PopupWindow from "../../components/CollaborateWindow";
 
@@ -18,6 +18,7 @@ interface UserProfileResponse {
   avgResponse: number;
   bio: string;
   rating: number;
+  phoneNumber: string;
 }
 
 const CreateJobPreview = () => {
@@ -25,15 +26,14 @@ const CreateJobPreview = () => {
   const params = useParams();
   const userId = params.id;
   const [userData, setUserData] = useState<UserProfileResponse | null>(null);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
 
     const fetchUserDetail = async () => {
       try {
-        const response = await fetch(
-          `/api/getProfile/?userId=${userId}`
-        );
+        const response = await fetch(`/api/getProfile/?userId=${userId}`);
         if (!response.ok) throw new Error("Failed to fetch job details");
 
         const data = await response.json();
@@ -79,14 +79,17 @@ const CreateJobPreview = () => {
   const handlePreviousPage = () => {
     router.push("/");
   };
+
+  if (!userData) return <p>Loading user details...</p>;
   const handleNextPage = () => {
+    if (!userData.phoneNumber) {
+      setIsAlertVisible(true);
+      return;
+    }
     localStorage.setItem("jobDetails", JSON.stringify(jobDetails));
     console.log("Saved to localStorage:", jobDetails);
     router.push(`/portfolio/${userId}`);
   };
-
-  if (!userData) return <p>Loading user details...</p>;
-
   return (
     <div className="flex flex-col h-screen bg-gray-100 overflow-y-auto">
       {/* App Header */}
@@ -327,6 +330,23 @@ const CreateJobPreview = () => {
           <span>Next</span>
         </button>
       </div>
+      {isAlertVisible && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-white/30 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm">
+            <XCircle className="mx-auto text-red-500 mb-2" size={40} />
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Please insert your Bank Account and PromptPay details in the
+              Profile page
+            </h2>
+            <button
+              onClick={() => setIsAlertVisible(false)}
+              className="bg-Pink text-white px-4 py-2 rounded-lg hover:bg-darkPink"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       {/* Pop-up Window */}
       <PopupWindow isVisible={isPopupVisible} onClose={handleClosePopup} />
     </div>

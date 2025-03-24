@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mysql from "mysql2/promise";
 
 export async function GET(request: NextRequest) {
-  const userId = request.nextUrl.searchParams.get('userId');
+  const userId = request.nextUrl.searchParams.get("userId");
 
   if (!userId) {
     return NextResponse.json({ error: "Missing userId" }, { status: 400 });
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Query to fetch user details
     const userQuery = `
       SELECT u.firstName, u.lastName, u.facultyCode, u.studentYear, 
-             f.facultyNameEN, u.studentId
+             f.facultyNameEN, u.studentId, u.phoneNumber
       FROM users u
       LEFT JOIN faculties f ON u.facultyCode = f.facultyCode
       WHERE u.userId = ?
@@ -47,7 +47,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(userData); // Return user data as JSON response
   } catch (error) {
     console.error("Error fetching profile:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   } finally {
     await con.end();
   }
