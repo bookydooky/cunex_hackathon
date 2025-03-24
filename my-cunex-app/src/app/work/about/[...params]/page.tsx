@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Users, Clock } from "lucide-react";
 import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
+import ReloadWindow from '@/app/components/ReloadWindow'
 
 interface JobDetailResponse {
   bannerId: string;
@@ -75,7 +76,7 @@ const WorkAbout = () => {
     fetchFreelanceDetails();
   }, [jobData]);
 
-  if (!jobData || !freelanceData) return <p>Loading job details...</p>;
+  if (!jobData || !freelanceData) return <ReloadWindow/>;
 
   function getAcademicYearLevel(
     entryYear: number,

@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
+import ReloadWindow from '@/app/components/ReloadWindow'
 
 interface JobDetailResponse {
   bannerId: string;
@@ -42,7 +43,7 @@ export default function Checkout() {
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <p>Loading job details...</p>;
+  if (!jobData) return <ReloadWindow/>;
 
   const handleAddPortfolio = async () => {
     try {
@@ -194,39 +195,8 @@ export default function Checkout() {
         </div>
       )}
 
-      {/* Client Details */}
-      <div className="px-4 py-2 bg-white">
-        <h2 className="text-xl font-bold text-Gray">Client Details</h2>
-        <p className="text-gray-600 text-sm mt-1">
-          Your personal and business information
-        </p>
-        <div className="mt-4 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input type="text" className="w-full p-2 border border-gray-300 rounded-md
-            focus:border-Pink outline-none" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input type="email" className="w-full p-2 border border-gray-300 rounded-md
-            focus:border-Pink outline-none" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Company
-            </label>
-            <input type="text" className="w-full p-2 border border-gray-300 rounded-md
-            focus:border-Pink outline-none" />
-          </div>
-        </div>
-      </div>
-
       {/* Confirm Payment Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white">
+      <div className="p-4 bg-white">
         <button
           className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink
           active:bg-darkPink"

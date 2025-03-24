@@ -94,7 +94,7 @@ export default function Home() {
       try {
         // Use the correct server endpoint
         const response = await fetch(
-          "/api/latest-jobs?typeOfWork=None&limit=3"
+          "/api/latest-jobs?typeOfWork=None&limit=10"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch latest jobs");
@@ -133,7 +133,7 @@ export default function Home() {
   if (!profile) return <p>Loading user details...</p>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100">
       <Suspense fallback={<div>Loading...</div>}>
         <TokenHandler setGotToken={setGotToken} />
       </Suspense>
@@ -301,8 +301,8 @@ export default function Home() {
               See All
             </h2>
           </div>
-          <div className="flex overflow-x-auto space-x-3 pb-2">
-            <div className="w-24 h-24 bg-pink-100 rounded-lg flex items-center justify-center">
+          <div className="grid gap-4 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(6rem, 1fr))' }}>
+            <div className="w-24 h-24 bg-pink-100 rounded-lg flex flex-shrink-0 items-center justify-center">
               <button
                 onClick={handleCreateJobClick}
                 className="transition-transform transform hover:scale-110 active:scale-90"
@@ -312,7 +312,7 @@ export default function Home() {
             </div>
             {loading
               ? // Show loading placeholders
-                Array(3)
+                Array(5)
                   .fill(0)
                   .map((_, idx) => (
                     <div
