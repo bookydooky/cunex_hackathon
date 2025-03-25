@@ -65,7 +65,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             <Image
               src={images[currentIndex].src}
               alt={images[currentIndex].alt || "Full image"}
-              layout="responsive"
               width={1280}
               height={1280}
               className="max-h-[70vh] object-contain"

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+
 const PaymentPage = () => {
   const router = useRouter();
   const params = useParams();
@@ -74,7 +75,7 @@ const PaymentPage = () => {
       <div className="sticky top-0 right-0 left-0 px-4 py-2 flex justify-between items-center bg-white">
         <div className="flex items-center">
           <button
-            onClick={() => router.push("/")}
+            onClick={() => router.back()}
             className="transition-transform transform active:scale-90"
           >
             <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
@@ -91,73 +92,79 @@ const PaymentPage = () => {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md flex-grow">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">
-          Payment Details
-        </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
-          {/* Bank Account Details */}
-          <div className="mb-4">
-            <h3 className="font-medium text-lg mb-2 text-gray-800">
-              Bank Account
-            </h3>
-            <label htmlFor="bank" className="block text-gray-500 mb-2">
-              Select Bank Account
-            </label>
-            <select
-              id="bank"
-              className="w-full p-3 border border-gray-300 rounded-lg mb-4 text-gray-500"
-              onChange={handleBankChange}
+      <div className="bg-gray-100 px-4 rounded-lg shadow-md flex-grow">
+        <div className='bg-white rounded-lg mt-4 p-4'>
+          <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+            Payment Details
+          </h2>
+          <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
+            {/* Bank Account Details */}
+            <div className="mb-4">
+              <h3 className="font-medium text-lg mb-2 text-gray-800">
+                Bank Account
+              </h3>
+              <label htmlFor="bank" className="block text-gray-500 mb-2">
+                Select Bank Account
+              </label>
+              <select
+                id="bank"
+                className="w-full p-3 mb-2 border border-gray-300 rounded-lg appearance-none text-Gray
+              focus:border-Pink focus:outline-none"
+                onChange={handleBankChange}
+              >
+                <option value="Kasikorn">Kasikorn</option>
+                <option value="SCB">SCB</option>
+                <option value="Krungthai">Krungthai</option>
+                <option value="Bangkok Bank">Bangkok Bank</option>
+                <option value="Krungsri">Krungsri</option>
+              </select>
+
+              <label
+                htmlFor="account-number"
+                className="block text-gray-500 mb-2"
+              >
+                Enter Account Number
+              </label>
+              <input
+                type="text"
+                id="account-number"
+                value={accountNumber}
+                onChange={handleAccountNumberChange}
+                placeholder="Enter Account Number"
+                className="w-full p-3 border border-gray-300 rounded-lg text-gray-500
+                focus:outline-none focus:border-Pink"
+              />
+            </div>
+
+            {/* PromptPay Details */}
+            <div className="mb-4 flex-grow">
+              <h3 className="font-medium text-lg mb-2 text-gray-800">
+                PromptPay
+              </h3>
+              <label htmlFor="phone-number" className="block text-gray-500 mb-2">
+                Enter Phone Number
+              </label>
+              <input
+                type="text"
+                id="phone-number"
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+                placeholder="0123456789"
+                className="w-full p-3 border border-gray-300 rounded-lg text-gray-500
+                focus:outline-none focus:border-Pink"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="bg-Pink hover:bg-darkPink active:bg-darkPink
+              py-3 rounded-lg mt-4"
             >
-              <option value="Kasikorn">Kasikorn</option>
-              <option value="SCB">SCB</option>
-              <option value="Krungthai">Krungthai</option>
-              <option value="Bangkok Bank">Bangkok Bank</option>
-              <option value="Krungsri">Krungsri</option>
-            </select>
-
-            <label
-              htmlFor="account-number"
-              className="block text-gray-500 mb-2"
-            >
-              Enter Account Number
-            </label>
-            <input
-              type="text"
-              id="account-number"
-              value={accountNumber}
-              onChange={handleAccountNumberChange}
-              placeholder="Enter Account Number"
-              className="w-full p-3 border border-gray-300 rounded-lg text-gray-500"
-            />
-          </div>
-
-          {/* PromptPay Details */}
-          <div className="mb-4 flex-grow">
-            <h3 className="font-medium text-lg mb-2 text-gray-800">
-              PromptPay
-            </h3>
-            <label htmlFor="phone-number" className="block text-gray-500 mb-2">
-              Enter Phone Number
-            </label>
-            <input
-              type="text"
-              id="phone-number"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-              placeholder="0123456789"
-              className="w-full p-3 border border-gray-300 rounded-lg text-gray-500"
-            />
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 mt-auto"
-          >
-            Submit Payment Details
-          </button>
-        </form>
+              Submit Payment Details
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

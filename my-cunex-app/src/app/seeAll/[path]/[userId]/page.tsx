@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 export default function AllJobs() {
   interface Job {
@@ -45,7 +46,7 @@ export default function AllJobs() {
   return (
     <div className="flex flex-col h-screen bg-gray-100 mx-auto shadow-lg overflow-y-auto">
       {/* App Header */}
-      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white">
+      <div className="sticky top-0 left-0 right-0 px-4 py-2 flex items-center justify-between bg-white z-1">
         <div className="flex items-center">
           <ArrowLeft
             className="mr-4 text-Pink hover:text-darkPink active:text-darkPink transition-transform
@@ -78,13 +79,14 @@ export default function AllJobs() {
                   router.push(`/work/workdetail/${job.bannerId}/${userId}`)
                 }
               >
-                <Image
-                  src={job.imageURL || "https://via.placeholder.com/150"}
-                  alt={job.bannerName}
-                  width={150}
-                  height={150}
-                  className="w-full h-40 object-cover rounded-md"
-                />
+                <div className="w-full h-40 relative">
+                  <Image
+                    src={job.imageURL || "https://via.placeholder.com/150"}
+                    alt={job.bannerName}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
                 <h2 className="text-lg text-Gray font-semibold mt-2">
                   {job.bannerName}
                 </h2>

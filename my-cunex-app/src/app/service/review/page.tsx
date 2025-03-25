@@ -8,6 +8,7 @@ export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [copySuccess, setCopySuccess] = useState('');
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { service } = useContext(GlobalStateContext);
   const router = useRouter();
   const promtpay = '092-XXX-XXX';
@@ -52,8 +53,10 @@ export default function ReviewAndPayPage() {
   }
 
   const handleSubmitOrder = () => {
-    alert("Order submitted successfully! Redirecting to home page...");
-    router.push("/");
+    setShowModal(true);
+    setTimeout(() => { setShowModal(false);
+      router.push("/"); }
+      , 2000);
   };
 
   return (
@@ -331,6 +334,13 @@ export default function ReviewAndPayPage() {
                 {copySuccess}
               </div>
             </div>
+            )}
+            {showModal && (
+              <div className="flex justify-center">
+                <div className="fixed bottom-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+                  Order Succesfully!
+                </div>
+              </div>
             )}
           </div>
         </div>

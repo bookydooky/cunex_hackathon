@@ -41,7 +41,7 @@ const WorkDetailPreview = () => {
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <ReloadWindow/>;
+  if (!jobData) return <ReloadWindow detail="Job"/>;
 
   return (
     <WorkLayout jobData={jobData} userId={userId}>

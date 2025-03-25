@@ -47,7 +47,7 @@ const WorkFeedback = () => {
     fetchFeedbacks();
   }, [bannerId]);
 
-  if (!jobData) return <ReloadWindow />;
+  if (!jobData) return <ReloadWindow detail="Job"/>;
   const overallRating =
     feedback.length > 0
       ? feedback

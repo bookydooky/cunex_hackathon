@@ -4,6 +4,7 @@ import { Users, Clock } from "lucide-react";
 import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import ReloadWindow from "@/app/components/ReloadWindow";
+import Image from 'next/image';
 
 interface JobDetailResponse {
   bannerId: string;
@@ -75,7 +76,7 @@ const WorkAbout = () => {
     fetchFreelanceDetails();
   }, [jobData]);
 
-  if (!jobData || !freelanceData) return <ReloadWindow />;
+  if (!jobData || !freelanceData) return <ReloadWindow detail="Job"/>;
 
   function getAcademicYearLevel(
     entryYear: number,
@@ -116,13 +117,31 @@ const WorkAbout = () => {
         </div>
 
         {/* Profile Header */}
-        <div className="flex items-center mt-2 mb-4">
-          <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden border-4 border-Pink">
-            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-              120 x 120
+        <div className="flex items-center mt-2 mb-4 gap-8">
+          <div className="w-24 h-24 flex-shrink-0 bg-white rounded-full overflow-hidden border-4 border-Pink relative">
+            { freelanceData.profileImageUrl ? (
+            <Image src={freelanceData.profileImageUrl}
+            alt="Profile Picture"
+            fill
+            objectFit="contain"/> ) :
+            (
+              <div className="w-full h-full flex-shrink-0 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8 text-gray-300"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </div>
+            )}
           </div>
-          <div className="ml-6">
+          <div>
             <h2 className="text-2xl text-Gray font-bold">
               {freelanceData.firstName} {freelanceData.lastName}
             </h2>

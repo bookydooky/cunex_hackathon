@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Users, CheckCircle, UserPlus } from "lucide-react"; // Import the required icons
+import { ArrowLeft, Users, CheckCircle, UserPlus, CreditCard } from "lucide-react"; // Import the required icons
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
+import ReloadWindow  from "@/app/components/ReloadWindow";
 
 export default function ProfilePage() {
   interface UserProfile {
@@ -139,7 +140,7 @@ export default function ProfilePage() {
     handleFileSubmit();
     setShowModal(false);
   };
-  if (!userData) return <p>Loading user details...</p>;
+  if (!userData) return <ReloadWindow detail="User"/>;
 
   return (
     <div className="h-screen bg-gray-100 overflow-y-auto">
@@ -166,7 +167,7 @@ export default function ProfilePage() {
 
       {/* Profile summary */}
       <div className="bg-white mx-4 mt-4 rounded-lg shadow-sm overflow-hidden">
-        <div className="p-4 flex w-full items-center justify-center gap-x-5">
+        <div className="px-2 py-4 flex w-full items-center justify-center gap-x-3">
           {/* Profile image */}
           {userData.profileImageUrl ? (
             <Image
@@ -174,10 +175,10 @@ export default function ProfilePage() {
               alt="Profile Picture"
               width={120}
               height={120}
-              className="w-30 h-30 rounded-full object-cover"
+              className="w-30 h-30 flex-shrink-0 rounded-full object-contain"
             />
           ) : (
-            <div className="w-30 h-30 bg-gray-100 rounded-full flex items-center justify-center">
+            <div className="w-30 h-30 flex-shrink-0 bg-gray-100 rounded-full flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-8 w-8 text-gray-300"
@@ -194,7 +195,7 @@ export default function ProfilePage() {
           )}
 
           {/* Profile info */}
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start max-w-sm">
             <h2 className="font-bold text-Gray text-xl">
               {userData.firstName} {userData.lastName}
             </h2>
@@ -208,7 +209,8 @@ export default function ProfilePage() {
             <div className="mt-2 flex justify-center">
               <button
                 onClick={() => setShowModal(true)}
-                className="border border-Pink text-Pink rounded-full px-6 py-1 w-50 text-[10px]"
+                className="border border-Pink text-Pink rounded-full px-6 py-1 w-full text-sm
+                cursor-pointer hover:border-darkPink hover:text-darkPink active:border-darkPink active:text-darkPink"
               >
                 Edit Profile Picture
               </button>
@@ -237,13 +239,13 @@ export default function ProfilePage() {
                   </svg>
                 </button>
 
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+                <h2 className="text-2xl font-semibold mb-6 text-Gray">
                   Upload Profile Picture
                 </h2>
 
                 <label
                   htmlFor="file-upload"
-                  className="mx-auto w-48 h-48 mb-6 rounded-full border-4 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:border-pink-500 transition-all duration-300"
+                  className="mx-auto w-48 h-48 mb-6 rounded-full border-4 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:border-Pink transition-all duration-300"
                 >
                   {imageSrc ? (
                     <img
@@ -283,12 +285,12 @@ export default function ProfilePage() {
                 <div className="flex justify-center space-x-4">
                   <button
                     onClick={() => setShowModal(false)}
-                    className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                    className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 active:bg-gray-300 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
-                    className="px-6 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+                    className="px-6 py-2 bg-Pink text-white rounded-lg hover:bg-darkPink active:bg-darkPink transition-colors"
                     onClick={handleSubmit}
                   >
                     Submit
@@ -328,7 +330,7 @@ export default function ProfilePage() {
           <Link href={`/profile/${userId}/myJob/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3">
                   <CheckCircle className="text-Pink w-[20px] h-[20px]" />
                 </div>
                 <span className="text-Gray">My Jobs</span>
@@ -356,7 +358,7 @@ export default function ProfilePage() {
           <Link href={`/profile/${userId}/myTeam/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3">
                   <Users className="text-Pink w-[20px] h-[20px]" />
                 </div>
                 <span className="text-Gray">My Team</span>
@@ -384,7 +386,7 @@ export default function ProfilePage() {
           <Link href={`/profile/${userId}/colab/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
+                <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3">
                   <UserPlus className="text-Pink w-[20px] h-[20px]" />
                 </div>
                 <span className="text-Gray">Team Up Requests</span>
@@ -412,8 +414,8 @@ export default function ProfilePage() {
           <Link href={`/profile/${userId}/payments/${userId}`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center mr-3">
-                  <span className="text-Pink w-[20px] h-[20px]">💸</span>
+                <div className="w-6 h-6 rounded-full lex items-center justify-center mr-3">
+                  <CreditCard className="text-Pink"/>
                 </div>
                 <span className="text-Gray">Payments</span>
               </div>

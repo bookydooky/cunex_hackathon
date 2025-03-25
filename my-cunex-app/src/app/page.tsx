@@ -5,7 +5,8 @@ import TokenHandler from "./components/TokenHandler";
 
 import { FiBox, FiPlus, FiEdit } from "react-icons/fi";
 import { BiCube } from "react-icons/bi";
-import { GiCutDiamond } from "react-icons/gi";
+import { BsBadge3dFill } from "react-icons/bs";
+import { GiLaserburn } from "react-icons/gi";
 import { MdFoodBank, MdLocationOn } from "react-icons/md";
 import { RiVideoAiFill } from "react-icons/ri";
 import {
@@ -25,6 +26,7 @@ import Notification from "./components/notification";
 import FeedbackPopup from "./components/FeedbackPopup";
 import axios from "axios";
 import { GlobalStateContext } from "./context/GlobalState";
+import ReloadWindow from '@/app/components/ReloadWindow'
 
 export default function Home() {
   interface Profile {
@@ -130,7 +132,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("userId", profile.userId);
   }, [profile]);
-  if (!profile) return <p>Loading user details...</p>;
+  if (!profile) return <ReloadWindow detail="User"/>;
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -247,8 +249,8 @@ export default function Home() {
               }}
             >
               <div
-                className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-200 rounded-full p-4 w-16 h-16 flex items-center justify-center
-              transition-transform transform active:scale-90 transition-colors active:bg-pink-200"
+                className="bg-pink-100 rounded-full p-4 w-16 h-16 flex items-center justify-centerbg-pink-100 hover:bg-pink-200 justify-center
+              transition-all transform active:scale-90 active:bg-pink-200"
               >
                 <item.icon className="text-Pink text-2xl" />
               </div>
@@ -270,8 +272,8 @@ export default function Home() {
             {[
               { icon: FiBox, label: "Item Delivery" },
               { icon: MdFoodBank, label: "Food Delivery" },
-              { icon: BiCube, label: "3D Printing" },
-              { icon: GiCutDiamond, label: "Laser Cutting" },
+              { icon: BsBadge3dFill, label: "3D Printing" },
+              { icon: GiLaserburn, label: "Laser Cutting" },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <div
@@ -327,7 +329,7 @@ export default function Home() {
                     className="flex flex-col items-center w-24"
                   >
                     <div
-                      className="w-24 h-24 bg-white rounded-lg overflow-hidden cursor-pointer"
+                      className="w-24 h-24 bg-white rounded-lg overflow-hidden cursor-pointer relative"
                       onClick={() =>
                         router.push(
                           `/work/workdetail/${job.bannerId}/${profile.userId}`
@@ -337,9 +339,8 @@ export default function Home() {
                       <Image
                         src={job.imageURL}
                         alt={job.bannerName || `Job ${idx}`}
-                        width={1280}
-                        height={1280}
-                        className="w-full h-full object-cover"
+                        fill
+                        objectFit="cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement; // Type assertion
                           target.onerror = null; // Prevent infinite loop in case the placeholder fails

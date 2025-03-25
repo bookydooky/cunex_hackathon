@@ -25,6 +25,7 @@ export default function Checkout() {
   const params = useParams();
   const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!bannerId) return;
@@ -44,7 +45,7 @@ export default function Checkout() {
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <ReloadWindow />;
+  if (!jobData) return <ReloadWindow detail='Job' />;
 
   const handleAddPortfolio = async () => {
     try {
@@ -61,11 +62,14 @@ export default function Checkout() {
       });
       const result = await response.json();
       console.log("Server response:", result);
+      setShowModal(true);
+      setTimeout(() => { setShowModal(false);
+      router.push("/"); }
+      , 2000);
     } catch (error) {
       console.error("Error Requesting Job", error);
       throw error; // Re-throw to handle in the calling function
     }
-    router.push("/");
   };
 
   return (
@@ -180,6 +184,8 @@ export default function Checkout() {
               PromptPay
             </span>
           </div>
+          <img src='https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png'
+            className='h-[30px]'/>
         </div>
       </div>
 
@@ -208,6 +214,13 @@ export default function Checkout() {
           Confirm Payment
         </button>
       </div>
+      {showModal && (
+        <div className="flex justify-center">
+          <div className="fixed bottom-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+              Payment Confirmed!
+          </div>
+        </div>
+      )}
     </div>
   );
 }

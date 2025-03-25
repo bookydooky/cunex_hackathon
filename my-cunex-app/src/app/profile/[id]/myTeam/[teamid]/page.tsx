@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import ReloadWindow from '@/app/components/ReloadWindow';
 export default function MessagePage() {
   interface Job {
     bannerId: string;
@@ -42,7 +43,7 @@ export default function MessagePage() {
   // Router would be used in a real implementation
   const router = useRouter();
 
-  if (!jobs || jobs.length === 0) return <p>Loading user details...</p>;
+  if (!jobs || jobs.length === 0) return <ReloadWindow detail="User"/>;
 
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
