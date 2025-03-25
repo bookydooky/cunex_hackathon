@@ -19,6 +19,7 @@ interface UserProfileResponse {
   bio: string;
   rating: number;
   phoneNumber: string;
+  profileImageUrl: string;
 }
 
 const CreateJobPreview = () => {

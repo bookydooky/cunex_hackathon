@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Query to fetch user details
     const userQuery = `
       SELECT u.firstName, u.lastName, u.facultyCode, u.studentYear, 
-             f.facultyNameEN, u.studentId, u.phoneNumber
+             f.facultyNameEN, u.studentId, u.phoneNumber, u.profileImageUrl
       FROM users u
       LEFT JOIN faculties f ON u.facultyCode = f.facultyCode
       WHERE u.userId = ?

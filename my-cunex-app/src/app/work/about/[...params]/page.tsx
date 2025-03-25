@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Users, Clock } from "lucide-react";
 import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
-import ReloadWindow from '@/app/components/ReloadWindow'
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 interface JobDetailResponse {
   bannerId: string;
@@ -28,6 +28,7 @@ interface FreelanceDetailsResponse {
   avgResponse: number;
   bio: string;
   rating: number;
+  profileImageUrl: string;
 }
 
 const WorkAbout = () => {
@@ -41,9 +42,7 @@ const WorkAbout = () => {
     if (!bannerId) return;
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(
-          `/api/jobDetails/${bannerId}`
-        );
+        const response = await fetch(`/api/jobDetails/${bannerId}`);
         if (!response.ok) throw new Error("Failed to fetch job details");
 
         const data = await response.json();
@@ -76,7 +75,7 @@ const WorkAbout = () => {
     fetchFreelanceDetails();
   }, [jobData]);
 
-  if (!jobData || !freelanceData) return <ReloadWindow/>;
+  if (!jobData || !freelanceData) return <ReloadWindow />;
 
   function getAcademicYearLevel(
     entryYear: number,
