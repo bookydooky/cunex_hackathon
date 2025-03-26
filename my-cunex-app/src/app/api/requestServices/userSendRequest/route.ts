@@ -45,11 +45,11 @@ export async function POST(req: NextRequest) {
     // Send notification request
     const response = await fetch(url, {
       method: "POST",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
-        ClientID: clientID,
-        ClientSecret: clientSecret,
-      },
+        ClientID: clientID || "",
+        ClientSecret: clientSecret || "",
+      }),
       body: JSON.stringify(payload),
     });
 

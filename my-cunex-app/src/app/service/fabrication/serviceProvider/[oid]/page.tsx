@@ -47,19 +47,29 @@ export default function ReviewPaymentPage() {
     }
 
     try {
-      const response = await fetch("/api/userRecieveConfirmation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId }),
-      });
+      const response = await fetch(
+        "/api/requestServices/userReceiveConfirmation",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sellerId: userId,
+            buyerId: projectDetails.buyerId,
+            orderId: orderId,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (data.success) {
         console.log("Notification sent successfully:", data);
-        router.push("/service/fabrication/3d/confirmation");
+        alert(
+          "Request Accepted Successfully, your client will contact you back shortly. Please start working on your services!"
+        );
+        router.push("/");
       } else {
         console.error("Failed to send notification:", data);
       }
@@ -70,7 +80,7 @@ export default function ReviewPaymentPage() {
 
   const handleDeny = () => {
     // Go back to previous page or show cancellation message
-    router.push("/service/fabrication/3d/details");
+    router.push("/");
   };
   if (projectDetails.buyerId == "") return <ReloadWindow detail="User" />;
 
@@ -94,7 +104,14 @@ export default function ReviewPaymentPage() {
 
               <div className="mb-6 p-4 bg-pink-50 rounded-lg border border-pink-100">
                 <div className="flex items-center mb-4">
-                  <div className="text-3xl mr-3">📁</div>
+                  <div
+                    className="text-3xl mr-3"
+                    onClick={() =>
+                      window.open(projectDetails.fileUrl, "_blank")
+                    }
+                  >
+                    📁
+                  </div>
                   <div>
                     <p className="text-gray-600 text-sm">Uploaded File</p>
                     <p className="text-Gray font-medium">
@@ -175,14 +192,14 @@ export default function ReviewPaymentPage() {
 
         {/* Payment Method - Demo */}
         <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-          <h2 className="text-2xl font-semibold mb-6 text-Gray">
+          {/* <h2 className="text-2xl font-semibold mb-6 text-Gray">
             Payment Method
           </h2>
 
           <div className="p-4 mb-6 bg-pink-50 rounded-lg border border-pink-100 flex items-center">
             <div className="text-2xl mr-3">💳</div>
             <div className="text-Gray font-medium">Credit Card</div>
-          </div>
+          </div> */}
 
           {/* Demo Credit Card Details */}
           {/* <div className="bg-gray-100 rounded-lg p-6 mb-8 border border-gray-200">

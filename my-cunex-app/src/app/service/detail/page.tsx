@@ -41,7 +41,7 @@ export default function UploadPagePreview() {
       filename: selectedFile.name,
       material: selectedMaterial || "",
       specs: requestDetails.specs,
-      Additional: requestDetails.additional,
+      additional: requestDetails.additional,
     };
 
     localStorage.setItem(
