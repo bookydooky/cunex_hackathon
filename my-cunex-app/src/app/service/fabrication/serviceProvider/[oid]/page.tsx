@@ -1,32 +1,78 @@
 "use client";
-import { useRouter } from 'next/navigation';
-
+//buyerId, requestDate, serviceType, fileUrl, material, specs, additional, filename;
+import { useRouter, useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import ReloadWindow from "@/app/components/ReloadWindow";
 export default function ReviewPaymentPage() {
   const router = useRouter();
-
-  // Example project details (in a real application, these would come from previous form or context)
-  const projectDetails = {
-    fileName: "robot-arm-v2.stl",
-    material: "PLA",
+  const params = useParams();
+  const orderId = String(params.oid);
+  const [projectDetails, setProjectDetails] = useState({
+    buyerId: "",
+    requestDate: "",
+    serviceType: "",
+    fileUrl: "",
+    filename: "",
+    material: "",
     materialIcon: "🔹",
-    size: "15cm x 10cm x 8cm, Blue color, 1:5 scale",
-    additionalNotes: "Please ensure smooth finish on joint surfaces. Sand down any rough edges.",
-    price: 79.99,
-    tax: 7.99,
-    shipping: 12.00
-  };
+    specs: "",
+    additional: "",
+    price: 67.5,
+  });
 
-  const totalPrice = projectDetails.price + projectDetails.tax + projectDetails.shipping;
+  const totalPrice = projectDetails.price;
+  useEffect(() => {
+    // Fetch order details from the server using the orderId
+    const fetchOrderDetails = async () => {
+      try {
+        const res = await fetch(`/api/getOrder/${orderId}`);
+        const data = await res.json();
+        setProjectDetails((prevDetails) => ({
+          ...prevDetails,
+          ...data.order,
+        }));
+      } catch (err) {
+        console.error("Error viewing order:", err);
+        alert("Error viewing order. Please try again later.");
+      }
+    };
+    fetchOrderDetails();
+  }, [orderId]);
+  const handleAccept = async () => {
+    const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
 
-  const handleAccept = () => {
-    // Process payment and redirect
-    router.push("/service/fabrication/3d/confirmation");
+    if (!userId) {
+      console.error("User ID not found in localStorage");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/userRecieveConfirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Notification sent successfully:", data);
+        router.push("/service/fabrication/3d/confirmation");
+      } else {
+        console.error("Failed to send notification:", data);
+      }
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
   };
 
   const handleDeny = () => {
     // Go back to previous page or show cancellation message
     router.push("/service/fabrication/3d/details");
   };
+  if (projectDetails.buyerId == "") return <ReloadWindow detail="User" />;
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -38,7 +84,6 @@ export default function ReviewPaymentPage() {
           <p className="text-xl text-Pink">Bring your ideas to life</p>
         </header>
 
-
         <div className="grid md:grid-cols-3 gap-6">
           {/* Project Summary */}
           <div className="md:col-span-2">
@@ -46,43 +91,47 @@ export default function ReviewPaymentPage() {
               <h2 className="text-2xl font-semibold mb-6 text-Gray">
                 Project Summary
               </h2>
-              
+
               <div className="mb-6 p-4 bg-pink-50 rounded-lg border border-pink-100">
                 <div className="flex items-center mb-4">
                   <div className="text-3xl mr-3">📁</div>
                   <div>
                     <p className="text-gray-600 text-sm">Uploaded File</p>
-                    <p className="text-Gray font-medium">{projectDetails.fileName}</p>
+                    <p className="text-Gray font-medium">
+                      {projectDetails.filename}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center mb-4">
-                  <div className="text-3xl mr-3">{projectDetails.materialIcon}</div>
+                  <div className="text-3xl mr-3">
+                    {projectDetails.materialIcon}
+                  </div>
                   <div>
                     <p className="text-gray-600 text-sm">Material</p>
-                    <p className="text-Gray font-medium">{projectDetails.material}</p>
+                    <p className="text-Gray font-medium">
+                      {projectDetails.material}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="mb-4">
                   <p className="text-gray-600 text-sm">Size & Specifications</p>
-                  <p className="text-Gray">{projectDetails.size}</p>
+                  <p className="text-Gray">{projectDetails.specs}</p>
                 </div>
-                
+
                 <div className="mb-2">
                   <p className="text-gray-600 text-sm">Additional Requests</p>
-                  <p className="text-Gray">{projectDetails.additionalNotes}</p>
+                  <p className="text-Gray">{projectDetails.additional}</p>
                 </div>
               </div>
 
-              
               <div className="border-t border-gray-200 my-4 pt-4">
                 <button
                   type="button"
                   onClick={() => router.push("/service/fabrication/3d/details")}
                   className="text-Pink font-medium hover:underline flex items-center"
-                >
-                </button>
+                ></button>
               </div>
             </div>
           </div>
@@ -93,19 +142,25 @@ export default function ReviewPaymentPage() {
               <h2 className="text-2xl font-semibold mb-6 text-Gray">
                 Payment Summary
               </h2>
-              
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Base Price:</span>
-                  <span className="text-Gray">${projectDetails.price.toFixed(2)}</span>
+                  <span className="text-Gray">
+                    ${projectDetails.price.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax:</span>
-                  <span className="text-Gray">${projectDetails.tax.toFixed(2)}</span>
+                  <span className="text-Gray">
+                    ${projectDetails.price.toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping:</span>
-                  <span className="text-Gray">${projectDetails.shipping.toFixed(2)}</span>
+                  <span className="text-Gray">
+                    ${projectDetails.price.toFixed(2)}
+                  </span>
                 </div>
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex justify-between font-bold">
@@ -123,19 +178,23 @@ export default function ReviewPaymentPage() {
           <h2 className="text-2xl font-semibold mb-6 text-Gray">
             Payment Method
           </h2>
-          
+
           <div className="p-4 mb-6 bg-pink-50 rounded-lg border border-pink-100 flex items-center">
             <div className="text-2xl mr-3">💳</div>
             <div className="text-Gray font-medium">Credit Card</div>
           </div>
-          
+
           {/* Demo Credit Card Details */}
-          <div className="bg-gray-100 rounded-lg p-6 mb-8 border border-gray-200">
+          {/* <div className="bg-gray-100 rounded-lg p-6 mb-8 border border-gray-200">
             <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold text-Gray mb-1">Demo Payment Information</h3>
-              <p className="text-gray-600 text-sm">For demonstration purposes only</p>
+              <h3 className="text-lg font-semibold text-Gray mb-1">
+                Demo Payment Information
+              </h3>
+              <p className="text-gray-600 text-sm">
+                For demonstration purposes only
+              </p>
             </div>
-            
+
             <div className="bg-white rounded-lg p-4 shadow-sm mb-4">
               <div className="flex justify-between items-center mb-6">
                 <div className="text-lg font-bold text-Gray">Demo Card</div>
@@ -144,12 +203,12 @@ export default function ReviewPaymentPage() {
                   <div className="h-6 w-10 bg-red-500 rounded"></div>
                 </div>
               </div>
-              
+
               <div className="mb-4">
                 <p className="text-xs text-gray-500">Card Number</p>
                 <p className="font-mono text-Gray">**** **** **** 4242</p>
               </div>
-              
+
               <div className="flex justify-between">
                 <div>
                   <p className="text-xs text-gray-500">Cardholder Name</p>
@@ -161,7 +220,7 @@ export default function ReviewPaymentPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-gray-600">Card Type:</span>
@@ -173,11 +232,13 @@ export default function ReviewPaymentPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Payment Amount:</span>
-                <span className="font-semibold text-Pink">${totalPrice.toFixed(2)}</span>
+                <span className="font-semibold text-Pink">
+                  ${totalPrice.toFixed(2)}
+                </span>
               </div>
             </div>
-          </div>
-          
+          </div> */}
+
           {/* Accept/Deny Buttons */}
           <div className="grid grid-cols-2 gap-4">
             <button
