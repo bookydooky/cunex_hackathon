@@ -4,7 +4,6 @@ import { GlobalStateContext } from "@/app/context/GlobalState";
 import { useRouter } from "next/navigation";
 import { FiClipboard } from "react-icons/fi";
 import { useEffect } from "react";
-import { request } from "http";
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const userId = localStorage.getItem("userId") || "";

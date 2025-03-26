@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import ReloadWindow from "@/app/components/ReloadWindow";
 interface UserProfileResponse {
