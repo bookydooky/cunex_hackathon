@@ -159,7 +159,7 @@ export default function UploadPagePreview() {
                   id="file-upload"
                   className="hidden"
                   onChange={handleFileChange}
-                  accept=".stl,.obj,.3mf,.step,.fbx,.jpg,.jpeg"
+                  accept=".stl,.obj,.3mf,.step,.fbx,.jpg,.jpeg,.png"
                 />
               </div>
             </div>
