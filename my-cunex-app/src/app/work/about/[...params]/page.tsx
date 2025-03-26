@@ -123,7 +123,7 @@ const WorkAbout = () => {
             <Image src={freelanceData.profileImageUrl}
             alt="Profile Picture"
             fill
-            objectFit="contain"/> ) :
+            objectFit="cover"/> ) :
             (
               <div className="w-full h-full flex-shrink-0 bg-gray-100 rounded-full flex items-center justify-center">
               <svg

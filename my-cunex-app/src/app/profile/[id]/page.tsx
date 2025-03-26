@@ -183,7 +183,7 @@ export default function ProfilePage() {
               alt="Profile Picture"
               width={120}
               height={120}
-              className="w-30 h-30 flex-shrink-0 rounded-full object-contain"
+              className="w-30 h-30 flex-shrink-0 rounded-full object-cover"
             />
           ) : (
             <div className="w-30 h-30 flex-shrink-0 bg-gray-100 rounded-full flex items-center justify-center">
