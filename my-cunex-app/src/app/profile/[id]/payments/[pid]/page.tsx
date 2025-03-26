@@ -1,16 +1,53 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-
+import ReloadWindow from "@/app/components/ReloadWindow";
+interface UserProfileResponse {
+  firstName: string;
+  lastName: string;
+  facultyCode: string;
+  studentYear: string;
+  facultyNameEN: string;
+  studentId: string;
+  successRate: number;
+  jobsSold: number;
+  rehired: number;
+  avgResponse: number;
+  bio: string;
+  rating: number;
+  phoneNumber: string;
+  profileImageUrl: string;
+  bank: string;
+  accountNumber: string;
+}
 const PaymentPage = () => {
   const router = useRouter();
   const params = useParams();
   const userId = String(params.pid);
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [userData, setUserData] = useState<UserProfileResponse | null>(null);
   const [bank, setBank] = useState<string>("Kasikorn");
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchUserDetail = async () => {
+      try {
+        const response = await fetch(`/api/getProfile/?userId=${userId}`);
+        if (!response.ok) throw new Error("Failed to fetch job details");
+
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching job details:", error);
+      }
+    };
+
+    fetchUserDetail();
+  }, [userId]);
 
   const handleBankChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBank(e.target.value);
@@ -70,6 +107,8 @@ const PaymentPage = () => {
       // Handle network or other errors
     }
   };
+  if (!userData) return <ReloadWindow detail="User" />;
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
       <div className="sticky top-0 right-0 left-0 px-4 py-2 flex justify-between items-center bg-white">
@@ -93,11 +132,25 @@ const PaymentPage = () => {
       </div>
 
       <div className="bg-gray-100 px-4 rounded-lg shadow-md flex-grow">
-        <div className='bg-white rounded-lg mt-4 p-4'>
+        <div className="bg-white rounded-lg mt-4 p-4">
           <h2 className="text-2xl font-semibold mb-2 text-gray-800">
             Payment Details
           </h2>
           <form onSubmit={handleSubmit} className="flex flex-col flex-grow">
+            {/*Current Bank Detail*/}
+            <div className="mb-4">
+              <h3 className="font-medium text-lg mb-2 text-gray-800">
+                Current Payment Details
+              </h3>
+              <div className="block text-gray-500 mb-2">
+                Bank Account: {userData.bank} {userData.accountNumber}
+              </div>
+
+              <div className="block text-gray-500 mb-2">
+                PromptPay: {userData.phoneNumber}
+              </div>
+            </div>
+
             {/* Bank Account Details */}
             <div className="mb-4">
               <h3 className="font-medium text-lg mb-2 text-gray-800">
@@ -141,7 +194,10 @@ const PaymentPage = () => {
               <h3 className="font-medium text-lg mb-2 text-gray-800">
                 PromptPay
               </h3>
-              <label htmlFor="phone-number" className="block text-gray-500 mb-2">
+              <label
+                htmlFor="phone-number"
+                className="block text-gray-500 mb-2"
+              >
                 Enter Phone Number
               </label>
               <input

@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Users, Clock, XCircle } from "lucide-react";
 import Image from "next/image";
 import PopupWindow from "../../components/CollaborateWindow";
-import ReloadWindow from '@/app/components/ReloadWindow';
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 interface UserProfileResponse {
   firstName: string;
@@ -21,6 +21,8 @@ interface UserProfileResponse {
   rating: number;
   phoneNumber: string;
   profileImageUrl: string;
+  bank: string;
+  accountNumber: string;
 }
 
 const CreateJobPreview = () => {
@@ -82,7 +84,7 @@ const CreateJobPreview = () => {
     router.push("/");
   };
 
-  if (!userData) return <ReloadWindow detail="User"/>;
+  if (!userData) return <ReloadWindow detail="User" />;
   const handleNextPage = () => {
     if (!userData.phoneNumber) {
       setIsAlertVisible(true);
