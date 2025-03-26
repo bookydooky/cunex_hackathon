@@ -62,6 +62,7 @@ export default function Home() {
   const [clickedBannerId, setClickedBannerId] = useState("");
   const { setService } = useContext(GlobalStateContext);
   const router = useRouter();
+
   const handleCreateJobClick = () => {
     if (profile?.userId) {
       router.push(`/create-job/${profile.userId}`);
@@ -381,15 +382,10 @@ export default function Home() {
                       }
                     >
                       <Image
-                        src={job.imageURL}
+                        src={job.imageURL || "/placeholder.png"}
                         alt={job.bannerName || `Job ${idx}`}
                         fill
                         objectFit="cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement; // Type assertion
-                          target.onerror = null; // Prevent infinite loop in case the placeholder fails
-                          target.src = "/placeholder.png";
-                        }}
                       />
                     </div>
                     <span className="text-xs text-Gray mt-1 text-center">
