@@ -22,7 +22,24 @@ export async function GET(
   try {
     // Query the orders table using the provided orderId
     const [rows] = (await con.execute(
-      "SELECT buyerId,requestDate,serviceType, fileUrl, material, specs, additional, filename FROM orders WHERE orderId = ?",
+      `SELECT 
+        orders.buyerId,
+        orders.requestDate,
+        orders.serviceType, 
+        orders.fileUrl, 
+        orders.material, 
+        orders.specs, 
+        orders.additional, 
+        orders.filename,
+        users.firstName,
+        users.lastName,
+        users.studentYear,
+        faculties.facultyNameEN,
+        users.phoneNumber
+      FROM orders 
+      JOIN users ON orders.buyerId = users.userId 
+      JOIN faculties ON users.facultyCode = faculties.facultyCode
+      WHERE orders.orderId = ?`,
       [id]
     )) as any;
 

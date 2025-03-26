@@ -4,6 +4,30 @@ import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReloadWindow from "@/app/components/ReloadWindow";
 export default function ReviewPaymentPage() {
+  function getAcademicYearLevel(
+    entryYear: number,
+    currentAcademicYear: number
+  ) {
+    // Calculate the difference between current academic year and entry year
+    const yearDifference = currentAcademicYear - entryYear;
+
+    // Determine year level based on the difference
+    if (yearDifference < 0) {
+      return "Not yet enrolled";
+    } else if (yearDifference === 0) {
+      return "1st year";
+    } else if (yearDifference === 1) {
+      return "2nd year";
+    } else if (yearDifference === 2) {
+      return "3rd year";
+    } else if (yearDifference === 3) {
+      return "4th year";
+    } else if (yearDifference === 4) {
+      return "5th year";
+    } else if (yearDifference > 4) {
+      return "Advanced year / Graduate";
+    }
+  }
   const router = useRouter();
   const params = useParams();
   const orderId = String(params.oid);
@@ -18,6 +42,11 @@ export default function ReviewPaymentPage() {
     specs: "",
     additional: "",
     price: 67.5,
+    firstName: "",
+    lastName: "",
+    studentYear: "",
+    facultyNameEN: "",
+    phoneNumber: "",
   });
 
   const totalPrice = projectDetails.price;
@@ -137,9 +166,24 @@ export default function ReviewPaymentPage() {
                   <p className="text-Gray">{projectDetails.specs}</p>
                 </div>
 
-                <div className="mb-2">
+                <div className="mb-4">
                   <p className="text-gray-600 text-sm">Additional Requests</p>
                   <p className="text-Gray">{projectDetails.additional}</p>
+                </div>
+
+                <div className="mb-2">
+                  <p className="text-gray-600 text-sm">Client Details</p>
+                  <p className="text-Gray">
+                    {projectDetails.firstName} {projectDetails.lastName}
+                  </p>
+                  <p className="text-Gray">
+                    {getAcademicYearLevel(
+                      parseInt(projectDetails.studentYear, 10),
+                      2567
+                    )}{" "}
+                    {projectDetails.facultyNameEN}
+                  </p>
+                  <p className="text-Gray">{projectDetails.phoneNumber}</p>
                 </div>
               </div>
 
