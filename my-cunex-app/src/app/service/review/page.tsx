@@ -6,7 +6,8 @@ import { FiClipboard } from "react-icons/fi";
 import { useEffect } from "react";
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
-  const userId = localStorage.getItem("userId") || "";
+  const [userId, setUserId] = useState("");
+  //const userId = localStorage.getItem("userId") || "";
 
   const [copySuccess, setCopySuccess] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
@@ -23,6 +24,8 @@ export default function ReviewAndPayPage() {
     additional: "",
   });
   useEffect(() => {
+    const storedUserId = localStorage.getItem("userId") || "";
+    setUserId(storedUserId);
     const storedData = localStorage.getItem("requestDetails");
     if (storedData) {
       setRequestDetails(JSON.parse(storedData)); // Convert JSON string to object
