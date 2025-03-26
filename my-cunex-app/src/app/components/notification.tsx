@@ -7,6 +7,7 @@ interface NotificationProps {
   setShowNotifications: (show: boolean) => void;
   setShowFeedbackPopup: React.Dispatch<React.SetStateAction<boolean>>;
   setClickedBannerId: React.Dispatch<React.SetStateAction<string>>;
+  currentNotis: SubmittedImage[];
 }
 interface SubmittedImage {
   historyId: number;
@@ -23,31 +24,12 @@ export default function Notification({
   setShowNotifications,
   setShowFeedbackPopup,
   setClickedBannerId,
+  currentNotis,
 }: NotificationProps) {
-  const [currentNotis, setCurrentNotis] = useState<SubmittedImage[]>([]);
   const handleCloseNotifications = () => {
     // Hide notifications by setting the state to false
     setShowNotifications(false);
   };
-  useEffect(() => {
-    if (!userId) return;
-
-    const checkSubmittedImages = async () => {
-      try {
-        const response = await fetch(
-          `/api/getSubmittedImages/?userId=${userId}`
-        );
-        if (!response.ok) throw new Error("Failed to check images");
-
-        const data = await response.json();
-        setCurrentNotis(data);
-      } catch (error) {
-        console.error("Error fetching job details:", error);
-      }
-    };
-
-    checkSubmittedImages();
-  }, [userId]);
 
   if (!currentNotis) return <p>Loading Notification details...</p>;
 

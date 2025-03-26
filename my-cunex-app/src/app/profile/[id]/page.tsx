@@ -1,10 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Users, CheckCircle, UserPlus, CreditCard } from "lucide-react"; // Import the required icons
+import {
+  ArrowLeft,
+  Users,
+  CheckCircle,
+  UserPlus,
+  CreditCard,
+} from "lucide-react"; // Import the required icons
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
-import ReloadWindow  from "@/app/components/ReloadWindow";
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 export default function ProfilePage() {
   interface UserProfile {
@@ -22,6 +28,8 @@ export default function ProfilePage() {
     rating: number;
     phoneNumber: string;
     profileImageUrl: string;
+    bank: string;
+    accountNumber: string;
   }
   function getAcademicYearLevel(
     entryYear: number,
@@ -140,7 +148,7 @@ export default function ProfilePage() {
     handleFileSubmit();
     setShowModal(false);
   };
-  if (!userData) return <ReloadWindow detail="User"/>;
+  if (!userData) return <ReloadWindow detail="User" />;
 
   return (
     <div className="h-screen bg-gray-100 overflow-y-auto">
@@ -415,7 +423,7 @@ export default function ProfilePage() {
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full lex items-center justify-center mr-3">
-                  <CreditCard className="text-Pink"/>
+                  <CreditCard className="text-Pink" />
                 </div>
                 <span className="text-Gray">Payments</span>
               </div>

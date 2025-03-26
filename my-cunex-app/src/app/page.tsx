@@ -26,9 +26,19 @@ import Notification from "./components/notification";
 import FeedbackPopup from "./components/FeedbackPopup";
 import axios from "axios";
 import { GlobalStateContext } from "./context/GlobalState";
-import ReloadWindow from '@/app/components/ReloadWindow'
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 export default function Home() {
+  interface SubmittedImage {
+    historyId: number;
+    bannerName: string;
+    firstName: string;
+    lastName: string;
+    imageURL: string;
+    submittedImageId: number;
+    bannerId: string;
+  }
+
   interface Profile {
     userId: string;
     studentId: string;
@@ -45,6 +55,8 @@ export default function Home() {
     firstImageId: number;
     imageURL: string;
   }
+  const [currentNotis, setCurrentNotis] = useState<SubmittedImage[]>([]);
+
   const [gotToken, setGotToken] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
   const [clickedBannerId, setClickedBannerId] = useState("");
@@ -129,10 +141,29 @@ export default function Home() {
     localStorage.removeItem("addedMembers");
     localStorage.removeItem("searchMembers");
   }, [gotToken]);
+
   useEffect(() => {
+    if (!profile.userId) return;
+
     localStorage.setItem("userId", profile.userId);
-  }, [profile]);
-  if (!profile) return <ReloadWindow detail="User"/>;
+
+    const checkSubmittedImages = async () => {
+      try {
+        const response = await fetch(
+          `/api/getSubmittedImages/?userId=${profile.userId}`
+        );
+        if (!response.ok) throw new Error("Failed to check images");
+
+        const data = await response.json();
+        setCurrentNotis(data);
+      } catch (error) {
+        console.error("Error fetching job details:", error);
+      }
+    };
+
+    checkSubmittedImages();
+  }, [profile, showNotifications]);
+  if (!profile) return <ReloadWindow detail="User" />;
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -167,22 +198,29 @@ export default function Home() {
             </div>
           </div>
           <div className="flex space-x-2">
-            <div
-              className={`rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer transition-colors
+            <div className="relative">
+              <div
+                className={`rounded-full p-2 flex items-center justify-center h-10 w-10 cursor-pointer transition-colors
               ${
                 showNotifications
                   ? "bg-gray-300"
                   : "bg-gray-100 hover:bg-gray-300"
               }`}
-              onClick={() => {
-                if (profile?.userId) {
-                  setShowNotifications(!showNotifications);
-                } else {
-                  console.warn("Profile is missing or incomplete.");
-                }
-              }}
-            >
-              <FaBell className="text-gray-400 text-lg" />
+                onClick={() => {
+                  if (profile?.userId) {
+                    setShowNotifications(!showNotifications);
+                  } else {
+                    console.warn("Profile is missing or incomplete.");
+                  }
+                }}
+              >
+                <FaBell className="text-gray-400 text-lg" />
+              </div>
+              {currentNotis.length > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[20px] flex items-center justify-center">
+                  {currentNotis.length > 99 ? "99+" : currentNotis.length}
+                </span>
+              )}
             </div>
             {showNotifications && (
               <Notification
@@ -190,6 +228,7 @@ export default function Home() {
                 setShowNotifications={setShowNotifications}
                 setShowFeedbackPopup={setShowFeedbackPopup}
                 setClickedBannerId={setClickedBannerId}
+                currentNotis={currentNotis}
               />
             )}
             {showFeedbackPopup && (
@@ -303,7 +342,12 @@ export default function Home() {
               See All
             </h2>
           </div>
-          <div className="grid gap-4 pb-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(6rem, 1fr))' }}>
+          <div
+            className="grid gap-4 pb-2"
+            style={{
+              gridTemplateColumns: "repeat(auto-fit, minmax(6rem, 1fr))",
+            }}
+          >
             <div className="w-24 h-24 bg-pink-100 rounded-lg flex flex-shrink-0 items-center justify-center">
               <button
                 onClick={handleCreateJobClick}
