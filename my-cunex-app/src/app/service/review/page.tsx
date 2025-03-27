@@ -18,7 +18,7 @@ export default function ReviewAndPayPage() {
   const handleCopyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(
       () => {
-        setCopySuccess('Copied!');
+        setCopySuccess('Copied to clipboard!');
         setTimeout(() => setCopySuccess(''), 2000); // Clear the message after 2 seconds
       },
       (err) => {

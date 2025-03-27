@@ -106,16 +106,6 @@ const WorkAbout = () => {
   return (
     <WorkLayout jobData={jobData} userId={userId}>
       <div className="p-4">
-        {/* View Full Profile Link */}
-        <div className="text-right">
-          <a
-            href="#"
-            className="text-Pink text-sm hover:underline hover:underline-offset-1"
-          >
-            View Full Profile
-          </a>
-        </div>
-
         {/* Profile Header */}
         <div className="flex items-center mt-2 mb-4 gap-8">
           <div className="w-24 h-24 flex-shrink-0 bg-white rounded-full overflow-hidden border-4 border-Pink relative">

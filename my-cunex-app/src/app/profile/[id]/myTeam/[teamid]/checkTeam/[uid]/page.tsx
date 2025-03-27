@@ -129,7 +129,32 @@ export default function UsersPage() {
     }
   };
 
-  if (!users || users.length === 0) return <p>Still Finding Teammates</p>;
+  if (!users || users.length === 0) return (
+    <div className="bg-gray-100 h-screen overflow-y-auto">
+      <div className="sticky top-0 left-0 right-0">
+        {/* Navigation bar */}
+        <div className="px-4 py-2 flex justify-between items-center bg-white">
+          <div className="flex items-center">
+            <button
+              onClick={() => router.back()}
+              className="transition-transform transform active:scale-90"
+            >
+              <ArrowLeft className="mr-4 text-Pink hover:text-darkPink active:text-darkPink" />
+            </button>
+            <img
+              src="/assets/CUNEX-logo.png"
+              alt="CUNEX Logo"
+              className="h-12"
+            />
+            <div className="h-6 border-l border-gray-300 mx-5"></div>
+            <div className="text-Pink font-medium text-xl">My Team</div>
+          </div>
+        </div>
+      </div>
+      <h1 className="text-Gray p-4">Still Finding Teammates...</h1>
+    </div>
+  )
+
   //   if (users.error === "No user found for the specified bannerId")
   //     return <p>Still Finding Teammates...</p>;
   return (

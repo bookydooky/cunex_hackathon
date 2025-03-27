@@ -57,7 +57,7 @@ const FeedbackPopup: React.FC<FeedbackPopupProps> = ({
         <h2 className="text-xl font-semibold mb-4">Write Your Feedback</h2>
 
         {/* Rating Stars */}
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center gap-1 mb-4">
           {[1, 2, 3, 4, 5].map((star) => (
             <FaStar
               key={star}
@@ -78,15 +78,17 @@ const FeedbackPopup: React.FC<FeedbackPopupProps> = ({
         ></textarea>
 
         {/* Buttons */}
-        <div className="flex justify-end mt-4">
+        <div className="flex gap-2 mt-4">
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+            className="flex-1 bg-gray-100 text-gray-400 px-4 py-2 rounded-lg
+            hover:bg-gray-200 active:bg-gray-200 transition-colors"
             onClick={() => setShowFeedbackPopup(false)}
           >
             Skip
           </button>
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="flex-1 bg-Pink text-white px-4 py-2 rounded-lg
+            hover:bg-darkPink active:bg-darkPink transition-colors"
             onClick={submitFeedback}
           >
             Submit

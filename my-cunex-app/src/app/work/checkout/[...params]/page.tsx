@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import ReloadWindow from "@/app/components/ReloadWindow";
+import { FiClipboard } from "react-icons/fi"
 
 interface JobDetailResponse {
   bannerId: string;
@@ -26,6 +27,7 @@ export default function Checkout() {
   const [bannerId, userId] = params?.params || []; // ✅ Get id dynamically
   const [jobData, setJobData] = useState<JobDetailResponse | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [copySuccess, setCopySuccess] = useState('');
 
   useEffect(() => {
     if (!bannerId) return;
@@ -70,6 +72,18 @@ export default function Checkout() {
       console.error("Error Requesting Job", error);
       throw error; // Re-throw to handle in the calling function
     }
+  };
+
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setCopySuccess('Copied to clipboard!');
+        setTimeout(() => setCopySuccess(''), 2000); // Clear the message after 2 seconds
+      },
+      (err) => {
+        setCopySuccess('Failed to copy!');
+      }
+    );
   };
 
   return (
@@ -159,7 +173,7 @@ export default function Checkout() {
         </div>
 
         <div
-          className={`border rounded-lg p-4 flex justify-between items-center cursor-pointer ${
+          className={`border rounded-lg p-4 mb-3 flex justify-between items-center cursor-pointer ${
             paymentMethod === "PromptPay" ? "border-Pink" : "border-gray-300"
           }`}
           onClick={() => setPaymentMethod("PromptPay")}
@@ -187,23 +201,29 @@ export default function Checkout() {
           <img src='https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png'
             className='h-[30px]'/>
         </div>
-      </div>
-
-      {paymentMethod === "PromptPay" && (
-        <div className="px-4 mb-4">
+        {paymentMethod === "PromptPay" && (
+        <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
           <span className="text-gray-700">
             Account Number: {jobData.phoneNumber}
           </span>
+          <button onClick={() => handleCopyToClipboard(jobData.phoneNumber)}>
+            <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
+          </button>
         </div>
       )}
       {paymentMethod === "Bank Account" && (
-        <div className="px-4 mb-4">
+        <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
           <span className="text-gray-700">
             Account Number: {jobData.bank} {jobData.accountNumber}
           </span>
+          <button onClick={() => handleCopyToClipboard(jobData.accountNumber)}
+            className="ml-2">
+            <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
+          </button>
         </div>
       )}
-
+      </div>
+      
       {/* Confirm Payment Button */}
       <div className="p-4 bg-white">
         <button
@@ -220,6 +240,13 @@ export default function Checkout() {
               Payment Confirmed!
           </div>
         </div>
+      )}
+      {copySuccess && (
+            <div className="flex justify-center">
+              <div className="fixed bottom-4 bg-gray-100 text-Gray px-4 py-2 rounded-md shadow-lg font-medium">
+                {copySuccess}
+              </div>
+            </div>
       )}
     </div>
   );
