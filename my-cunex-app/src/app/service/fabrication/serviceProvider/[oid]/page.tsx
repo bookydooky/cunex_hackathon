@@ -1,7 +1,9 @@
 "use client";
 //buyerId, requestDate, serviceType, fileUrl, material, specs, additional, filename;
 import { useRouter, useParams } from "next/navigation";
+import Image from 'next/image';
 import { useEffect, useState } from "react";
+import { File, InspectionPanel, X } from 'lucide-react';
 import ReloadWindow from "@/app/components/ReloadWindow";
 export default function ReviewPaymentPage() {
   function getAcademicYearLevel(
@@ -49,6 +51,7 @@ export default function ReviewPaymentPage() {
     phoneNumber: "",
   });
 
+  const [fullImage, setFullImage] = useState<boolean>(false);
   const totalPrice = projectDetails.price;
   useEffect(() => {
     // Fetch order details from the server using the orderId
@@ -112,6 +115,7 @@ export default function ReviewPaymentPage() {
     router.push("/");
   };
   if (projectDetails.buyerId == "") return <ReloadWindow detail="User" />;
+  
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -123,23 +127,21 @@ export default function ReviewPaymentPage() {
           <p className="text-xl text-Pink">Bring your ideas to life</p>
         </header>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 mb-6">
           {/* Project Summary */}
           <div className="md:col-span-2">
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-6">
-              <h2 className="text-2xl font-semibold mb-6 text-Gray">
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold mb-4 text-Gray">
                 Project Summary
               </h2>
 
-              <div className="mb-6 p-4 bg-pink-50 rounded-lg border border-pink-100">
+              <div className="mb-2 p-4 bg-pink-50 rounded-lg border border-pink-100">
                 <div className="flex items-center mb-4">
                   <div
                     className="text-3xl mr-3"
-                    onClick={() =>
-                      window.open(projectDetails.fileUrl, "_blank")
-                    }
+                    onClick={() => setFullImage(true)}
                   >
-                    📁
+                    <File className="text-Pink cursor-pointer hover:text-darkPink active:text-darkPink"/>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Uploaded File</p>
@@ -151,7 +153,7 @@ export default function ReviewPaymentPage() {
 
                 <div className="flex items-center mb-4">
                   <div className="text-3xl mr-3">
-                    {projectDetails.materialIcon}
+                    <InspectionPanel className="text-Pink cursor-pointer hover:text-darkPink active:text-darkPink"/>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Material</p>
@@ -186,25 +188,17 @@ export default function ReviewPaymentPage() {
                   <p className="text-Gray">{projectDetails.phoneNumber}</p>
                 </div>
               </div>
-
-              <div className="border-t border-gray-200 my-4 pt-4">
-                <button
-                  type="button"
-                  onClick={() => router.push("/service/fabrication/3d/details")}
-                  className="text-Pink font-medium hover:underline flex items-center"
-                ></button>
-              </div>
             </div>
           </div>
 
           {/* Payment Summary */}
           <div className="md:col-span-1">
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-6 sticky top-4">
+            <div className="bg-white rounded-2xl p-6 shadow-lg sticky top-4">
               <h2 className="text-2xl font-semibold mb-6 text-Gray">
                 Payment Summary
               </h2>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-3 mb-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Base Price:</span>
                   <span className="text-Gray">
@@ -225,7 +219,7 @@ export default function ReviewPaymentPage() {
                 </div>
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex justify-between font-bold">
-                    <span className="text-Gray">Total:</span>
+                    <span className="text-Pink">Total:</span>
                     <span className="text-Pink">${totalPrice.toFixed(2)}</span>
                   </div>
                 </div>
@@ -234,91 +228,41 @@ export default function ReviewPaymentPage() {
           </div>
         </div>
 
-        {/* Payment Method - Demo */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-          {/* <h2 className="text-2xl font-semibold mb-6 text-Gray">
-            Payment Method
-          </h2>
-
-          <div className="p-4 mb-6 bg-pink-50 rounded-lg border border-pink-100 flex items-center">
-            <div className="text-2xl mr-3">💳</div>
-            <div className="text-Gray font-medium">Credit Card</div>
-          </div> */}
-
-          {/* Demo Credit Card Details */}
-          {/* <div className="bg-gray-100 rounded-lg p-6 mb-8 border border-gray-200">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold text-Gray mb-1">
-                Demo Payment Information
-              </h3>
-              <p className="text-gray-600 text-sm">
-                For demonstration purposes only
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-4 shadow-sm mb-4">
-              <div className="flex justify-between items-center mb-6">
-                <div className="text-lg font-bold text-Gray">Demo Card</div>
-                <div className="flex space-x-2">
-                  <div className="h-6 w-10 bg-blue-500 rounded"></div>
-                  <div className="h-6 w-10 bg-red-500 rounded"></div>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <p className="text-xs text-gray-500">Card Number</p>
-                <p className="font-mono text-Gray">**** **** **** 4242</p>
-              </div>
-
-              <div className="flex justify-between">
-                <div>
-                  <p className="text-xs text-gray-500">Cardholder Name</p>
-                  <p className="text-Gray">John Doe</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500">Expires</p>
-                  <p className="text-Gray">12/25</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Card Type:</span>
-                <span className="text-Gray">MasterCard</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Billing Address:</span>
-                <span className="text-Gray">123 Main St, Anytown</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Payment Amount:</span>
-                <span className="font-semibold text-Pink">
-                  ${totalPrice.toFixed(2)}
-                </span>
-              </div>
-            </div>
-          </div> */}
-
           {/* Accept/Deny Buttons */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={handleDeny}
-              className="w-full bg-gray-100 text-gray-400 py-4 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-gray-200 active:scale-90"
+              className="w-full bg-gray-200 text-gray-600  py-4 px-6 rounded-lg text-lg font-medium transition-colors hover:bg-gray-300 active:bg-gray-300"
             >
               Deny
             </button>
             <button
               type="button"
               onClick={handleAccept}
-              className="w-full bg-Pink text-white py-4 px-6 rounded-full text-lg font-semibold transition-transform transform hover:bg-darkPink hover:shadow-lg active:scale-90"
+              className="w-full bg-Pink text-white py-4 px-6 rounded-lg text-lg font-medium transition-colors hover:bg-darkPink active:bg-darkPink"
             >
               Accept
             </button>
           </div>
         </div>
+        {fullImage && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <button
+              className="absolute top-2 right-2 text-red-400"
+              onClick={() => setFullImage(false)}
+            >
+              <X/>
+            </button>
+            <Image
+              src={projectDetails.fileUrl}
+              alt={projectDetails.filename}
+              width={1280}
+              height={1280}
+              className="max-h-[70vh] object-contain"
+            />
+        </div>
+      )}
       </div>
-    </div>
   );
 }
