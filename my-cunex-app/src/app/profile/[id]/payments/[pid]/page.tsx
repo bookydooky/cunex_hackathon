@@ -136,7 +136,7 @@ const PaymentPage = () => {
       </div>
 
       <div className="bg-gray-100 px-4 rounded-lg shadow-md flex-grow">
-        <div className="bg-white rounded-lg mt-4 p-4">
+        <div className="bg-white rounded-lg my-4 p-4">
           <h2 className="text-2xl font-semibold mb-2 text-gray-800">
             Payment Details
           </h2>
@@ -219,7 +219,7 @@ const PaymentPage = () => {
             <button
               type="submit"
               className="bg-Pink hover:bg-darkPink active:bg-darkPink
-              py-3 rounded-lg mt-4"
+              text-white py-3 rounded-lg mt-4"
             >
               Submit Payment Details
             </button>
