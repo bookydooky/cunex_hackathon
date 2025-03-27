@@ -213,6 +213,9 @@ export default function ProfilePage() {
               Faculty: {userData.facultyNameEN}
             </p>
             <p className="text-gray-500 text-sm">ID: {userData.studentId}</p>
+            <p className="text-gray-500 text-sm">
+              Phone Number: {userData.phoneNumber}
+            </p>
             <div className="mt-2 flex justify-center">
               <button
                 onClick={() => setShowModal(true)}
