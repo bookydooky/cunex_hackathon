@@ -64,21 +64,20 @@ export default function ProfilePage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null); // Explicitly set type
 
+  const fetchUserDetail = async () => {
+    try {
+      const response = await fetch(`/api/getProfile/?userId=${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch job details");
+
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching job details:", error);
+    }
+  };
+
   useEffect(() => {
     if (!userId) return;
-
-    const fetchUserDetail = async () => {
-      try {
-        const response = await fetch(`/api/getProfile/?userId=${userId}`);
-        if (!response.ok) throw new Error("Failed to fetch job details");
-
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching job details:", error);
-      }
-    };
-
     fetchUserDetail();
   }, [userId]);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,11 +134,11 @@ export default function ProfilePage() {
 
       // Send fileUrls to your Node.js server (server.js)
       await sendToServer(fileUrls, userId); // Pass bannerId here
-      router.push("/");
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
       setSelectedFile(null); // Clear file after upload
+      fetchUserDetail();
     }
   };
 

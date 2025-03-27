@@ -12,6 +12,7 @@ export default function ReviewAndPayPage() {
   const [copySuccess, setCopySuccess] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [popupMessage, setPopupMessage] = useState<string>('');
   const { service } = useContext(GlobalStateContext);
   const router = useRouter();
   const promtpay = "092-XXX-XXX";
@@ -37,12 +38,15 @@ export default function ReviewAndPayPage() {
         method: "POST",
         body: JSON.stringify({ userId, orderId }),
       });
-      alert("Order submitted successfully! Redirecting to home page...");
       const result = await response.json();
       console.log(result);
     } catch (error) {
       console.error("Error submitting order:", error);
-      alert("No Student available to take your order, Please Try again Later");
+      setPopupMessage("No Student available to take your order, Please Try again Later");
+      setShowModal(true);
+      setTimeout(() => {
+        setShowModal(false);
+      }, 2000);
     }
   };
   const handleFileSubmit = async () => {
@@ -181,12 +185,13 @@ export default function ReviewAndPayPage() {
 
   const handleSubmitOrder = () => {
     console.log(orderDetails);
-    handleFileSubmit();
+    setPopupMessage('Order Succesfully!');
     setShowModal(true);
     setTimeout(() => {
       setShowModal(false);
       router.push("/");
     }, 2000);
+    handleFileSubmit();
   };
 
   return (
@@ -459,7 +464,9 @@ export default function ReviewAndPayPage() {
                 </div>
               </div>
             </div>
-            {copySuccess && (
+          </div>
+        </div>
+        {copySuccess && (
               <div className="flex justify-center">
                 <div className="fixed bottom-4 bg-gray-100 text-Gray px-4 py-2 rounded-md shadow-lg font-medium">
                   {copySuccess}
@@ -469,12 +476,10 @@ export default function ReviewAndPayPage() {
             {showModal && (
               <div className="flex justify-center">
                 <div className="fixed bottom-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
-                  Order Succesfully!
+                  {popupMessage}
                 </div>
               </div>
             )}
-          </div>
-        </div>
       </div>
     </div>
   );
