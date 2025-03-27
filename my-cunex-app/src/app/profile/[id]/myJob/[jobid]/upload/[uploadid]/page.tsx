@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
+import { IoCloudUpload } from "react-icons/io5";
 import Image from "next/image";
 
 const ImageUpload = () => {
@@ -161,7 +162,9 @@ const ImageUpload = () => {
             onClick={openFileDialog}
             onDrop={handleDrop}
           >
-            <div className="text-4xl text-gray-300 mb-2">📁</div>
+            <div className='flex items-center justify-center'>
+              <IoCloudUpload className="text-4xl text-Pink mb-2"/>
+            </div>
             <p className="text-gray-500">
               Drag & drop files here
               <br />

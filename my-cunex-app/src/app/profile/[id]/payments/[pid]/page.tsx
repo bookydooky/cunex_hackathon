@@ -30,22 +30,20 @@ const PaymentPage = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [userData, setUserData] = useState<UserProfileResponse | null>(null);
   const [bank, setBank] = useState<string>("Kasikorn");
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const fetchUserDetail = async () => {
+    try {
+      const response = await fetch(`/api/getProfile/?userId=${userId}`);
+      if (!response.ok) throw new Error("Failed to fetch job details");
 
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching job details:", error);
+    }
+  };
   useEffect(() => {
     if (!userId) return;
-
-    const fetchUserDetail = async () => {
-      try {
-        const response = await fetch(`/api/getProfile/?userId=${userId}`);
-        if (!response.ok) throw new Error("Failed to fetch job details");
-
-        const data = await response.json();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching job details:", error);
-      }
-    };
-
     fetchUserDetail();
   }, [userId]);
 
@@ -97,7 +95,13 @@ const PaymentPage = () => {
       // Check if the submission was successful
       if (response.ok) {
         // Redirect to the homepage after success
-        router.push("/");
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+        }, 2000); // Hide the pop-up after 3 seconds;
+        setAccountNumber("");
+        setPhoneNumber("");
+        fetchUserDetail();
       } else {
         console.error("Failed to submit payment data.");
         // Handle error case here, like showing an error message to the user
@@ -132,7 +136,7 @@ const PaymentPage = () => {
       </div>
 
       <div className="bg-gray-100 px-4 rounded-lg shadow-md flex-grow">
-        <div className="bg-white rounded-lg mt-4 p-4">
+        <div className="bg-white rounded-lg my-4 p-4">
           <h2 className="text-2xl font-semibold mb-2 text-gray-800">
             Payment Details
           </h2>
@@ -142,11 +146,11 @@ const PaymentPage = () => {
               <h3 className="font-medium text-lg mb-2 text-gray-800">
                 Current Payment Details
               </h3>
-              <div className="block text-gray-500 mb-2">
+              <div className="block text-gray-500">
                 Bank Account: {userData.bank} {userData.accountNumber}
               </div>
 
-              <div className="block text-gray-500 mb-2">
+              <div className="block text-gray-500">
                 PromptPay: {userData.phoneNumber}
               </div>
             </div>
@@ -215,13 +219,20 @@ const PaymentPage = () => {
             <button
               type="submit"
               className="bg-Pink hover:bg-darkPink active:bg-darkPink
-              py-3 rounded-lg mt-4"
+              text-white py-3 rounded-lg mt-4"
             >
               Submit Payment Details
             </button>
           </form>
         </div>
       </div>
+          {showPopup && (
+          <div className="flex justify-center">
+            <div className="fixed bottom-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+              Payment Details Confirmed!
+            </div>
+          </div>
+        )}
     </div>
   );
 };

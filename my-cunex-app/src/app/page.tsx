@@ -193,7 +193,7 @@ export default function Home() {
               <input
                 type="search"
                 placeholder="What are you looking for?"
-                className="text-gray-400 text-sm flex-1 bg-transparent outline-none"
+                className="text-gray-400 text-sm flex-1 mr-2 bg-transparent outline-none"
               />
               <FaMagnifyingGlass className="text-gray-400" />
             </div>
@@ -218,7 +218,7 @@ export default function Home() {
                 <FaBell className="text-gray-400 text-lg" />
               </div>
               {currentNotis.length > 0 && (
-                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[20px] flex items-center justify-center">
+                <span className="absolute top-1 right-1 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full min-w-[20px] flex items-center justify-center">
                   {currentNotis.length > 99 ? "99+" : currentNotis.length}
                 </span>
               )}

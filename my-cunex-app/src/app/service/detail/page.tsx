@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useContext } from "react";
+import { FolderCheck } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
 import { IoCloudUpload } from "react-icons/io5";
@@ -135,7 +136,7 @@ export default function UploadPagePreview() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <div className="flex text-4xl text-Pink mb-2 justify-center">
-                  {selectedFile ? "✅" : <IoCloudUpload />}
+                  {selectedFile ? <FolderCheck /> : <IoCloudUpload />}
                 </div>
                 {selectedFile ? (
                   <p className="text-Gray">

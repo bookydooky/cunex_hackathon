@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import Image from "next/image";
+import ReloadWindow from "./ReloadWindow";
 
 interface NotificationProps {
   userId: string;
@@ -31,7 +31,7 @@ export default function Notification({
     setShowNotifications(false);
   };
 
-  if (!currentNotis) return <p>Loading Notification details...</p>;
+  if (!currentNotis) return <ReloadWindow detail="Notification"/>;
 
   // Group notifications by historyId
   const groupedNotifications: { [key: number]: SubmittedImage[] } = {};
@@ -118,16 +118,18 @@ export default function Notification({
           {notifications.map((notif) => (
             <div
               key={notif.submittedImageId}
-              className="flex items-center mb-2 pb-2"
+              className="flex items-center mb-2"
             >
-              <Image
-                src={notif.imageURL}
-                alt={notif.bannerName}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <span className="ml-2 flex-1 text-xs text-gray-700">
+              <div className='w-[40px] h-[40px] relative'>
+                <Image
+                  src={notif.imageURL}
+                  alt={notif.bannerName}
+                  fill
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              </div>
+              <span className="ml-2 flex-1 text-sm text-gray-700">
                 {notif.bannerName}
               </span>
               <button
