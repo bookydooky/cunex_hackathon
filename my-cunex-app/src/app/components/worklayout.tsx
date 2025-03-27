@@ -136,7 +136,8 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
 
         {/* Chat Button */}
         <div className="flex-shrink-0 bg-white rounded-full p-3 shadow-lg border border-gray-200">
-          <MessageCircle size={24} className="text-gray-600" />
+          <MessageCircle size={24} onClick={() => router.push("/chatpage")}
+          className="text-gray-600" />
         </div>
       </div>
     </div>

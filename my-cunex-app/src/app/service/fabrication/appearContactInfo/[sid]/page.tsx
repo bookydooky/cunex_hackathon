@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import ReloadWindow from "@/app/components/ReloadWindow";
+import router from "next/router";
 interface UserProfileResponse {
   firstName: string;
   lastName: string;
@@ -107,7 +108,8 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <button className="mt-6 w-full bg-Pink text-white py-2 px-4 rounded-lg hover:bg-darkPink transition">
+        <button onClick={() => router.push("/chatpage")}
+        className="mt-6 w-full bg-Pink text-white py-2 px-4 rounded-lg hover:bg-darkPink transition">
           Contact Service Provider
         </button>
       </div>
