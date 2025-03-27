@@ -281,7 +281,10 @@ export default function MyJobsPage() {
 
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
-                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
+                    <button
+                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                      onClick={() => router.push("/chatpage")}
+                    >
                       Message
                     </button>
 
