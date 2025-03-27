@@ -10,6 +10,55 @@ export default function UploadPagePreview() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { service } = useContext(GlobalStateContext);
+  const [requestDetails, setRequestDetails] = useState({
+    file: "",
+    filename: "",
+    material: "",
+    specs: "",
+    additional: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setRequestDetails({ ...requestDetails, [e.target.name]: e.target.value });
+  };
+
+  const handleContinue = async () => {
+    if (!selectedFile || !selectedMaterial || !requestDetails.specs.trim()) {
+      alert(
+        "Please upload a file, select a material, and enter specifications before continuing."
+      );
+      return;
+    }
+
+    let fileBase64 = "";
+
+    if (selectedFile) {
+      fileBase64 = await fileToBase64(selectedFile);
+    }
+
+    const updatedRequestDetails = {
+      file: fileBase64,
+      filename: selectedFile.name,
+      material: selectedMaterial || "",
+      specs: requestDetails.specs,
+      additional: requestDetails.additional,
+    };
+
+    localStorage.setItem(
+      "requestDetails",
+      JSON.stringify(updatedRequestDetails)
+    );
+    router.push("/service/review");
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const materials = [
     { id: "pla", name: "PLA", icon: "🔹" },
@@ -86,7 +135,7 @@ export default function UploadPagePreview() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <div className="flex text-4xl text-Pink mb-2 justify-center">
-                  {selectedFile ? "✅" : <IoCloudUpload/>}
+                  {selectedFile ? "✅" : <IoCloudUpload />}
                 </div>
                 {selectedFile ? (
                   <p className="text-Gray">
@@ -110,7 +159,7 @@ export default function UploadPagePreview() {
                   id="file-upload"
                   className="hidden"
                   onChange={handleFileChange}
-                  accept=".stl,.obj,.3mf,.step,.fbx"
+                  accept=".stl,.obj,.3mf,.step,.fbx,.jpg,.jpeg,.png"
                 />
               </div>
             </div>
@@ -146,7 +195,9 @@ export default function UploadPagePreview() {
               </label>
               <textarea
                 id="size"
-                name="size"
+                name="specs"
+                value={requestDetails.specs}
+                onChange={handleChange}
                 className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-Pink text-Gray"
                 rows={3}
                 placeholder="Please enter your desired dimensions, color, and any specific details about scale or measurements."
@@ -163,6 +214,8 @@ export default function UploadPagePreview() {
               <textarea
                 id="additional"
                 name="additional"
+                value={requestDetails.additional}
+                onChange={handleChange}
                 className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-Pink text-Gray"
                 rows={4}
                 placeholder="Enter any finishing requirements, painting instructions, special considerations or other notes for your project."
@@ -171,7 +224,7 @@ export default function UploadPagePreview() {
 
             <button
               type="button"
-              onClickCapture={() => router.push("/service/review")}
+              onClickCapture={handleContinue}
               className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium
               hover:bg-darkPink active:bg-darkPink transition-colors"
             >

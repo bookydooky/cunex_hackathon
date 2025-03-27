@@ -3,17 +3,145 @@ import { useState, useContext } from "react";
 import { GlobalStateContext } from "@/app/context/GlobalState";
 import { useRouter } from "next/navigation";
 import { FiClipboard } from "react-icons/fi";
-
+import { useEffect } from "react";
 export default function ReviewAndPayPage() {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
-  const [copySuccess, setCopySuccess] = useState('');
+  const [userId, setUserId] = useState("");
+  //const userId = localStorage.getItem("userId") || "";
+
+  const [copySuccess, setCopySuccess] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { service } = useContext(GlobalStateContext);
   const router = useRouter();
-  const promtpay = '092-XXX-XXX';
-  const bankaccount = '038-xxxxxx-x'
+  const promtpay = "092-XXX-XXX";
+  const bankaccount = "038-xxxxxx-x";
+  const [requestDetails, setRequestDetails] = useState({
+    file: "",
+    filename: "",
+    material: "",
+    specs: "",
+    additional: "",
+  });
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId") || "";
+    setUserId(storedUserId);
+    const storedData = localStorage.getItem("requestDetails");
+    if (storedData) {
+      setRequestDetails(JSON.parse(storedData)); // Convert JSON string to object
+    }
+  }, []);
+  const sendNotification = async (orderId: number) => {
+    try {
+      const response = await fetch("/api/requestServices/userSendRequest", {
+        method: "POST",
+        body: JSON.stringify({ userId, orderId }),
+      });
+      alert("Order submitted successfully! Redirecting to home page...");
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      alert("No Student available to take your order, Please Try again Later");
+    }
+  };
+  const handleFileSubmit = async () => {
+    if (!requestDetails.file) {
+      alert("Please select an image before submitting.");
+      return;
+    }
 
+    try {
+      const base64ToFile = (
+        base64String: string,
+        fileName: string,
+        mimeType: string
+      ): File => {
+        const byteString = atob(base64String.split(",")[1]); // Decode Base64
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+
+        for (let i = 0; i < byteString.length; i++) {
+          uint8Array[i] = byteString.charCodeAt(i);
+        }
+
+        const blob = new Blob([uint8Array], { type: mimeType });
+        return new File([blob], fileName, { type: mimeType });
+      };
+      const file = base64ToFile(
+        requestDetails.file,
+        requestDetails.filename,
+        "image/jpeg"
+      );
+
+      const formData = new FormData();
+      formData.append("files", file); // Append the single file
+
+      const response = await fetch("/api/s3-upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+
+      const { fileUrls } = await response.json();
+      console.log("Uploaded file:", fileUrls);
+
+      const orderId = await sendToServer(fileUrls); // Pass bannerId here
+      await sendNotification(orderId);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    } finally {
+      setRequestDetails({
+        file: "",
+        filename: "",
+        material: "",
+        specs: "",
+        additional: "",
+      }); // Clear file after upload
+    }
+  };
+
+  const sendToServer = async (fileUrls: string[]) => {
+    if (!userId) {
+      console.error("User ID is missing.");
+      return;
+    }
+
+    const payload = {
+      userId,
+      serviceType: orderDetails.service,
+      fileUrl: fileUrls[0], // Assuming only one file, adjust if multiple
+      filename: orderDetails.filename,
+      material: orderDetails.material,
+      specs: orderDetails.specs,
+      additional: orderDetails.additionalRequests,
+    };
+
+    console.log("Sending order data:", payload);
+
+    try {
+      const response = await fetch("/api/requestServices/submitOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Server response:", result);
+      return result.orderId;
+    } catch (error) {
+      console.error("Error sending order to server:", error);
+    }
+  };
 
   const handleCopyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(
@@ -22,20 +150,19 @@ export default function ReviewAndPayPage() {
         setTimeout(() => setCopySuccess(''), 2000); // Clear the message after 2 seconds
       },
       (err) => {
-        setCopySuccess('Failed to copy!');
+        setCopySuccess("Failed to copy!");
       }
     );
   };
 
   // Sample order data that would come from previous steps
   const orderDetails = {
-    service: "3D Printing",
-    filename: "robot-arm-v2.stl",
-    material: "PLA",
-    color: "White",
-    size: "15cm x 8cm x 5cm",
+    service: service === "3d" ? "3D Printing" : "Laser Cutting",
+    filename: requestDetails.filename,
+    material: requestDetails.material,
+    specs: requestDetails.specs,
     additionalRequests:
-      "Extra support structures for the overhanging arm joints. Medium infill (50%).",
+      requestDetails.additional || "No additional requests specified",
     estimatedPrintTime: "4 hours 25 minutes",
     pricing: {
       baseCost: 45.0,
@@ -53,10 +180,13 @@ export default function ReviewAndPayPage() {
   }
 
   const handleSubmitOrder = () => {
+    console.log(orderDetails);
+    handleFileSubmit();
     setShowModal(true);
-    setTimeout(() => { setShowModal(false);
-      router.push("/"); }
-      , 2000);
+    setTimeout(() => {
+      setShowModal(false);
+      router.push("/");
+    }, 2000);
   };
 
   return (
@@ -124,15 +254,12 @@ export default function ReviewAndPayPage() {
                       {orderDetails.material}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm text-Gray">Color</p>
-                    <p className="font-medium text-Gray">
-                      {orderDetails.color}
-                    </p>
-                  </div>
+
                   <div className="sm:col-span-2">
-                    <p className="text-sm text-Gray">Size</p>
-                    <p className="font-medium text-Gray">{orderDetails.size}</p>
+                    <p className="text-sm text-Gray">Specs</p>
+                    <p className="font-medium text-Gray">
+                      {orderDetails.specs}
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <p className="text-sm text-Gray">Additional Requests</p>
@@ -216,32 +343,36 @@ export default function ReviewAndPayPage() {
                       )}
                     </div>
                     <div className="flex-grow">PromtPay</div>
-                    <img src='https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png'
-                    className='h-[30px]'/>
+                    <img
+                      src="https://www.designil.com/wp-content/uploads/2020/04/prompt-pay-logo.png"
+                      className="h-[30px]"
+                    />
                   </div>
                   {paymentMethod === "promptpay" && (
-                  <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
-                    <span className="text-gray-700">Account Number: 
-                      <span> {promtpay}</span>
-                    </span>
-                    <button onClick={() => handleCopyToClipboard(promtpay)}>
-                      <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
-                    </button>
-                  </div>
+                    <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
+                      <span className="text-gray-700">
+                        Account Number:
+                        <span> {promtpay}</span>
+                      </span>
+                      <button onClick={() => handleCopyToClipboard(promtpay)}>
+                        <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray" />
+                      </button>
+                    </div>
                   )}
                   {paymentMethod === "bankaccount" && (
                     <div className="flex justify-between items-center px-4 py-2 mb-4 bg-gray-100 rounded-lg">
                       <span className="text-gray-700">
                         Account Number: SCB <span>{bankaccount}</span>
                       </span>
-                      <button onClick={() => handleCopyToClipboard(bankaccount)}>
-                        <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray"/>
+                      <button
+                        onClick={() => handleCopyToClipboard(bankaccount)}
+                      >
+                        <FiClipboard className="text-gray-500 hover:text-Gray active:text-Gray" />
                       </button>
                     </div>
                   )}
                 </div>
               </div>
-
 
               <div className="flex items-center mb-6">
                 <input
@@ -263,7 +394,7 @@ export default function ReviewAndPayPage() {
                 </label>
               </div>
             </div>
-            
+
             {/* Order Summary Column */}
             <div className="col-span-1">
               <div className="bg-pink-50 rounded-lg p-6 w-full">
@@ -329,11 +460,11 @@ export default function ReviewAndPayPage() {
               </div>
             </div>
             {copySuccess && (
-            <div className="flex justify-center">
-              <div className="fixed bottom-4 bg-gray-100 text-Gray px-4 py-2 rounded-md shadow-lg font-medium">
-                {copySuccess}
+              <div className="flex justify-center">
+                <div className="fixed bottom-4 bg-gray-100 text-Gray px-4 py-2 rounded-md shadow-lg font-medium">
+                  {copySuccess}
+                </div>
               </div>
-            </div>
             )}
             {showModal && (
               <div className="flex justify-center">
