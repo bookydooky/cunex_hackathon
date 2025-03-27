@@ -29,7 +29,16 @@ export async function GET(request: NextRequest) {
     `;
 
     const [rows]: any = await con.query(jobData, [userId]);
-    return NextResponse.json({ jobs: rows });
+
+    const orderData = `
+    SELECT o.*, u.firstName, u.lastName
+    FROM orders o
+    LEFT JOIN users u ON o.buyerId = u.userId
+    WHERE o.sellerId = ? AND o.completed = TRUE
+  `;
+
+    const [orderRows] = (await con.execute(orderData, [userId])) as any;
+    return NextResponse.json({ jobs: rows, orders: orderRows });
   } catch (error) {
     console.error("Database error:", error);
     return NextResponse.json({ error: "Database error" }, { status: 500 });
