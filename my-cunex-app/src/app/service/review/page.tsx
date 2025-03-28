@@ -448,7 +448,7 @@ export default function ReviewAndPayPage() {
 
                 <div className="pt-4">
                   <button
-                    className={`w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium transition-all ${
+                    className={`w-full bg-Pink text-white py-3 px-6 rounded-lg text-lg font-medium transition-all ${
                       agreeToTerms
                         ? "hover:bg-darkPink hover:shadow-lg active:bg-darkPink"
                         : "opacity-50 cursor-not-allowed"

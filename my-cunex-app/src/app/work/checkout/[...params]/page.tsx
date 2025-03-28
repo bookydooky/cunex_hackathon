@@ -227,7 +227,7 @@ export default function Checkout() {
       {/* Confirm Payment Button */}
       <div className="p-4 bg-white">
         <button
-          className="w-full bg-Pink text-white py-4 rounded-lg font-medium text-lg hover:bg-darkPink
+          className="w-full bg-Pink text-white py-3 rounded-lg font-medium text-lg hover:bg-darkPink
           active:bg-darkPink"
           onClick={handleAddPortfolio}
         >

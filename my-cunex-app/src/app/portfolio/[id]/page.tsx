@@ -206,7 +206,7 @@ export default function Portfolio() {
             <label
               htmlFor="file-upload"
               className="bg-Pink text-white px-6 py-2 rounded-md cursor-pointer
-            transition-transform transition-colors transform active:scale-95  hover:bg-darkPink active:bg-darkPink"
+            transition-all transform active:scale-95  hover:bg-darkPink active:bg-darkPink"
             >
               Upload Files
             </label>
@@ -264,7 +264,7 @@ export default function Portfolio() {
           <button
             type="submit"
             disabled={files.length === 0} // Disable button if no files are uploaded
-            className={`w-full py-4 rounded-lg text-lg font-medium
+            className={`w-full py-3 rounded-lg text-lg font-medium
               ${
                 files.length === 0
                   ? "bg-Pink/50 text-white cursor-not-allowed"

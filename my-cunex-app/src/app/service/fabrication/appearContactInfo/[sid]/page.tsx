@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { MapPin, Phone, Mail } from 'lucide-react';
 import ReloadWindow from "@/app/components/ReloadWindow";
-import router from "next/router";
 interface UserProfileResponse {
   firstName: string;
   lastName: string;
@@ -24,6 +23,7 @@ interface UserProfileResponse {
 }
 export default function ContactPage() {
   const params = useParams();
+  const router = useRouter();
   const sellerId = String(params.sid);
 
   const [sellerData, setSellerData] = useState<UserProfileResponse | null>(
@@ -73,43 +73,53 @@ export default function ContactPage() {
   if (!sellerData) return <ReloadWindow detail="User" />;
 
   return (
-    <div className="flex h-full items-center justify-center">
-      <div className="bg-white shadow-lg rounded-2xl p-8 mx-8 max-w-lg w-full text-center">
-        <h1 className="text-3xl font-bold text-Pink">
+    <div className="flex p-8 h-full items-center justify-center">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full text-center">
+        <h1 className="text-2xl font-bold text-Pink">
           Fabrication Service Provider
         </h1>
-        <p className="text-gray-700 mt-2">
+        <p className="text-gray-700">
           Fabrication services for your needs.
         </p>
 
-        <div className="mt-6 text-left">
-          <p className="text-Gray font-semibold">📍 Address:</p>
-          <p className="text-gray-600">
+        <div className="mt-6 text-left text-xl">
+          <div className="flex gap-1 text-Gray items-center font-semibold">
+            <MapPin size={20}/>
+            <h1>Address</h1>
+          </div>
+          <p className="text-gray-600 text-lg">
             123 Fabrication St., Industrial Area, Bangkok
           </p>
 
-          <p className="text-Gray font-semibold mt-4">📞 Phone:</p>
-          <p className="text-gray-600">{sellerData.phoneNumber}</p>
+          <div className="flex gap-1 text-Gray items-center font-semibold mt-4">
+            <Phone size={20}/>
+            <h1>Phone</h1>
+          </div>
+          <p className="text-gray-600 text-lg">{sellerData.phoneNumber}</p>
 
-          <p className="text-Gray font-semibold mt-4">✉️ Email:</p>
-          <p className="text-gray-600">
+          <div className="flex gap-1 text-Gray items-center font-semibold mt-4">
+            <Mail size={20}/>
+            <h1>Email</h1>
+          </div>
+          <p className="text-gray-600 text-lg">
             {sellerData.studentId}@student.chula.ac.th
           </p>
 
-          <p className="text-Gray font-semibold mt-4">🌐 Name:</p>
-          <p className="text-gray-600">
+          <p className="text-Gray font-semibold mt-4">Name</p>
+          <p className="text-gray-600 text-lg">
             {sellerData.firstName} {sellerData.lastName}
           </p>
 
-          <p className="text-Gray font-semibold mt-4">🌐 Name:</p>
-          <p className="text-gray-600">
+          <p className="text-Gray font-semibold mt-4">Faculty</p>
+          <p className="text-gray-600 text-lg">
             {getAcademicYearLevel(parseInt(sellerData.studentYear, 10), 2567)}{" "}
             {sellerData.facultyNameEN}
           </p>
         </div>
 
         <button onClick={() => router.push("/chatpage")}
-        className="mt-6 w-full bg-Pink text-white py-2 px-4 rounded-lg hover:bg-darkPink transition">
+        className="mt-6 w-full bg-Pink text-white py-3 px-4
+        rounded-lg hover:bg-darkPink transition">
           Contact Service Provider
         </button>
       </div>

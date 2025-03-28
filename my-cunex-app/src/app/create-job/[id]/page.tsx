@@ -328,7 +328,7 @@ const CreateJobPreview = () => {
 
         <button
           onClick={handleNextPage}
-          className="w-full bg-Pink text-white py-4 px-4 rounded-lg font-medium flex items-center justify-center
+          className="w-full bg-Pink text-white py-3 px-4 rounded-lg font-medium flex items-center justify-center
             transition-colors duration-200 ease-in-out hover:bg-darkPink active:bg-darkPink"
         >
           <span>Next</span>

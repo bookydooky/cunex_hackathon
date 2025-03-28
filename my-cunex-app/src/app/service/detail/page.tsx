@@ -226,7 +226,7 @@ export default function UploadPagePreview() {
             <button
               type="button"
               onClickCapture={handleContinue}
-              className="w-full bg-Pink text-white py-3 px-6 rounded-full text-lg font-medium
+              className="w-full bg-Pink text-white py-3 px-6 rounded-lg text-lg font-medium
               hover:bg-darkPink active:bg-darkPink transition-colors"
             >
               Continue to Review

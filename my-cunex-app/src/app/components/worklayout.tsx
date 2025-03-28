@@ -126,7 +126,7 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
       <div className="sticky bottom-0 left-0 right-0 p-4 h-20 bg-white flex items-center space-x-4">
         <button
           className="flex-grow bg-Pink hover:bg-darkPink active:bg-darkPink
-           text-white py-4 rounded-lg font-medium"
+           text-white py-3 rounded-lg font-medium"
           onClick={() =>
             handleNavigation(`/work/checkout/${jobData.bannerId}/${userId}`)
           }
@@ -135,7 +135,8 @@ const WorkLayout: React.FC<WorkDetailLayoutProps> = ({
         </button>
 
         {/* Chat Button */}
-        <div className="flex-shrink-0 bg-white rounded-full p-3 shadow-lg border border-gray-200">
+        <div className="flex-shrink-0 bg-white rounded-full p-3 shadow-lg border border-gray-200
+        cursor-pointer hover:bg-gray-100 active:bg-gray-100">
           <MessageCircle size={24} onClick={() => router.push("/chatpage")}
           className="text-gray-600" />
         </div>
