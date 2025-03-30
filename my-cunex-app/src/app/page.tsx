@@ -308,26 +308,28 @@ export default function Home() {
               Request Services
             </h2>
           </div>
-          <div className="flex overflow-x-auto space-x-10 pb-2 justify-center">
-            {[
-              { icon: FiBox, label: "Item Delivery" },
-              { icon: MdFoodBank, label: "Food Delivery" },
-              { icon: BsBadge3dFill, label: "3D Printing" },
-              { icon: GiLaserburn, label: "Laser Cutting" },
-            ].map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center">
-                <div
-                  onClick={() => handleServiceClick(item.label)}
-                  className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
-                transition-transform transform active:scale-90 transition-colors active:bg-gray-300"
-                >
-                  <item.icon className="text-Gray text-2xl" />
+          <div className="overflow-x-auto pb-2">
+            <div className="flex justify-center space-x-6 min-w-max">
+              {[
+                { icon: FiBox, label: "Item Delivery" },
+                { icon: MdFoodBank, label: "Food Delivery" },
+                { icon: BsBadge3dFill, label: "3D Printing" },
+                { icon: GiLaserburn, label: "Laser Cutting" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex flex-col items-center">
+                  <div
+                    onClick={() => handleServiceClick(item.label)}
+                    className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
+                  transition-transform transform active:scale-90 transition-colors active:bg-gray-300"
+                  >
+                    <item.icon className="text-Gray text-2xl" />
+                  </div>
+                  <span className="text-xs text-Gray mt-1 text-center">
+                    {item.label}
+                  </span>
                 </div>
-                <span className="text-xs text-Gray mt-1 text-center">
-                  {item.label}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
