@@ -70,6 +70,22 @@ export default function MyOrdersPage() {
   const [showPopup, setShowPopup] = useState(false);
   const [images, setImages] = useState<string[]>([]);
 
+  const getClassName = (job: OngoingJob, index: number) => {
+    console.log(`Job accept: ${job.accept}, Progress: ${job.progress}, Index: ${index}`);
+  
+    if (job.progress === 0) 
+      return "bg-gray-200";
+    else if (job.progress > index) {
+      if (job.accept === 0)
+        return "bg-red-500";
+      else if (job.accept === 1)
+        return "bg-green-500";
+      else
+        return "bg-blue-500";
+    }
+    else return "bg-gray-200";
+  };
+
   const handleCheckDrafts = async (historyId: number) => {
     const checkImages = async (historyId: number) => {
       try {
@@ -259,21 +275,18 @@ export default function MyOrdersPage() {
                       <p className="text-gray-500 text-sm">
                         Duration: {job.duration}
                       </p>
-                      <span className="text-sm">{job.progress * 33.33}%</span>
+                      <span className="text-sm">{(job.progress * (100/3)).toFixed(2)}%</span>
                     </div>
 
                     {/* Progress bar */}
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full ${
-                          job.accept === null
-                            ? "bg-blue-500"
-                            : job.accept === 0
-                            ? "bg-red-500"
-                            : "bg-Pink"
-                        }`}
-                        style={{ width: `${job.progress * 33.33}%` }}
-                      ></div>
+                    <div className="grid grid-cols-3 gap-2 w-full">
+                      {[...Array(3)].map((_, index) => (
+                          <div
+                            key={index}
+                            className={`h-[6px] w-full rounded-full ${getClassName(job,index)}`}
+                            style={{ width: "100%" }}
+                          ></div>
+                      ))}
                     </div>
                   </div>
 
