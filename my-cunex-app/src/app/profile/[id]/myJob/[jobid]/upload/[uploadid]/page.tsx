@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import { IoCloudUpload } from "react-icons/io5";
 import Image from "next/image";
+import { BsShopWindow } from "react-icons/bs";
 
 const ImageUpload = () => {
   const params = useParams();
@@ -13,6 +14,7 @@ const ImageUpload = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter(); // Don't forget to use the router for navigation
   const [acceptStatus, setAcceptStatus] = useState<boolean | null>(null); // Explicitly set type
+  const [showPopup, setShowPoup] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("History Id: ", historyId);
@@ -98,7 +100,10 @@ const ImageUpload = () => {
 
       // Send fileUrls to your Node.js server (server.js)
       await sendToServer(fileUrls, historyId); // Pass bannerId here
-      router.push("/");
+      setShowPoup(true);
+      setTimeout(() => {setShowPoup(false);
+        router.back();
+      },2000);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -144,7 +149,7 @@ const ImageUpload = () => {
             />
           </div>
           <div className="h-6 border-l border-gray-300 mx-5"></div>
-          <div className="text-Pink font-medium text-xl">Upload Image</div>
+          <div className="text-Pink font-medium text-xl">Update Work</div>
         </div>
       </div>
 
@@ -205,6 +210,13 @@ const ImageUpload = () => {
           </button>
         </div>
       </div>
+      {showPopup && (
+          <div className="flex justify-center">
+            <div className="fixed bottom-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg font-medium">
+              Work Updated!
+            </div>
+          </div>
+        )}
     </div>
   );
 };

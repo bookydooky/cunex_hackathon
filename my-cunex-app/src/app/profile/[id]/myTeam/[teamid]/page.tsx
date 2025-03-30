@@ -14,6 +14,7 @@ export default function MessagePage() {
   }
 
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
   const userId = String(params.teamid);
 
@@ -33,6 +34,8 @@ export default function MessagePage() {
       setJobs(result);
     } catch (error) {
       console.error("Error Finding Ongoing Jobs", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,8 +45,6 @@ export default function MessagePage() {
 
   // Router would be used in a real implementation
   const router = useRouter();
-
-  if (!jobs || jobs.length === 0) return <ReloadWindow detail="User"/>;
 
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
@@ -70,41 +71,46 @@ export default function MessagePage() {
 
       {/* Message List */}
       <div className="mx-4 mt-4">
-        {jobs.map((job) => (
-          <div
-            key={job.bannerId}
-            className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
-          >
-            <div className="p-4">
-              <div className="flex justify-between items-start mb-1">
-                <h2 className="font-semibold text-gray-700">
-                  {job.bannerName}
-                </h2>
-                <span className="text-Pink font-medium">${job.price}</span>
-              </div>
+        {isLoading ? (
+          <p className="text-gray-500">Loading Teams...</p>
+        ) : (
+          <div>
+            {jobs.length === 0 ? (
+              <p className="text-gray-500">No current teams</p>
+            ) : (
+              jobs.map((job) => (  // <-- Removed extra curly braces here
+                <div key={job.bannerId} className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-1">
+                      <h2 className="font-semibold text-gray-700">
+                        {job.bannerName}
+                      </h2>
+                      <span className="text-Pink font-medium">${job.price}</span>
+                    </div>
 
-              <div className="flex justify-between items-center mb-1">
-                <p className="text-gray-500 text-sm">
-                  Duration: {job.duration} days
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Work Type: {job.typeOfWork}
-                </p>
-              </div>
-            </div>
+                    <div className="flex justify-between items-center mb-1">
+                      <p className="text-gray-500 text-sm">
+                        Duration: {job.duration} days
+                      </p>
+                      <p className="text-gray-500 text-sm">
+                        Work Type: {job.typeOfWork}
+                      </p>
+                    </div>
+                  </div>
 
-            {/* Message button */}
-            <div className="flex border-t border-gray-100">
-              <button className="w-full py-3 text-center text-gray-700 flex items-center justify-center hover:bg-gray-50 active:bg-gray-100">
-                <Link
-                  href={`/profile/${userId}/myTeam/${userId}/checkTeam/${job.bannerId}`}
-                >
-                  Check Teammates
-                </Link>
-              </button>
-            </div>
+                  {/* Message button */}
+                  <div className="flex border-t border-gray-100">
+                    <button className="w-full py-3 text-center text-gray-700 flex items-center justify-center hover:bg-gray-50 active:bg-gray-100">
+                      <Link href={`/profile/${userId}/myTeam/${userId}/checkTeam/${job.bannerId}`}>
+                        Check Teammates
+                      </Link>
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

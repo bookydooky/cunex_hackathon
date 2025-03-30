@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
         u.studentId,
         u.studentYear,
         u.facultyCode,
+        u.phoneNumber,
         f.facultyNameEN,
         c.confirmedOrg
       FROM colabs c

@@ -320,7 +320,7 @@ export default function Home() {
                   <div
                     onClick={() => handleServiceClick(item.label)}
                     className="bg-gray-200 hover:bg-gray-300 rounded-full p-4 w-14 h-14 flex items-center justify-center
-                  transition-transform transform active:scale-90 transition-colors active:bg-gray-300"
+                  transition-all transform active:scale-90 active:bg-gray-300"
                   >
                     <item.icon className="text-Gray text-2xl" />
                   </div>

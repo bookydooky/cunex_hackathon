@@ -64,6 +64,23 @@ export default function MyJobsPage() {
   const [ongoingRequests, setOngoingRequests] = useState<Order[]>([]);
   const [completedRequests, setCompletedRequests] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const getClassName = (job: OngoingJob, index: number) => {
+    console.log(`Job accept: ${job.accept}, Progress: ${job.progress}, Index: ${index}`);
+  
+    if (job.progress === 0) 
+      return "bg-gray-200";
+    else if (job.progress > index) {
+      if (job.accept === 0)
+        return "bg-red-500";
+      else if (job.accept === 1)
+        return "bg-green-500";
+      else
+        return "bg-blue-500";
+    }
+    else return "bg-gray-200";
+  };
+
   const handleComplete = async (orderId: number) => {
     try {
       const response = await fetch(`/api/requestServices/requestDone`, {
@@ -152,7 +169,7 @@ export default function MyJobsPage() {
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-Pink font-medium text-xl">Profile</div>
+            <div className="text-Pink font-medium text-xl">My Jobs</div>
           </div>
         </div>
 
@@ -214,21 +231,18 @@ export default function MyJobsPage() {
                       <p className="text-gray-500 text-sm">
                         Duration: {job.duration}
                       </p>
-                      <span className="text-sm">{job.progress * 33.33}%</span>
+                      <span className="text-sm">{(job.progress * (100/3)).toFixed(2)}%</span>
                     </div>
 
                     {/* Progress bar */}
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full ${
-                          job.accept === null
-                            ? "bg-blue-500"
-                            : job.accept === 0
-                            ? "bg-red-500"
-                            : "bg-Pink"
-                        }`}
-                        style={{ width: `${job.progress * 33.33}%` }}
-                      ></div>
+                    <div className="grid grid-cols-3 gap-2 w-full">
+                      {[...Array(3)].map((_, index) => (
+                          <div
+                            key={index}
+                            className={`h-[6px] w-full rounded-full ${getClassName(job,index)}`}
+                            style={{ width: "100%" }}
+                          ></div>
+                      ))}
                     </div>
                   </div>
 

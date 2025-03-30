@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function MyOrdersPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('';)
+  const [activeTab, setActiveTab] = useState('');
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
       <div className="sticky top-0 left-0 right-0">

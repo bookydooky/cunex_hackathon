@@ -39,6 +39,7 @@ export default function UsersPage() {
     studentYear: string;
     workTypes: string[];
     lineId: string; // Assuming this data is available
+    phoneNumber: string;
     confirmedOrg?: boolean; // Assuming confirmedOrg is a boolean field indicating whether the user is accepted
   }
 
@@ -222,7 +223,7 @@ export default function UsersPage() {
               {acceptedUserId === user.userId ? (
                 // If the user has been accepted, show the Line ID
                 <div className="w-full py-3 text-center text-gray-700 font-medium">
-                  Line ID: {user.lineId}
+                  Tel: {user.phoneNumber}
                 </div>
               ) : (
                 <>
