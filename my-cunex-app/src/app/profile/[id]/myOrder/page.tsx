@@ -5,10 +5,156 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
 import Image from "next/image";
+import ImageCarousel from "@/app/components/ImageCarousel";
+
+interface OngoingJob {
+  historyId: number;
+  bannerId: string;
+  buyerId: string;
+  dateSold: string; // Using string to represent DateTime
+  progress: number;
+  sellerId: string;
+  completedDate: string | null; // Can be '0000-00-00 00:00:00' (needs handling)
+  accept: number | null;
+  bannerName?: string;
+  price?: number;
+  duration?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+interface CompletedJob {
+  historyId: number;
+  bannerId: string;
+  buyerId: string;
+  dateSold: string; // Using string to represent DateTime
+  progress: number;
+  sellerId: string;
+  completedDate: string | null; // Can be '0000-00-00 00:00:00' (needs handling)
+  accept: number | null;
+  bannerName?: string;
+  price?: number;
+  duration?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+interface Order {
+  orderId: number; // Primary Key (Auto Increment)
+  sellerId: string; // Foreign Key (Nullable)
+  buyerId: string; // Foreign Key (Nullable)
+  requestDate: string; // DateTime (Not Nullable)
+  receivedDate?: string; // DateTime (Nullable)
+  serviceType: string; // Service Type (Not Nullable)
+  fileUrl: string; // File URL (Not Nullable)
+  material: string; // Material (Not Nullable)
+  specs: string; // Specifications (Not Nullable)
+  additional?: string; // Additional Info (Nullable)
+  filename?: string; // Filename (Nullable)
+  firstName: string;
+  lastName: string;
+}
 
 export default function MyOrdersPage() {
+  const params = useParams();
+  const userId = params.id;
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState("ongoing");
+
+  const [ongoingJobs, setOngoingJobs] = useState<OngoingJob[]>([]);
+  const [ongoingRequests, setOngoingRequests] = useState<Order[]>([]);
+
+  const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
+  const [completedRequests, setCompletedRequests] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
+
+  const handleCheckDrafts = async (historyId: number) => {
+    const checkImages = async (historyId: number) => {
+      try {
+        const response = await fetch(
+          `/api/checkImages?historyId=${historyId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const result = await response.json();
+        setImages(result.images);
+        return result;
+      } catch (error) {
+        console.log("Error fetching Images", error);
+        throw error;
+      }
+    };
+
+    checkImages(historyId);
+    setShowPopup(true);
+  };
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  const getOngoingJobs = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/getOngoingOrders?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      console.log("Server response:", result);
+      setOngoingJobs(result.jobs);
+      setOngoingRequests(result.orders);
+      return result; // Return the result to get the bannerId
+    } catch (error) {
+      console.error("Error Finding Ongoing Jobs", error);
+      throw error; // Re-throw to handle in the calling function
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userId]);
+  const getCompletedJobs = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/getCompletedOrders?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      console.log("Server response:", result);
+      setCompletedJobs(result.jobs);
+      setCompletedRequests(result.orders);
+      return result; // Return the result to get the bannerId
+    } catch (error) {
+      console.error("Error Finding Completed Jobs", error);
+      throw error; // Re-throw to handle in the calling function
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    getOngoingJobs();
+    getCompletedJobs();
+    console.log("userId", userId);
+  }, [getOngoingJobs, getCompletedJobs, userId]);
+  // Assuming images is already an array of strings (based on your code)
+  const carouselImages = images
+    ? images.map((img) => ({
+        src: img, // If img is already a string
+        alt: "Job Image",
+      }))
+    : [
+        {
+          src: "/placeholder.jpg",
+          alt: "Placeholder Image",
+          caption: "No Images Available",
+        },
+      ];
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
       <div className="sticky top-0 left-0 right-0">
@@ -57,16 +203,38 @@ export default function MyOrdersPage() {
           </button>
         </div>
       </div>
+
+      {/* Image Carousel Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-Pink text-xl font-semibold">
+                Submitted Drafts
+              </h2>
+              <button
+                onClick={closePopup}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            <ImageCarousel images={carouselImages} />
+          </div>
+        </div>
+      )}
       {/* Job List */}
       {isLoading ? (
-        <p className="text-gray-500 pl-4">Loading Jobs...</p>
+        <p className="text-gray-500 pl-4">Loading Orders...</p>
       ) : (
         <div className="mx-4">
           {activeTab === "ongoing" && (
             <>
               <div className="pb-2">
-                <h1 className="text-Pink text-2xl font-semibold">My Jobs</h1>
-                {ongoingJobs.length == 0 && <p className="text-gray-500">No current ongoing jobs</p>}
+                <h1 className="text-Pink text-2xl font-semibold">My Orders</h1>
+                {ongoingJobs.length == 0 && (
+                  <p className="text-gray-500">No current ongoing orders</p>
+                )}
               </div>
               {ongoingJobs.map((job) => (
                 <div
@@ -82,7 +250,7 @@ export default function MyOrdersPage() {
                     </div>
 
                     <p className="text-gray-500 text-sm mb-1">
-                      Client: {job.firstName} {job.lastName}
+                      Freelance: {job.firstName} {job.lastName}
                     </p>
                     <p className="text-gray-500 text-sm">
                       Start Date: {moment(job.dateSold).format("MM/DD/YYYY")}
@@ -121,12 +289,9 @@ export default function MyOrdersPage() {
                     <button
                       className="flex-1 py-3 text-center text-Pink font-medium
                   hover:underline active:text-darkPink"
+                      onClick={() => handleCheckDrafts(job.historyId)}
                     >
-                      <Link
-                        href={`/profile/${userId}/myJob/${userId}/upload/${job.historyId}`}
-                      >
-                        Update
-                      </Link>
+                      View Submitted Drafts
                     </button>
                   </div>
                 </div>
@@ -135,7 +300,9 @@ export default function MyOrdersPage() {
                 <h1 className="text-Pink text-2xl font-semibold">
                   My Requests
                 </h1>
-                {ongoingRequests.length == 0 && <p className="text-gray-500">No current ongoing requests</p>}
+                {ongoingRequests.length == 0 && (
+                  <p className="text-gray-500">No current ongoing requests</p>
+                )}
               </div>
               {ongoingRequests.map((job) => (
                 <div
@@ -152,36 +319,41 @@ export default function MyOrdersPage() {
                       </span>
                     </div>
 
-                    <p className="text-gray-500 text-sm mb-1">
-                      Client: {job.firstName} {job.lastName}
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      Start Date:{" "}
-                      {moment(job.receivedDate).format("MM/DD/YYYY")}
-                    </p>
+                    {job.firstName && job.lastName ? (
+                      <>
+                        <p className="text-gray-500 text-sm mb-1">
+                          Freelance: {job.firstName} {job.lastName}
+                        </p>
+                        {job.receivedDate && (
+                          <p className="text-gray-500 text-sm">
+                            Start Date:{" "}
+                            {moment(job.receivedDate).format("MM/DD/YYYY")}
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-red-500 text-sm mb-1 italic">
+                        Request Pending...
+                      </p>
+                    )}
+
                     <p className="text-gray-500 text-sm">
                       Material: {job.material}
                     </p>
                     <p className="text-gray-500 text-sm">Specs: {job.specs}</p>
                   </div>
 
-                  {/* Action buttons */}
-                  <div className="flex border-t border-gray-100">
-                    <button
-                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
-                      onClick={() => router.push("/chatpage")}
-                    >
-                      Message
-                    </button>
-
-                    <button
-                      className="flex-1 py-3 text-center text-Pink font-medium
-                  hover:underline active:text-darkPink"
-                      onClick={() => handleComplete(job.orderId)}
-                    >
-                      Complete
-                    </button>
-                  </div>
+                  {/* Action buttons - only show if there's a freelance assigned */}
+                  {job.firstName && job.lastName && (
+                    <div className="flex border-t border-gray-100">
+                      <button
+                        className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                        onClick={() => router.push("/chatpage")}
+                      >
+                        Message
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </>
@@ -191,9 +363,11 @@ export default function MyOrdersPage() {
             <>
               <div className="pb-2">
                 <h1 className="text-Pink text-2xl font-semibold">
-                  Completed Jobs
+                  Completed Orders
                 </h1>
-                {completedJobs.length == 0 && <p className="text-gray-500">No current completed jobs</p>}
+                {completedJobs.length == 0 && (
+                  <p className="text-gray-500">No current completed orders</p>
+                )}
               </div>
 
               {completedJobs.map((job) => (
@@ -210,7 +384,7 @@ export default function MyOrdersPage() {
                     </div>
 
                     <p className="text-gray-500 text-sm mb-1">
-                      Client: {job.firstName} {job.lastName}
+                      Freelance: {job.firstName} {job.lastName}
                     </p>
                     <div className="flex justify-between items-center mb-2">
                       <p className="text-gray-500 text-sm">
@@ -254,9 +428,11 @@ export default function MyOrdersPage() {
               ))}
               <div className="pb-2">
                 <h1 className="text-Pink text-2xl font-semibold">
-                  Completed Jobs
+                  Completed Requests
                 </h1>
-                {completedRequests.length == 0 && <p className="text-gray-500">No current completed requests</p>}
+                {completedRequests.length == 0 && (
+                  <p className="text-gray-500">No current completed requests</p>
+                )}
               </div>
               {completedRequests.map((job) => (
                 <div
@@ -274,7 +450,7 @@ export default function MyOrdersPage() {
                     </div>
 
                     <p className="text-gray-500 text-sm mb-1">
-                      Client: {job.firstName} {job.lastName}
+                      Freelance: {job.firstName} {job.lastName}
                     </p>
                     <div className="flex justify-between items-center mb-2">
                       <p className="text-gray-500 text-sm">
