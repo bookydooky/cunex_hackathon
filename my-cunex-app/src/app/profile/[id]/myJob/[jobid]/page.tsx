@@ -189,7 +189,9 @@ export default function MyJobsPage() {
             <>
               <div className="pb-2">
                 <h1 className="text-Pink text-2xl font-semibold">My Jobs</h1>
-                {ongoingJobs.length == 0 && <p className="text-gray-500">No current ongoing jobs</p>}
+                {ongoingJobs.length == 0 && (
+                  <p className="text-gray-500">No current ongoing jobs</p>
+                )}
               </div>
               {ongoingJobs.map((job) => (
                 <div
@@ -258,7 +260,9 @@ export default function MyJobsPage() {
                 <h1 className="text-Pink text-2xl font-semibold">
                   My Requests
                 </h1>
-                {ongoingRequests.length == 0 && <p className="text-gray-500">No current ongoing requests</p>}
+                {ongoingRequests.length == 0 && (
+                  <p className="text-gray-500">No current ongoing requests</p>
+                )}
               </div>
               {ongoingRequests.map((job) => (
                 <div
@@ -316,7 +320,9 @@ export default function MyJobsPage() {
                 <h1 className="text-Pink text-2xl font-semibold">
                   Completed Jobs
                 </h1>
-                {completedJobs.length == 0 && <p className="text-gray-500">No current completed jobs</p>}
+                {completedJobs.length == 0 && (
+                  <p className="text-gray-500">No current completed jobs</p>
+                )}
               </div>
 
               {completedJobs.map((job) => (
@@ -377,9 +383,11 @@ export default function MyJobsPage() {
               ))}
               <div className="pb-2">
                 <h1 className="text-Pink text-2xl font-semibold">
-                  Completed Jobs
+                  Completed Requests
                 </h1>
-                {completedRequests.length == 0 && <p className="text-gray-500">No current completed requests</p>}
+                {completedRequests.length == 0 && (
+                  <p className="text-gray-500">No current completed requests</p>
+                )}
               </div>
               {completedRequests.map((job) => (
                 <div
