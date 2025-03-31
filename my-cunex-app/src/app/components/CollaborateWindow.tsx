@@ -107,7 +107,7 @@ const PopupWindow: React.FC<PopupWindowProps> = ({ isVisible, onClose }) => {
               <option value="Others">Others</option>
             </select>
           </div>
-          <div className="relative w-1/20">
+          <div className="relative w-[35px]">
             <select
               name="collaborators"
               className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black

@@ -24,6 +24,7 @@ export default function ReviewAndPayPage() {
     specs: "",
     additional: "",
   });
+
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId") || "";
     setUserId(storedUserId);
@@ -32,6 +33,7 @@ export default function ReviewAndPayPage() {
       setRequestDetails(JSON.parse(storedData)); // Convert JSON string to object
     }
   }, []);
+
   const sendNotification = async (orderId: number) => {
     try {
       const response = await fetch("/api/requestServices/userSendRequest", {
@@ -49,6 +51,7 @@ export default function ReviewAndPayPage() {
       }, 2000);
     }
   };
+
   const handleFileSubmit = async () => {
     if (!requestDetails.file) {
       alert("Please select an image before submitting.");
@@ -190,6 +193,7 @@ export default function ReviewAndPayPage() {
     setTimeout(() => {
       setShowModal(false);
       router.push("/");
+      localStorage.clear();
     }, 2000);
     handleFileSubmit();
   };

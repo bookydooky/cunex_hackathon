@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X,  Trash2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -82,6 +82,13 @@ export default function Portfolio() {
     });
   };
 
+  const handleRemoveAll = () => {
+  // Revoke all object URLs to prevent memory leaks
+  files.forEach((file) => URL.revokeObjectURL(file.preview));
+  // Clear the files state
+  setFiles([]);
+  }
+
   const handleAddPortfolio = async () => {
     const jobDetails = JSON.parse(localStorage.getItem("jobDetails") || "{}");
     const searchMembers = JSON.parse(
@@ -143,6 +150,7 @@ export default function Portfolio() {
       const portfolioResult = await handleAddPortfolio(); // Then submit portfolio data
       const bannerId = portfolioResult?.bannerId; // Get the bannerId directly from the result
       await handleFileSubmit(bannerId); // Pass the bannerId to handleFileSubmit
+      localStorage.clear();
     } catch (error) {
       console.error("Error submitting portfolio:", error);
     }
@@ -185,7 +193,7 @@ export default function Portfolio() {
       {/* Main content */}
       <div className="flex-1 px-4 py-4">
         {/* Info box */}
-        <div className="bg-gray-50 rounded-lg p-4 mb-8">
+        <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <h2 className="text-xl text-Gray font-bold mb-2">
             Portfolio and Examples
           </h2>
@@ -221,9 +229,13 @@ export default function Portfolio() {
         </div>
 
         {/* Portfolio grid */}
-        <h2 className="text-xl text-Gray font-bold mb-4">
-          Your Portfolio Previews
-        </h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl text-Gray font-bold">
+            Your Portfolio Previews
+          </h2>
+          <Trash2 className="text-Pink hover:text-darkPink active:text-darkPink" size={20}
+          onClick={handleRemoveAll}/>
+        </div>
         {files.length === 0 ? (
           <p className="text-gray-500 text-center mb-4">
             No portfolio items added yet.

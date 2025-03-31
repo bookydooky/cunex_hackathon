@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
 import Image from "next/image";
+import ImageCarousel from "@/app/components/ImageCarousel";
 
 export default function MyJobsPage() {
   interface OngoingJob {
@@ -63,7 +64,9 @@ export default function MyJobsPage() {
   const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
   const [ongoingRequests, setOngoingRequests] = useState<Order[]>([]);
   const [completedRequests, setCompletedRequests] = useState<Order[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showViewDetail, setShowViewDetail] = useState(false);
 
   const getClassName = (job: OngoingJob, index: number) => {
     console.log(`Job accept: ${job.accept}, Progress: ${job.progress}, Index: ${index}`);
@@ -100,6 +103,27 @@ export default function MyJobsPage() {
       console.log("Response:", data);
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  
+  const handleCheckDrafts = async (historyId: number) => {
+    try {
+      const response = await fetch(
+        `/api/checkImages?historyId=${historyId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = await response.json();
+      setImages(result.images);
+      return result;
+    } catch (error) {
+      console.log("Error fetching Images", error);
+      throw error;
     }
   };
 
@@ -149,6 +173,21 @@ export default function MyJobsPage() {
     console.log("userId", userId);
   }, [getOngoingJobs, getCompletedJobs, userId]);
 
+  // Assuming images is already an array of strings (based on your code)
+  const carouselImages = images
+    ? images.map((img) => ({
+        src: img, // If img is already a string
+        alt: "Job Image",
+      }))
+    : [
+        {
+          src: "/placeholder.jpg",
+          alt: "Placeholder Image",
+          caption: "No Images Available",
+        },
+      ];
+  const lastImage = carouselImages.at(-1);
+
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
       <div className="sticky top-0 left-0 right-0">
@@ -197,6 +236,29 @@ export default function MyJobsPage() {
           </button>
         </div>
       </div>
+
+      {/* View Details Popup */}
+        {showViewDetail && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-Pink text-xl font-semibold">
+                Final Submission
+              </h2>
+              <button
+                onClick={() => setShowViewDetail(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            {images.length === 0 ? (<p className="text-gray-500">No submitted drafts</p>) : (
+            <ImageCarousel images={lastImage ? [lastImage] : []} 
+            showArrow={false} showNavDot={false}/> )}
+          </div>
+        </div>
+      )}
+
       {/* Job List */}
       {isLoading ? (
         <p className="text-gray-500 pl-4">Loading Jobs...</p>
@@ -251,7 +313,7 @@ export default function MyJobsPage() {
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
                     <button
-                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray"
                       onClick={() => router.push("/chatpage")}
                     >
                       Message
@@ -309,7 +371,7 @@ export default function MyJobsPage() {
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
                     <button
-                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray"
                       onClick={() => router.push("/chatpage")}
                     >
                       Message
@@ -386,10 +448,12 @@ export default function MyJobsPage() {
 
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
-                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
+                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray"
+                    onClick={() => {handleCheckDrafts(job.historyId);
+                      setShowViewDetail(true);}}>
                       View Details
                     </button>
-                    <button className="flex-1 py-3 text-center text-gray-500">
+                    <button className="flex-1 py-3 text-center text-Pink">
                       Archive
                     </button>
                   </div>
@@ -449,10 +513,10 @@ export default function MyJobsPage() {
 
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
-                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
+                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray">
                       View Details
                     </button>
-                    <button className="flex-1 py-3 text-center text-gray-500">
+                    <button className="flex-1 py-3 text-center text-Pink">
                       Archive
                     </button>
                   </div>

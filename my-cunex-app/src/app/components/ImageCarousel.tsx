@@ -10,9 +10,11 @@ interface Image {
 
 interface ImageCarouselProps {
   images: Image[];
+  showArrow? : boolean;
+  showNavDot? : boolean;
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, showArrow = true, showNavDot = true }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,6 +33,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   return (
     <div className="relative w-full bg-gray-50">
       {/* Left Arrow */}
+      {showArrow && (
       <div
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer
         active:bg-gray-100"
@@ -51,7 +54,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </div> )}
 
       {/* Modal for full image */}
       {isModalOpen && (
@@ -103,6 +106,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       </div>
 
       {/* Right Arrow */}
+      {showArrow && (
       <div
         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 cursor-pointer
         active:bg-gray-100"
@@ -123,10 +127,11 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </div> )}
 
       {/* Optional: Dots for navigation */}
-      <div className="flex justify-center gap-2 mb-4">
+      {showNavDot && (
+      <div className="flex justify-center gap-2 pb-4">
         {images.map((_, index) => (
           <button
             key={index}
@@ -136,9 +141,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
             onClick={() => setCurrentIndex(index)}
           />
         ))}
-      </div>
+      </div> )}
     </div>
-  );
+  ); 
 };
 
 export default ImageCarousel;

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { FolderCheck } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { GlobalStateContext } from "@/app/context/GlobalState";
@@ -22,6 +22,32 @@ export default function UploadPagePreview() {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setRequestDetails({ ...requestDetails, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    // Retrieve saved data from localStorage on page load
+    const savedData = localStorage.getItem("requestDetails");
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setRequestDetails(parsedData);
+
+      // Retrieve the Base64 string and convert it to a Blob and File object
+      if (parsedData.file) {
+        const byteCharacters = atob(parsedData.file.split(",")[1]); // Decode Base64
+        const byteArrays = [];
+        for (let offset = 0; offset < byteCharacters.length; offset++) {
+          byteArrays.push(byteCharacters.charCodeAt(offset));
+        }
+        const byteArray = new Uint8Array(byteArrays);
+        const blob = new Blob([byteArray], { type: "application/octet-stream" });
+        const file = new File([blob], parsedData.filename, { type: "application/octet-stream" });
+        setSelectedFile(file); // Reassign the file to show it in the UI
+      }
+
+      if (parsedData.material) {
+        setSelectedMaterial(parsedData.material);
+      }
+    }
+  }, []);
 
   const handleContinue = async () => {
     if (!selectedFile || !selectedMaterial || !requestDetails.specs.trim()) {
@@ -73,7 +99,15 @@ export default function UploadPagePreview() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      setSelectedFile(files[0]);
+      const file = files[0];
+      setSelectedFile(file);
+      fileToBase64(file).then((base64) => {
+        const updatedRequestDetails = {
+          ...requestDetails,
+          file: base64,
+          filename: file.name,
+        };
+        setRequestDetails(updatedRequestDetails); })
     }
   };
 

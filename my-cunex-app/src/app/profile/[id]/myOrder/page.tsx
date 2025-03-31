@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import moment from "moment";
@@ -67,11 +66,11 @@ export default function MyOrdersPage() {
   const [completedJobs, setCompletedJobs] = useState<CompletedJob[]>([]);
   const [completedRequests, setCompletedRequests] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showSubmittedDraft, setShowSubmittedDraft] = useState(false);
+  const [showViewDetail, setShowViewDetail] = useState(false);
   const [images, setImages] = useState<string[]>([]);
 
   const getClassName = (job: OngoingJob, index: number) => {
-    console.log(`Job accept: ${job.accept}, Progress: ${job.progress}, Index: ${index}`);
   
     if (job.progress === 0) 
       return "bg-gray-200";
@@ -87,7 +86,6 @@ export default function MyOrdersPage() {
   };
 
   const handleCheckDrafts = async (historyId: number) => {
-    const checkImages = async (historyId: number) => {
       try {
         const response = await fetch(
           `/api/checkImages?historyId=${historyId}`,
@@ -106,13 +104,6 @@ export default function MyOrdersPage() {
         throw error;
       }
     };
-
-    checkImages(historyId);
-    setShowPopup(true);
-  };
-  const closePopup = () => {
-    setShowPopup(false);
-  };
 
   const getOngoingJobs = useCallback(async () => {
     try {
@@ -158,6 +149,7 @@ export default function MyOrdersPage() {
     getCompletedJobs();
     console.log("userId", userId);
   }, [getOngoingJobs, getCompletedJobs, userId]);
+
   // Assuming images is already an array of strings (based on your code)
   const carouselImages = images
     ? images.map((img) => ({
@@ -171,6 +163,8 @@ export default function MyOrdersPage() {
           caption: "No Images Available",
         },
       ];
+  const lastImage = carouselImages.at(-1);
+
   return (
     <div className="bg-gray-100 h-screen overflow-y-auto">
       <div className="sticky top-0 left-0 right-0">
@@ -191,7 +185,7 @@ export default function MyOrdersPage() {
               className="h-12"
             />
             <div className="h-6 border-l border-gray-300 mx-5"></div>
-            <div className="text-Pink font-medium text-xl">Profile</div>
+            <div className="text-Pink font-medium text-xl">My Orders</div>
           </div>
         </div>
 
@@ -220,25 +214,49 @@ export default function MyOrdersPage() {
         </div>
       </div>
 
-      {/* Image Carousel Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      {/* Submitted Drafts Popup */}
+      {showSubmittedDraft && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
           <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-2">
               <h2 className="text-Pink text-xl font-semibold">
                 Submitted Drafts
               </h2>
               <button
-                onClick={closePopup}
+                onClick={() => setShowSubmittedDraft(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
                 ✕
               </button>
             </div>
-            <ImageCarousel images={carouselImages} />
+            {images.length === 0 ? (<p className="text-gray-500">No submitted drafts</p>) : (
+            <ImageCarousel images={carouselImages} /> )}
           </div>
         </div>
       )}
+
+        {/* View Details Popup */}
+        {showViewDetail && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-Pink text-xl font-semibold">
+                Final Submission
+              </h2>
+              <button
+                onClick={() => setShowViewDetail(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            {images.length === 0 ? (<p className="text-gray-500">No submitted drafts</p>) : (
+            <ImageCarousel images={lastImage ? [lastImage] : []} 
+            showArrow={false} showNavDot={false}/> )}
+          </div>
+        </div>
+      )}
+
       {/* Job List */}
       {isLoading ? (
         <p className="text-gray-500 pl-4">Loading Orders...</p>
@@ -293,7 +311,7 @@ export default function MyOrdersPage() {
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
                     <button
-                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray"
                       onClick={() => router.push("/chatpage")}
                     >
                       Message
@@ -302,7 +320,9 @@ export default function MyOrdersPage() {
                     <button
                       className="flex-1 py-3 text-center text-Pink font-medium
                   hover:underline active:text-darkPink"
-                      onClick={() => handleCheckDrafts(job.historyId)}
+                      onClick={() => {handleCheckDrafts(job.historyId);
+                        setShowSubmittedDraft(true);
+                      }}
                     >
                       View Submitted Drafts
                     </button>
@@ -327,9 +347,9 @@ export default function MyOrdersPage() {
                       <h2 className="font-semibold text-xl text-Gray">
                         {job.serviceType}
                       </h2>
-                      <span className="text-Pink font-medium">
+                      <div className="text-Pink font-medium max-w-[50%] text-end">
                         {job.filename}
-                      </span>
+                      </div>
                     </div>
 
                     {job.firstName && job.lastName ? (
@@ -360,7 +380,7 @@ export default function MyOrdersPage() {
                   {job.firstName && job.lastName && (
                     <div className="flex border-t border-gray-100">
                       <button
-                        className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500"
+                        className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500 active:text-Gray"
                         onClick={() => router.push("/chatpage")}
                       >
                         Message
@@ -430,11 +450,13 @@ export default function MyOrdersPage() {
 
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
-                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
+                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500
+                    active:text-Gray"
+                    onClick={() => {handleCheckDrafts(job.historyId);
+                      setShowViewDetail(true);
+                    }}
+                    >
                       View Details
-                    </button>
-                    <button className="flex-1 py-3 text-center text-gray-500">
-                      Archive
                     </button>
                   </div>
                 </div>
@@ -495,9 +517,6 @@ export default function MyOrdersPage() {
                   <div className="flex border-t border-gray-100">
                     <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500">
                       View Details
-                    </button>
-                    <button className="flex-1 py-3 text-center text-gray-500">
-                      Archive
                     </button>
                   </div>
                 </div>

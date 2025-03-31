@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Users, Clock } from "lucide-react";
+import { Users, Clock, RotateCcw } from "lucide-react";
 import { useParams } from "next/navigation";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import ReloadWindow from "@/app/components/ReloadWindow";
@@ -200,17 +200,7 @@ const WorkAbout = () => {
 
           <div className="bg-pink-50 p-4 rounded-lg">
             <div className="flex items-center text-Pink mb-1">
-              <svg
-                viewBox="0 0 24 24"
-                width="16"
-                height="16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="mr-2 text-Pink"
-              >
-                <path d="M16 5v2a10 10 0 0 1-10 10h0c0-5.5 4.5-10 10-10h2m-2-2h7v7" />
-              </svg>
+              <RotateCcw size={16} className="mr-2"/>
               <span className="text-sm text-Gray">Rehired</span>
             </div>
             <div className="font-bold text-lg text-Gray">

@@ -61,11 +61,6 @@ const WorkDetailPreview = () => {
             Project Description
           </h3>
           <p className="text-gray-700">{jobData.bannerdesc}</p>
-          <p className="text-gray-700 mt-2">
-            You will receive three high-quality final drafts in PNG/JPEG format,
-            ready for immediate use on your products, website, and marketing
-            materials.
-          </p>
         </div>
 
         <div className="mb-6">

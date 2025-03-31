@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Users, Clock, XCircle } from "lucide-react";
+import { ArrowLeft, Users, Clock, XCircle, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import PopupWindow from "../../components/CollaborateWindow";
 import ReloadWindow from "@/app/components/ReloadWindow";
@@ -127,9 +127,17 @@ const CreateJobPreview = () => {
       <div className="flex-1 p-4">
         {/* User Profile Section */}
         <div className="bg-white p-4 rounded-lg mb-8">
-          <div className="flex items-start mb-6">
-            <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center">
+          <div className="flex items-center mb-6">
+            <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center relative">
+              {userData.profileImageUrl ? (
+                <Image src={userData.profileImageUrl} 
+                alt="Profile Image"
+                fill={true}
+                objectFit="cover"
+                className="rounded-full"/>
+                ) : (
               <Users size={28} className="text-Pink" />
+                )}
             </div>
             <div className="ml-4">
               <div className="font-bold text-xl text-Gray">
@@ -189,17 +197,7 @@ const CreateJobPreview = () => {
 
             <div className="bg-pink-50 p-4 rounded-lg">
               <div className="flex items-center text-Pink mb-1">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="mr-2 text-Pink"
-                >
-                  <path d="M16 5v2a10 10 0 0 1-10 10h0c0-5.5 4.5-10 10-10h2m-2-2h7v7" />
-                </svg>
+                <RotateCcw size={16} className="mr-2"/>
                 <span className="text-sm text-Gray">Rehired</span>
               </div>
               <div className="font-bold text-lg text-Gray">
@@ -242,7 +240,7 @@ const CreateJobPreview = () => {
               value={jobDetails.workTitle}
               onChange={handleChange}
               placeholder="Enter the title of the work"
-              className="w-full p-3 border border-gray-300 rounded-lg text-Gray
+              className="w-full p-3 border border-gray-300 rounded-lg text-black
               focus:border-Pink focus:outline-none"
             />
           </div>
@@ -254,7 +252,7 @@ const CreateJobPreview = () => {
                 name="workType"
                 value={jobDetails.workType}
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-Gray
+                className="w-full p-3 border border-gray-300 rounded-lg appearance-none text-black
                 focus:border-Pink focus:outline-none"
               >
                 <option value="" disabled>
@@ -321,6 +319,19 @@ const CreateJobPreview = () => {
               onChange={handleChange}
               placeholder="Describe the job details"
               className="w-full p-3 border border-gray-300 rounded-lg h-24 text-black
+              focus:border-Pink focus:outline-none"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-Gray mb-2">Tools</label>
+            <input
+              type="text"
+              name="tools"
+              value={jobDetails.workTitle}
+              onChange={handleChange}
+              placeholder="Add tools (e.g., Figma)"
+              className="w-full p-3 border border-gray-300 rounded-lg text-black
               focus:border-Pink focus:outline-none"
             />
           </div>
