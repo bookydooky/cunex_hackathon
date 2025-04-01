@@ -25,6 +25,21 @@ interface UserProfileResponse {
   accountNumber: string;
 }
 
+const toolOptions: { [key: string]: string[] } = {
+  UXUI: ["Figma", "Adobe XD", "Sketch", "Axure RP", "Framer"],
+  Coding: ["VS Code", "Git", "Postman", "Docker", "Node.js", "React", 
+    ".NET", "Python", "MongoDB", "MySQL", "Kubernetes"],
+  Graphic: ["Photoshop", "Illustrator", "Canva", "Procreate"],
+  Video: ["Premiere Pro", "After Effects", "DaVinci Resolve", "Sony Vegas Pro", "CapCut"],
+  Tutoring: ["Zoom", "Google Meet", "MS Teams", "Discord", "Line"],
+  Language: ["Google Translate", "Grammarly", "DeepL", "Duolingo"],
+  Modeling: ["Blender", "Maya", "SolidWorks", "AutoCAD", "SketchUp",
+    "Fusion360", "Rhino"
+  ],
+  Others: [],
+};
+
+
 const CreateJobPreview = () => {
   const router = useRouter();
   const params = useParams();
@@ -50,30 +65,84 @@ const CreateJobPreview = () => {
     fetchUserDetail();
   }, [userId]);
 
-  const [jobDetails, setJobDetails] = useState({
+  const [jobDetails, setJobDetails] = useState<{
+    workTitle: string;
+    workType: string;
+    price: string;
+    duration: string;
+    description: string;
+    tools: string[];
+  }>({
     workTitle: "",
     workType: "",
     price: "",
     duration: "",
     description: "",
+    tools: []
   });
 
   useEffect(() => {
     const savedData = localStorage.getItem("jobDetails");
     if (savedData) {
-      setJobDetails(JSON.parse(savedData));
+      const parsedJobDetails = JSON.parse(savedData);
+      setJobDetails(parsedJobDetails);
+      
+      // Set selectedTools only if jobDetails.tools exists
+      if (parsedJobDetails.tools) {
+        setSelectedTools(parsedJobDetails.tools);
+      }
     }
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once after the component mounts
+  
+
+  useEffect(() => {
+    console.log(jobDetails.tools)
+    console.log(selectedTools)
+  }, [jobDetails]);
 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setJobDetails({ ...jobDetails, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+  
+    // If the work type is changing, reset selected tools and jobDetails.tools
+    if (name === "workType" && value !== jobDetails.workType) {
+      setSelectedTools([]); // Clear the selected tools when work type changes
+      setJobDetails((prevJobDetails) => ({
+        ...prevJobDetails,
+        tools: [] // Clear the tools in jobDetails as well
+      }));
+    }
+  
+    setJobDetails((prevJobDetails) => ({
+      ...prevJobDetails,
+      [name]: value
+    }));
   };
-
+  
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedTools, setSelectedTools] = useState<string[]>([]);
+
+  const handleToolClick = (tool: string) => {
+    setSelectedTools((prevSelectedTools) => {
+      // Update selected tools first
+      const updatedSelectedTools = prevSelectedTools.includes(tool)
+        ? prevSelectedTools.filter((selectedTool) => selectedTool !== tool)
+        : [...prevSelectedTools, tool];
+  
+      // Then update jobDetails with the new selected tools
+      setJobDetails((prevJobDetails) => ({
+        ...prevJobDetails,
+        tools: updatedSelectedTools,
+      }));
+  
+      return updatedSelectedTools; // Return updated selected tools
+    });
+  };
+  
+
   const handleCollaborateClick = () => {
     setIsPopupVisible(true);
   };
@@ -318,22 +387,28 @@ const CreateJobPreview = () => {
               value={jobDetails.description}
               onChange={handleChange}
               placeholder="Describe the job details"
-              className="w-full p-3 border border-gray-300 rounded-lg h-24 text-black
+              className="w-full p-3 border border-gray-300 rounded-lg h-full text-black
               focus:border-Pink focus:outline-none"
             />
           </div>
 
           <div className="mb-4">
             <label className="block text-Gray mb-2">Tools</label>
-            <input
-              type="text"
-              name="tools"
-              value={jobDetails.workTitle}
-              onChange={handleChange}
-              placeholder="Add tools (e.g., Figma)"
-              className="w-full p-3 border border-gray-300 rounded-lg text-black
-              focus:border-Pink focus:outline-none"
-            />
+            {toolOptions[jobDetails.workType].length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {toolOptions[jobDetails.workType].map((tool, index) => (
+                  <span key={index} className={`px-3 py-1 rounded-full text-sm border-1 border-Pink transition-colors cursor-pointer
+                    ${selectedTools.includes(tool)
+                  ? 'bg-Pink text-white'
+                  : 'bg-white text-Pink'}`}
+                  onClick={() => handleToolClick(tool)}>
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No tools available for this work type.</p>
+            )}
           </div>
         </div>
 
