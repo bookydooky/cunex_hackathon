@@ -20,6 +20,7 @@ interface OngoingJob {
   duration?: string;
   firstName?: string;
   lastName?: string;
+  archived?: boolean;
 }
 
 interface CompletedJob {
@@ -36,6 +37,7 @@ interface CompletedJob {
   duration?: string;
   firstName?: string;
   lastName?: string;
+  archived?: boolean;
 }
 
 interface Order {
@@ -52,6 +54,7 @@ interface Order {
   filename?: string; // Filename (Nullable)
   firstName: string;
   lastName: string;
+  archived?: boolean;
 }
 
 export default function MyOrdersPage() {
@@ -71,39 +74,30 @@ export default function MyOrdersPage() {
   const [images, setImages] = useState<string[]>([]);
 
   const getClassName = (job: OngoingJob, index: number) => {
-  
-    if (job.progress === 0) 
-      return "bg-gray-200";
+    if (job.progress === 0) return "bg-gray-200";
     else if (job.progress > index) {
-      if (job.accept === 0)
-        return "bg-red-500";
-      else if (job.accept === 1)
-        return "bg-green-500";
-      else
-        return "bg-blue-500";
-    }
-    else return "bg-gray-200";
+      if (job.accept === 0) return "bg-red-500";
+      else if (job.accept === 1) return "bg-green-500";
+      else return "bg-blue-500";
+    } else return "bg-gray-200";
   };
 
   const handleCheckDrafts = async (historyId: number) => {
-      try {
-        const response = await fetch(
-          `/api/checkImages?historyId=${historyId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const result = await response.json();
-        setImages(result.images);
-        return result;
-      } catch (error) {
-        console.log("Error fetching Images", error);
-        throw error;
-      }
-    };
+    try {
+      const response = await fetch(`/api/checkImages?historyId=${historyId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      setImages(result.images);
+      return result;
+    } catch (error) {
+      console.log("Error fetching Images", error);
+      throw error;
+    }
+  };
 
   const getOngoingJobs = useCallback(async () => {
     try {
@@ -229,14 +223,17 @@ export default function MyOrdersPage() {
                 ✕
               </button>
             </div>
-            {images.length === 0 ? (<p className="text-gray-500">No submitted drafts</p>) : (
-            <ImageCarousel images={carouselImages} /> )}
+            {images.length === 0 ? (
+              <p className="text-gray-500">No submitted drafts</p>
+            ) : (
+              <ImageCarousel images={carouselImages} />
+            )}
           </div>
         </div>
       )}
 
-        {/* View Details Popup */}
-        {showViewDetail && (
+      {/* View Details Popup */}
+      {showViewDetail && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50">
           <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-2">
@@ -250,9 +247,15 @@ export default function MyOrdersPage() {
                 ✕
               </button>
             </div>
-            {images.length === 0 ? (<p className="text-gray-500">No submitted drafts</p>) : (
-            <ImageCarousel images={lastImage ? [lastImage] : []} 
-            showArrow={false} showNavDot={false}/> )}
+            {images.length === 0 ? (
+              <p className="text-gray-500">No submitted drafts</p>
+            ) : (
+              <ImageCarousel
+                images={lastImage ? [lastImage] : []}
+                showArrow={false}
+                showNavDot={false}
+              />
+            )}
           </div>
         </div>
       )}
@@ -293,17 +296,22 @@ export default function MyOrdersPage() {
                       <p className="text-gray-500 text-sm">
                         Duration: {job.duration}
                       </p>
-                      <span className="text-sm">{(job.progress * (100/3)).toFixed(2)}%</span>
+                      <span className="text-sm">
+                        {(job.progress * (100 / 3)).toFixed(2)}%
+                      </span>
                     </div>
 
                     {/* Progress bar */}
                     <div className="grid grid-cols-3 gap-2 w-full">
                       {[...Array(3)].map((_, index) => (
-                          <div
-                            key={index}
-                            className={`h-[6px] w-full rounded-full ${getClassName(job,index)}`}
-                            style={{ width: "100%" }}
-                          ></div>
+                        <div
+                          key={index}
+                          className={`h-[6px] w-full rounded-full ${getClassName(
+                            job,
+                            index
+                          )}`}
+                          style={{ width: "100%" }}
+                        ></div>
                       ))}
                     </div>
                   </div>
@@ -320,7 +328,8 @@ export default function MyOrdersPage() {
                     <button
                       className="flex-1 py-3 text-center text-Pink font-medium
                   hover:underline active:text-darkPink"
-                      onClick={() => {handleCheckDrafts(job.historyId);
+                      onClick={() => {
+                        handleCheckDrafts(job.historyId);
                         setShowSubmittedDraft(true);
                       }}
                     >
@@ -450,11 +459,13 @@ export default function MyOrdersPage() {
 
                   {/* Action buttons */}
                   <div className="flex border-t border-gray-100">
-                    <button className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500
+                    <button
+                      className="flex-1 py-3 text-center border-r border-gray-100 text-gray-500
                     active:text-Gray"
-                    onClick={() => {handleCheckDrafts(job.historyId);
-                      setShowViewDetail(true);
-                    }}
+                      onClick={() => {
+                        handleCheckDrafts(job.historyId);
+                        setShowViewDetail(true);
+                      }}
                     >
                       View Details
                     </button>

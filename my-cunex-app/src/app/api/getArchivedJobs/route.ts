@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       FROM jobHistory jh
       LEFT JOIN jobBanners jb ON jh.bannerId = jb.bannerId
       LEFT JOIN users u ON jh.buyerId = u.userId
-      WHERE jh.sellerId = ? AND (COALESCE(jh.accept,-1) = 1 OR (jh.progress = 3 AND COALESCE(jh.accept,-1) = 0)) AND jh.archived = FALSE
+      WHERE jh.sellerId = ? AND (COALESCE(jh.accept,-1) = 1 OR (jh.progress = 3 AND COALESCE(jh.accept,-1) = 0)) AND jh.archived = TRUE
     `;
 
     const [rows]: any = await con.query(jobData, [userId]);
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     SELECT o.*, u.firstName, u.lastName
     FROM orders o
     LEFT JOIN users u ON o.buyerId = u.userId
-    WHERE o.sellerId = ? AND o.completed = TRUE AND o.archived = FALSE
+    WHERE o.sellerId = ? AND o.completed = TRUE AND o.archived = TRUE
   `;
 
     const [orderRows] = (await con.execute(orderData, [userId])) as any;

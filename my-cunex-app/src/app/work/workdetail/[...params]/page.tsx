@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import WorkLayout from "../../../components/worklayout"; // Import WorkLayout
 import { useParams } from "next/navigation"; // Import useParams
-import ReloadWindow from '@/app/components/ReloadWindow'
+import ReloadWindow from "@/app/components/ReloadWindow";
 
 interface JobDetailResponse {
   bannerId: string;
@@ -13,6 +13,7 @@ interface JobDetailResponse {
   duration: string; // Duration in days, or another appropriate unit
   typeOfWork: string;
   bannerdesc: string;
+  tools: string;
   images: string[]; // Array of image URLs
 }
 
@@ -26,9 +27,7 @@ const WorkDetailPreview = () => {
 
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(
-          `/api/jobDetails/${bannerId}`
-        );
+        const response = await fetch(`/api/jobDetails/${bannerId}`);
         if (!response.ok) throw new Error("Failed to fetch job details");
 
         const data = await response.json();
@@ -36,12 +35,12 @@ const WorkDetailPreview = () => {
       } catch (error) {
         console.error("Error fetching job details:", error);
       }
-    }; 
+    };
 
     fetchJobDetails();
   }, [bannerId]);
 
-  if (!jobData) return <ReloadWindow detail="Job"/>;
+  if (!jobData) return <ReloadWindow detail="Job" />;
 
   return (
     <WorkLayout jobData={jobData} userId={userId}>
@@ -66,15 +65,14 @@ const WorkDetailPreview = () => {
         <div className="mb-6">
           <h3 className="text-lg text-Gray font-bold mb-2">Tools</h3>
           <div className="flex flex-wrap gap-2">
-            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
-              Figma
-            </div>
-            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
-              Adobe XD
-            </div>
-            <div className="bg-pink-100 text-Pink px-6 py-3 rounded-lg">
-              InVision
-            </div>
+            {jobData.tools.split(",").map((tool, index) => (
+              <div
+                key={index}
+                className="bg-pink-100 text-Pink px-6 py-3 rounded-lg"
+              >
+                {tool.trim()}
+              </div>
+            ))}
           </div>
         </div>
       </div>

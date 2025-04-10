@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     description,
     colabType,
     addMembers,
+    tools,
   } = await request.json();
 
   if (!workTitle || !workType || !price || !duration || !description) {
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
       duration,
       workType,
       description,
-      "AAA",
+      tools,
     ];
     await con.execute(insertQuery, values);
 

@@ -25,6 +25,7 @@ export async function GET(
         jb.duration, 
         jb.typeOfWork, 
         jb.bannerdesc,
+        jb.tools,
         u.bank,
         u.accountNumber,
         u.phoneNumber

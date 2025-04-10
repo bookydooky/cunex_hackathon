@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
-import { ArrowLeft, X,  Trash2 } from "lucide-react";
+import { ArrowLeft, X, Trash2 } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -83,11 +83,11 @@ export default function Portfolio() {
   };
 
   const handleRemoveAll = () => {
-  // Revoke all object URLs to prevent memory leaks
-  files.forEach((file) => URL.revokeObjectURL(file.preview));
-  // Clear the files state
-  setFiles([]);
-  }
+    // Revoke all object URLs to prevent memory leaks
+    files.forEach((file) => URL.revokeObjectURL(file.preview));
+    // Clear the files state
+    setFiles([]);
+  };
 
   const handleAddPortfolio = async () => {
     const jobDetails = JSON.parse(localStorage.getItem("jobDetails") || "{}");
@@ -110,6 +110,7 @@ export default function Portfolio() {
       description: jobDetails.description || "No description",
       colabType: cleanedColabTypes,
       addMembers: addMembers,
+      tools: (jobDetails.tools || []).join(","), // <-- added here
     };
 
     console.log("Sending data to server:", workData);
@@ -233,8 +234,11 @@ export default function Portfolio() {
           <h2 className="text-xl text-Gray font-bold">
             Your Portfolio Previews
           </h2>
-          <Trash2 className="text-Pink hover:text-darkPink active:text-darkPink" size={20}
-          onClick={handleRemoveAll}/>
+          <Trash2
+            className="text-Pink hover:text-darkPink active:text-darkPink"
+            size={20}
+            onClick={handleRemoveAll}
+          />
         </div>
         {files.length === 0 ? (
           <p className="text-gray-500 text-center mb-4">

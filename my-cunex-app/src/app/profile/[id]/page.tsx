@@ -8,7 +8,7 @@ import {
   UserPlus,
   CreditCard,
   ShoppingCart,
-  Archive
+  Archive,
 } from "lucide-react"; // Import the required icons
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
@@ -476,11 +476,12 @@ export default function ProfilePage() {
             </div>
           </Link>
         </div>
-        {/* Payments */}
+        {/* Archive */}
         <div
           className="bg-white rounded-lg mb-3 shadow-sm hover:bg-gray-100
     transition-colors active:bg-gray-200"
         >
+          <Link href={`/profile/${userId}/archive`}>
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-6 h-6 rounded-full lex items-center justify-center mr-3">
@@ -501,6 +502,7 @@ export default function ProfilePage() {
                 />
               </svg>
             </div>
+          </Link>
         </div>
       </div>
     </div>
